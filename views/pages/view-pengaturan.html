@@ -1,0 +1,198 @@
+<div class="page-view d-none animate-fade-in" id="view-pengaturan">
+<h1 class="h3 mb-4 text-gray-800 fw-bold">Pengaturan Aplikasi</h1>
+<div class="row">
+<div class="col-lg-8">
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<ul class="nav nav-tabs card-header-tabs" id="pengaturanTabs" role="tablist">
+<li class="nav-item">
+<button class="nav-link active fw-bold" data-bs-target="#content-umum" data-bs-toggle="tab" role="tab" type="button">Informasi
+                                                    Instansi</button>
+</li>
+<li class="nav-item">
+<button class="nav-link fw-bold text-danger" data-bs-target="#content-keamanan" data-bs-toggle="tab" role="tab" type="button">Keamanan
+                                                    Akun</button>
+</li>
+<li class="nav-item">
+<button class="nav-link fw-bold text-info" data-bs-target="#content-tema" data-bs-toggle="tab" role="tab" type="button">Tema &amp;
+                                                    Background</button>
+</li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content">
+<!-- Tab Informasi Instansi -->
+<div class="tab-pane fade show active" id="content-umum" role="tabpanel">
+<form>
+<div class="row">
+<!-- Kolom Kiri -->
+<div class="col-md-6 border-end">
+<h6 class="fw-bold text-primary mb-3"><i class="fas fa-building me-1"></i> Data Instansi</h6>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Nama
+                                                                    Instansi</label>
+<input class="form-control form-control-sm" id="set_instansi" placeholder="Pemerintah Provinsi" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Nama OPD /
+                                                                    Dinas <span class="text-muted fw-normal">(Opsional)</span></label>
+<input class="form-control form-control-sm" id="set_opd" placeholder="Dinas Pendidikan" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Nama
+                                                                    Sekolah / Unit Kerja</label>
+<input class="form-control form-control-sm" id="set_sekolah" placeholder="Nama Sekolah" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Alamat
+                                                                    Lengkap</label>
+<textarea class="form-control form-control-sm" id="set_alamat_text" placeholder="Alamat lengkap" rows="2"></textarea>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">No Telpon /
+                                                                    HP</label>
+<input class="form-control form-control-sm" id="set_hp" placeholder="08123456789" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Email</label>
+<input class="form-control form-control-sm" id="set_email" placeholder="email@contoh.com" type="email"/>
+</div>
+<div class="mb-3">
+<label class="form-label small mb-1 fw-bold">Website</label>
+<input class="form-control form-control-sm" id="set_web" placeholder="https://www.contoh.com" type="text"/>
+</div>
+</div>
+<!-- Kolom Kanan -->
+<div class="col-md-6">
+<h6 class="fw-bold text-primary mb-3"><i class="fas fa-user-tie me-1"></i> Data Pejabat &amp;
+                                                                Logo</h6>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Nama Kepala
+                                                                    Sekolah / Pimpinan</label>
+<input class="form-control form-control-sm" id="set_kepsek_nama" placeholder="Nama Pimpinan" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">NIP Kepala
+                                                                    Sekolah / Pimpinan</label>
+<input class="form-control form-control-sm" id="set_kepsek_nip" placeholder="NIP Pimpinan" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">Nama
+                                                                    Bendahara Gaji / Dinas</label>
+<input class="form-control form-control-sm" id="set_bendahara_nama" placeholder="Nama Bendahara" type="text"/>
+</div>
+<div class="mb-2">
+<label class="form-label small mb-1 fw-bold">NIP
+                                                                    Bendahara Gaji / Dinas</label>
+<input class="form-control form-control-sm" id="set_bendahara_nip" placeholder="NIP Bendahara" type="text"/>
+</div>
+<hr/>
+<div class="row">
+<div class="col-6 text-center">
+<label class="form-label small fw-bold">Logo
+                                                                        Instansi</label>
+<div class="border rounded p-1 mb-2 bg-light mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+<img alt="Logo Instansi" class="img-fluid" id="previewLogoInstansi" src="logo-simpeel.png" style="max-height: 100%;"/>
+</div>
+<input accept="image/*" class="d-none" id="inputLogoInstansi" onchange="openCropper(this, 'previewLogoInstansi', 1/1)" type="file"/>
+<button class="btn btn-sm btn-outline-primary py-0" onclick="document.getElementById('inputLogoInstansi').click()" type="button"><i class="fas fa-upload" style="font-size: 0.8rem;"></i></button>
+</div>
+<div class="col-6 text-center">
+<label class="form-label small fw-bold">Logo
+                                                                        Sekolah</label>
+<div class="border rounded p-1 mb-2 bg-light mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+<img alt="Logo Sekolah" class="img-fluid" id="previewLogoSekolah" src="logo-simpeel.png" style="max-height: 100%;"/>
+</div>
+<input accept="image/*" class="d-none" id="inputLogoSekolah" onchange="openCropper(this, 'previewLogoSekolah', 1/1)" type="file"/>
+<button class="btn btn-sm btn-outline-primary py-0" onclick="document.getElementById('inputLogoSekolah').click()" type="button"><i class="fas fa-upload" style="font-size: 0.8rem;"></i></button>
+</div>
+</div>
+</div>
+</div>
+<hr/>
+<button class="btn btn-primary w-100" onclick="simpanPengaturan()" type="button"><i class="fas fa-save"></i> Simpan
+                                                        Pengaturan</button>
+</form>
+</div>
+<!-- Tab Keamanan Akun -->
+<div class="tab-pane fade" id="content-keamanan" role="tabpanel">
+<form>
+<div class="mb-3">
+<label class="form-label fw-bold">Username</label>
+<input class="form-control" id="set_username" placeholder="Masukkan Username" readonly="" title="Username tidak dapat diubah" type="text"/>
+<small class="text-danger">* Username dikunci secara permanen
+                                                            dan tidak dapat diubah.</small>
+</div>
+<div class="mb-3">
+<label class="form-label fw-bold">Password Baru</label>
+<div class="input-group">
+<input class="form-control" id="set_password" placeholder="Masukkan Password Baru" type="password"/>
+<button class="btn btn-outline-secondary" id="toggleSetPassword" type="button">
+<i class="fas fa-eye-slash" id="iconSetPassword"></i>
+</button>
+</div>
+</div>
+<button class="btn btn-danger" onclick="simpanKeamanan()" type="button"><i class="fas fa-lock"></i> Simpan
+                                                        Keamanan</button>
+</form>
+</div>
+<!-- Tab Tema & Background -->
+<div class="tab-pane fade" id="content-tema" role="tabpanel">
+<form>
+<div class="mb-4">
+<label class="form-label fw-bold">Warna Tema Aplikasi</label>
+<div class="d-flex align-items-center gap-3">
+<input class="form-control form-control-color" id="set_warna_tema" title="Warna Tema 1" type="color" value="#4e73df"/>
+<input class="form-control form-control-color" id="set_warna_tema2" title="Warna Tema 2" type="color" value="#224abe"/>
+<input class="form-control form-control-color" id="set_warna_tema3" title="Warna Tema 3" type="color" value="#132a76"/>
+<span class="text-muted small">Pilih 3 warna kustom untuk
+                                                                mengubah tema gradien aplikasi.</span>
+</div>
+</div>
+<hr/>
+<div class="mb-3">
+<label class="form-label fw-bold">Background Landing
+                                                            Page</label>
+<p class="text-muted small">Unggah gambar untuk mengubah latar
+                                                            belakang halaman awal. Disarankan memiliki resolusi tinggi
+                                                            (16:9).</p>
+<div class="mb-3">
+<img alt="Preview Background" class="img-thumbnail" id="previewBgLanding" src="./logo-simpeel.png" style="width: 100%; max-height: 250px; object-fit: cover;"/>
+</div>
+<input accept="image/*" class="form-control mb-3" onchange="openCropper(this, 'previewBgLanding', 16/9)" type="file"/>
+</div>
+<button class="btn btn-info text-white" onclick="simpanTemaBackground()" type="button"><i class="fas fa-paint-roller"></i> Simpan Tema</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="card shadow-sm mb-4 border-left-danger">
+<div class="card-header py-3">
+<h6 class="m-0 fw-bold text-danger"><i class="fas fa-database"></i> Backup &amp;
+                                            Restore</h6>
+</div>
+<div class="card-body">
+<p class="text-muted small">Data aplikasi tersimpan aman di komputer ini.
+                                            Gunakan fitur Backup jika Anda ingin memindahkan data ke perangkat lain.</p>
+<div class="d-grid gap-2">
+<button class="btn btn-outline-success" onclick="backupDataJSON()" type="button"><i class="fas fa-download"></i> Unduh Backup
+                                                (JSON)</button>
+<button class="btn btn-outline-danger" onclick="restoreDataJSON()" type="button"><i class="fas fa-upload"></i> Restore Backup
+                                                (JSON)</button>
+</div>
+<hr/>
+<p class="text-muted small fw-bold mb-1">Standar Sync URL (Bawaan)</p>
+<p class="text-muted small" style="font-size: 0.75rem;">URL Google Apps Script
+                                            bawaan aplikasi (hanya bisa disalin).</p>
+<div class="input-group input-group-sm mb-2">
+<input class="form-control" id="defaultSyncUrlReadonly" readonly="" type="text" value="Memuat..."/>
+<button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('defaultSyncUrlReadonly').value); Swal.fire({toast:true, position:'top-end', icon:'success', title:'URL disalin!', showConfirmButton:false, timer:2000})" type="button"><i class="fas fa-copy"></i></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

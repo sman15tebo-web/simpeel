@@ -1,0 +1,25 @@
+<div aria-hidden="true" class="modal fade" id="modalImportAkun" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header bg-primary text-white">
+<h5 class="modal-title"><i class="fas fa-file-excel"></i> Import Akun Pegawai (6 Kolom)</h5>
+<button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body text-center">
+<p>Template berisi 6 kolom: <strong>NIP, Nama, NIK, Tgl Lahir, Status Pegawai, Password</strong>.
+                    </p>
+<p class="text-muted small">Jika kolom Password dikosongkan, password default akan sama dengan NIP.
+                    </p>
+<button class="btn btn-outline-primary mb-4" onclick="downloadTemplateImportAkun()"><i class="fas fa-download"></i> Unduh Template Akun</button>
+<div class="mb-3 text-start">
+<label class="form-label fw-bold">Upload File Excel (.xls / .xlsx)</label>
+<input accept=".xls, .xlsx" class="form-control" id="fileImportAkunExcel" type="file"/>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Batal</button>
+<button class="btn btn-primary" onclick="prosesImportAkunExcel()" type="button"><i class="fas fa-upload"></i> Proses Import</button>
+</div>
+</div>
+</div>
+</div>

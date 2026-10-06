@@ -1,0 +1,72 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<!-- Sidebar - Brand -->
+<a class="sidebar-brand d-flex align-items-center" href="#" onclick="nav('dashboard')">
+<img alt="Logo Sekolah" class="sidebar-brand-logo" id="sidebar-sekolah-logo" src="logo-simpeel.png"/>
+<span class="sidebar-brand-copy">
+<span class="sidebar-brand-text">SiMPeEL</span>
+<small class="sidebar-brand-school" id="sidebar-sekolah-nama">Nama Sekolah</small>
+</span>
+</a>
+<hr class="sidebar-divider my-0"/>
+<!-- 1. Dashboard -->
+<li class="nav-item active" data-admin-only="true" data-page="dashboard">
+<a class="nav-link" href="#" onclick="nav('dashboard')">
+<i class="fas fa-fw fa-tachometer-alt"></i>
+<span>Dashboard</span></a>
+</li>
+<hr class="sidebar-divider"/>
+<div class="sidebar-heading">Data Pegawai</div>
+<!-- SIDEBAR ADMIN -->
+<div id="sidebar-admin">
+<!-- 2. Data Induk Pegawai -->
+<li class="nav-item" data-page="data-induk">
+<a class="nav-link" href="#" onclick="nav('data-induk')">
+<i class="fas fa-fw fa-users"></i>
+<span>Data Induk Pegawai</span></a>
+</li>
+<!-- 3. Pegawai Aktif/Non Aktif -->
+<li class="nav-item" data-page="status-pegawai">
+<a class="nav-link" href="#" onclick="nav('status-pegawai')">
+<i class="fas fa-fw fa-users-cog"></i>
+<span>Pegawai Aktif/Non Aktif</span></a>
+</li>
+<!-- 4. Monitor Pegawai -->
+<li class="nav-item" data-page="monitor">
+<a class="nav-link" href="#" onclick="nav('monitor')">
+<i class="fas fa-fw fa-chart-bar"></i>
+<span>Monitor Pegawai</span></a>
+</li>
+<hr class="sidebar-divider"/>
+<div class="sidebar-heading">Sistem</div>
+<!-- 5. Pengaturan -->
+<li class="nav-item" data-page="pengaturan">
+<a class="nav-link" href="#" onclick="nav('pengaturan')">
+<i class="fas fa-fw fa-cogs"></i>
+<span>Pengaturan</span></a>
+</li>
+</div>
+<!-- SIDEBAR PEGAWAI -->
+<div class="d-none" id="sidebar-pegawai">
+<li class="nav-item" data-page="dashboard-pegawai">
+<a class="nav-link" href="#" onclick="nav('dashboard-pegawai')">
+<i class="fas fa-fw fa-home"></i>
+<span>Beranda</span></a>
+</li>
+<li class="nav-item" data-page="profil-pegawai">
+<a class="nav-link" href="#" onclick="nav('profil-pegawai')">
+<i class="fas fa-fw fa-id-card"></i>
+<span>Profil Saya</span></a>
+</li>
+<li class="nav-item" data-page="update-data">
+<a class="nav-link" href="#" onclick="nav('update-data')">
+<i class="fas fa-fw fa-edit"></i>
+<span>Update Data</span></a>
+</li>
+</div>
+<!-- 6. Keluar -->
+<li class="nav-item">
+<a class="nav-link" href="#" onclick="logoutSSO()">
+<i class="fas fa-fw fa-sign-out-alt"></i>
+<span>Keluar</span></a>
+</li>
+</ul>

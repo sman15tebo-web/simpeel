@@ -1,0 +1,54 @@
+<div class="page-view d-none animate-fade-in" id="view-profil-pegawai">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold"><i class="fas fa-id-card me-2 text-primary"></i>Profil Saya</h1>
+</div>
+<div class="card shadow-sm mb-4 border-left-primary">
+<div class="card-header py-3 bg-gradient-primary">
+<h6 class="m-0 fw-bold text-white"><i class="fas fa-user me-2"></i>Informasi Akun</h6>
+</div>
+<div class="card-body">
+<div class="row mb-4 align-items-center">
+<div class="col-md-4 text-center mb-3 mb-md-0">
+<div class="avatar-placeholder mx-auto mb-3 shadow" style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#4e73df,#224abe);display:flex;align-items:center;justify-content:center;">
+<i class="fas fa-user fa-3x text-white"></i>
+</div>
+<span class="badge bg-primary px-3 py-2 shadow-sm" id="profil-role-badge">Pegawai</span>
+</div>
+<div class="col-md-8">
+<div class="mb-3">
+<label class="form-label fw-bold text-gray-700"><i class="fas fa-user me-1"></i>Nama Lengkap</label>
+<input class="form-control bg-light" id="profil-nama" placeholder="-" readonly="" type="text"/>
+</div>
+<div class="mb-3">
+<label class="form-label fw-bold text-gray-700"><i class="fas fa-id-badge me-1"></i>NIP / Username</label>
+<input class="form-control bg-light" id="profil-nip" placeholder="-" readonly="" type="text"/>
+</div>
+</div>
+</div>
+<hr/>
+<h6 class="fw-bold text-gray-700 mb-3"><i class="fas fa-lock me-2"></i>Ubah Password
+                                </h6>
+<div class="row">
+<div class="col-md-6 mb-3">
+<label class="form-label fw-bold text-gray-700">Password Baru</label>
+<div class="input-group">
+<input class="form-control" id="profil-password-baru" placeholder="Masukkan password baru" type="password"/>
+<button class="btn btn-outline-secondary" onclick="togglePassVisibility('profil-password-baru', this)" type="button">
+<i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="col-md-6 mb-4">
+<label class="form-label fw-bold text-gray-700">Konfirmasi Password</label>
+<div class="input-group">
+<input class="form-control" id="profil-password-konfirm" placeholder="Ulangi password baru" type="password"/>
+<button class="btn btn-outline-secondary" onclick="togglePassVisibility('profil-password-konfirm', this)" type="button">
+<i class="fas fa-eye"></i></button>
+</div>
+</div>
+</div>
+<button class="btn btn-primary w-100 fw-bold shadow-sm py-2" onclick="simpanUbahPassword()">
+<i class="fas fa-save me-1"></i> Simpan Perubahan Password
+                                </button>
+</div>
+</div>
+</div>

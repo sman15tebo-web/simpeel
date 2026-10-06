@@ -1,0 +1,136 @@
+<div class="page-view d-none animate-fade-in" data-old-view="true" id="view-pegawai">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Data Induk Pegawai</h1>
+<div>
+<button class="btn btn-success shadow-sm me-2" data-bs-target="#modalImport" data-bs-toggle="modal"><i class="fas fa-file-excel fa-sm text-white-50"></i>
+                                    Import Data</button>
+</div>
+</div>
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<!-- Tabs -->
+<ul class="nav nav-pills card-header-pills" id="pegawaiTabs" role="tablist">
+<li class="nav-item" role="presentation">
+<button class="nav-link active fw-bold" data-bs-target="#content-pns" data-bs-toggle="tab" id="tab-pns" role="tab" type="button">PNS</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold" data-bs-target="#content-pppk" data-bs-toggle="tab" id="tab-pppk" role="tab" type="button">PPPK</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold" data-bs-target="#content-pppkpw" data-bs-toggle="tab" id="tab-pppkpw" role="tab" type="button">PPPK Paruh
+                                            Waktu</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold" data-bs-target="#content-honorer" data-bs-toggle="tab" id="tab-honorer" role="tab" type="button">Honorer</button>
+</li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content" id="pegawaiTabsContent">
+<div class="tab-pane fade show active" id="content-pns" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaPNS" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-3">
+<select class="form-select" id="filterGolPNS">
+<option value="">Semua Golongan</option>
+<option value="I/">Golongan I</option>
+<option value="II/">Golongan II</option>
+<option value="III/">Golongan III</option>
+<option value="IV/">Golongan IV</option>
+</select>
+</div>
+<div class="col-md-5 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblPNS', 'DATA INDUK PEGAWAI (PNS)')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblPNS" width="100%">
+<thead class="table-light">
+<tr>
+<th>NIP</th>
+<th>Nama Lengkap</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th style="width: 120px;">Aksi</th>
+</tr>
+</thead>
+<tbody>
+<!-- Data akan di-load via JS -->
+</tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-pppk" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaPPPK" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblPPPK', 'DATA INDUK PEGAWAI (PPPK)')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblPPPK" width="100%">
+<thead class="table-light">
+<tr>
+<th>NIP/NI PPPK</th>
+<th>Nama Lengkap</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th style="width: 120px;">Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-pppkpw" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaPPPKPW" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblPPPKPW', 'DATA INDUK PEGAWAI (PPPK PARUH WAKTU)')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblPPPKPW" width="100%">
+<thead class="table-light">
+<tr>
+<th>NIP/NI PPPK</th>
+<th>Nama Lengkap</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th style="width: 120px;">Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-honorer" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaHonorer" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblHonorer', 'Data_Honorer')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblHonorer" width="100%">
+<thead class="table-light">
+<tr>
+<th>NIP/NI PPPK</th>
+<th>Nama Lengkap</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th style="width: 120px;">Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

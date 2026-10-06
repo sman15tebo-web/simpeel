@@ -1,0 +1,226 @@
+<div class="page-view d-none animate-fade-in" id="view-status-pegawai">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Pegawai Aktif / Non Aktif</h1>
+</div>
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<ul class="nav nav-tabs card-header-tabs" id="statusPegawaiTabs" role="tablist">
+<li class="nav-item"><button class="nav-link active fw-bold text-success" data-bs-target="#sp-aktif" data-bs-toggle="tab" id="tab-sp-aktif" type="button"><i class="fas fa-user-check me-1"></i> Pegawai Aktif</button>
+</li>
+<li class="nav-item"><button class="nav-link fw-bold text-danger" data-bs-target="#sp-nonaktif" data-bs-toggle="tab" id="tab-sp-nonaktif" type="button"><i class="fas fa-user-times me-1"></i> Pegawai Non
+                                            Aktif</button></li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content" id="statusPegawaiTabsContent">
+<!-- TAB AKTIF -->
+<div class="tab-pane fade show active" id="sp-aktif" role="tabpanel">
+<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+<ul class="nav nav-pills gap-1 mb-0">
+<li class="nav-item"><button class="nav-link active fw-bold btn-sm" data-bs-target="#rek-pns" data-bs-toggle="tab" type="button">PNS</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#rek-pppk" data-bs-toggle="tab" type="button">PPPK</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#rek-pppkpw" data-bs-toggle="tab" type="button">PPPK
+                                                        Paruh Waktu</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#rek-honorer" data-bs-toggle="tab" type="button">Honorer</button></li>
+</ul>
+<button class="btn btn-sm btn-success shadow-sm" onclick="exportAllToExcel('Aktif')"><i class="fas fa-file-excel"></i>
+                                                Unduh Excel</button>
+</div>
+<div class="tab-content">
+<div class="tab-pane fade show active" id="rek-pns" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterRekapPNS" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblRekapPNS" width="100%">
+<thead>
+<tr>
+<th>Nama</th>
+<th>NIP</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Pendidikan</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="rek-pppk" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterRekapPPPK" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblRekapPPPK" width="100%">
+<thead>
+<tr>
+<th>Nama</th>
+<th>NIP</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Pendidikan</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="rek-pppkpw" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterRekapPPPKPW" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblRekapPPPKPW" width="100%">
+<thead>
+<tr>
+<th>Nama</th>
+<th>NIP</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Pendidikan</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="rek-honorer" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterRekapHonorer" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblRekapHonorer" width="100%">
+<thead>
+<tr>
+<th>Nama</th>
+<th>NIP</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Pendidikan</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB NON AKTIF -->
+<div class="tab-pane fade" id="sp-nonaktif" role="tabpanel">
+<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+<ul class="nav nav-pills gap-1 mb-0">
+<li class="nav-item"><button class="nav-link active fw-bold btn-sm" data-bs-target="#content-pensiun" data-bs-toggle="tab" type="button"><i class="fas fa-user-clock me-1"></i>Pensiun</button>
+</li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#content-meninggal" data-bs-toggle="tab" type="button"><i class="fas fa-user-minus me-1"></i>Meninggal</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#content-mutasi" data-bs-toggle="tab" type="button"><i class="fas fa-exchange-alt me-1"></i>Mutasi</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#content-berhenti" data-bs-toggle="tab" type="button"><i class="fas fa-user-slash me-1"></i>Berhenti/Resign</button>
+</li>
+</ul>
+<button class="btn btn-sm btn-success shadow-sm" onclick="exportAllToExcel('NonAktif')"><i class="fas fa-file-excel"></i>
+                                                Unduh Excel</button>
+</div>
+<div class="tab-content">
+<div class="tab-pane fade show active" id="content-pensiun" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaPensiun" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblPensiun" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Status</th>
+<th>TMT Pensiun</th>
+<th>Jabatan Terakhir</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-meninggal" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaMeninggal" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblMeninggal" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Status</th>
+<th>Jabatan</th>
+<th>Tanggal Meninggal</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-mutasi" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaMutasi" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblMutasi" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Status</th>
+<th>TMT Mutasi</th>
+<th>Keterangan Mutasi</th>
+<th>Jabatan</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-berhenti" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaBerhenti" placeholder="Cari..." type="text"/>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblBerhenti" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Status</th>
+<th>Tanggal Berhenti</th>
+<th>Alasan Berhenti</th>
+<th>Jabatan</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

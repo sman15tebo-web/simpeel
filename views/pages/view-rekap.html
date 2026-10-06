@@ -1,0 +1,139 @@
+<div class="page-view d-none animate-fade-in" data-old-view="true" id="view-rekap">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Daftar Pegawai Aktif</h1>
+</div>
+<div class="alert alert-primary shadow-sm"><i class="fas fa-info-circle"></i> Menampilkan daftar
+                            pegawai aktif dengan <b>Jabatan Terbaru</b>, <b>Pangkat Terbaru</b>, dan <b>Pendidikan
+                                Terakhir</b>.</div>
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<!-- Tabs -->
+<ul class="nav nav-pills card-header-pills" id="rekapTabs" role="tablist">
+<li class="nav-item" role="presentation">
+<button class="nav-link active fw-bold" data-bs-target="#content-rekap-pns" data-bs-toggle="tab" id="tab-rekap-pns" role="tab" type="button">PNS</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold" data-bs-target="#content-rekap-pppk" data-bs-toggle="tab" id="tab-rekap-pppk" role="tab" type="button">PPPK</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold" data-bs-target="#content-rekap-pppkpw" data-bs-toggle="tab" id="tab-rekap-pppkpw" role="tab" type="button">PPPK Paruh
+                                            Waktu</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold" data-bs-target="#content-rekap-honorer" data-bs-toggle="tab" id="tab-rekap-honorer" role="tab" type="button">Honorer</button>
+</li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content" id="rekapTabsContent">
+<div class="tab-pane fade show active" id="content-rekap-pns" role="tabpanel">
+<div class="row mb-3 mt-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaAktifPNS" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-3">
+<select class="form-select" id="filterGolAktifPNS">
+<option value="">Semua Golongan</option>
+<option value="I/">Golongan I</option>
+<option value="II/">Golongan II</option>
+<option value="III/">Golongan III</option>
+<option value="IV/">Golongan IV</option>
+</select>
+</div>
+<div class="col-md-5 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblRekapPNS', 'Data_Pegawai_Aktif_PNS')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-hover" id="old_tblRekapPNS" width="100%">
+<thead class="bg-primary text-white">
+<tr>
+<th>Nama Lengkap</th>
+<th>NIP/NRP</th>
+<th>Pangkat/Gol Terbaru</th>
+<th>Jabatan Terbaru</th>
+<th>Pendidikan Terakhir</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody>
+<!-- Data dummy via JS -->
+</tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-rekap-pppk" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaRekapPPPK" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblRekapPPPK', 'Data_Pegawai_Aktif_PPPK')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblRekapPPPK" width="100%">
+<thead class="bg-primary text-white">
+<tr>
+<th>Nama Lengkap</th>
+<th>NIP/NI PPPK</th>
+<th>Pangkat/Gol Terbaru</th>
+<th>Jabatan Terbaru</th>
+<th>Pendidikan Terakhir</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-rekap-pppkpw" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaRekapPPPKPW" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblRekapPPPKPW', 'Data_Pegawai_Aktif_PPPKPW')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblRekapPPPKPW" width="100%">
+<thead class="bg-primary text-white">
+<tr>
+<th>Nama Lengkap</th>
+<th>NIP/NI PPPK</th>
+<th>Pangkat/Gol Terbaru</th>
+<th>Jabatan Terbaru</th>
+<th>Pendidikan Terakhir</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-rekap-honorer" role="tabpanel">
+<div class="row mt-3 mb-2">
+<div class="col-md-4"><input class="form-control" id="filterNamaRekapHonorer" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblRekapHonorer', 'Data_Pegawai_Aktif_Honorer')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="old_tblRekapHonorer" width="100%">
+<thead class="bg-primary text-white">
+<tr>
+<th>Nama Lengkap</th>
+<th>NIP/NI PPPK</th>
+<th>Pangkat/Gol Terbaru</th>
+<th>Jabatan Terbaru</th>
+<th>Pendidikan Terakhir</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

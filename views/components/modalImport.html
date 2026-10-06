@@ -1,0 +1,23 @@
+<div aria-hidden="true" class="modal fade" id="modalImport" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header bg-success text-white">
+<h5 class="modal-title"><i class="fas fa-file-excel"></i> Import Data Pegawai</h5>
+<button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body text-center">
+<p>Silakan unduh template Excel terlebih dahulu, isi data sesuai format, lalu unggah kembali ke
+                        sini.</p>
+<button class="btn btn-outline-success mb-4" onclick="downloadTemplateImport()"><i class="fas fa-download"></i> Unduh Template Excel</button>
+<div class="mb-3 text-start">
+<label class="form-label fw-bold">Upload File Excel (.xls / .xlsx)</label>
+<input accept=".xls, .xlsx" class="form-control" id="fileImportExcel" type="file"/>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Batal</button>
+<button class="btn btn-success" onclick="prosesImportExcel()" type="button"><i class="fas fa-upload"></i> Proses Import</button>
+</div>
+</div>
+</div>
+</div>

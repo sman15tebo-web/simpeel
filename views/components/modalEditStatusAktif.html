@@ -1,0 +1,43 @@
+<div aria-hidden="true" class="modal fade" data-bs-backdrop="static" id="modalEditStatusAktif" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header bg-warning text-dark">
+<h5 class="modal-title"><i class="fas fa-user-edit"></i> Edit Status Pegawai</h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3">
+<label class="form-label">Ubah Status</label>
+<select class="form-select" id="statusPegawaiDropdown" onchange="toggleFormStatus(this.value)">
+<option value="Aktif">Aktif</option>
+<option value="Pensiun">Pensiun</option>
+<option value="Meninggal">Meninggal Dunia</option>
+<option value="Berhenti">Berhenti / Resign</option>
+<option value="Mutasi">Mutasi Keluar</option>
+</select>
+</div>
+<!-- Form Dinamis -->
+<div class="d-none mb-3 bg-light p-2 rounded" id="form-pensiun-meninggal">
+<label class="form-label" id="labelTglPensiunMeninggal">Tanggal Pensiun/Meninggal</label>
+<input class="form-control" id="statusTanggalKhusus" type="date"/>
+</div>
+<div class="d-none mb-3 bg-light p-2 rounded" id="form-resign">
+<label class="form-label">Tanggal Berhenti</label>
+<input class="form-control mb-2" id="statusTanggalBerhenti" type="date"/>
+<label class="form-label">Alasan Berhenti</label>
+<textarea class="form-control" id="statusAlasanBerhenti" rows="2"></textarea>
+</div>
+<div class="d-none mb-3 bg-light p-2 rounded" id="form-mutasi">
+<label class="form-label">TMT Mutasi</label>
+<input class="form-control mb-2" id="statusTmtMutasi" type="date"/>
+<label class="form-label">Mutasi Ke (Instansi/Daerah)</label>
+<input class="form-control" id="statusMutasiTujuan" type="text"/>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Batal</button>
+<button class="btn btn-primary" onclick="simpanStatusPegawai()" type="button">Simpan Status</button>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,35 @@
+<div class="page-view d-none animate-fade-in" data-old-view="true" id="view-pensiun">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Estimasi Pensiun Pegawai</h1>
+</div>
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3 bg-white">
+<h6 class="m-0 fw-bold text-primary">Daftar Estimasi Pensiun</h6>
+</div>
+<div class="card-body">
+<div class="row mb-3">
+<div class="col-md-4"><input class="form-control" id="filterNamaPensiun" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblEstPensiun', 'Estimasi_Pensiun')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped" id="old_tblEstPensiun" width="100%">
+<thead class="table-dark">
+<tr>
+<th>Nama / NIP</th>
+<th>Tanggal Lahir</th>
+<th>Jenis Jabatan</th>
+<th>Nama Jabatan Terakhir</th>
+<th>BUP</th>
+<th>Estimasi Pensiun</th>
+</tr>
+</thead>
+<tbody>
+<!-- Data dummy via JS -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>

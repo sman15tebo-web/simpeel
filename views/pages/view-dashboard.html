@@ -1,0 +1,110 @@
+<div class="page-view animate-fade-in" id="view-dashboard">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Dashboard Statistik</h1>
+</div>
+<!-- Content Row -->
+<div class="row">
+<!-- PNS Card -->
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card border-left-primary shadow-sm h-100 py-2 custom-card">
+<div class="card-body">
+<div class="row no-gutters align-items-center">
+<div class="col mr-2">
+<div class="text-xs fw-bold text-primary text-uppercase mb-1">PNS Aktif
+                                                </div>
+<div class="h5 mb-0 fw-bold text-gray-800" id="count-pns">0</div>
+</div>
+<div class="col-auto">
+<i class="fas fa-user-tie fa-2x text-gray-300"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PPPK Card -->
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card border-left-success shadow-sm h-100 py-2 custom-card">
+<div class="card-body">
+<div class="row no-gutters align-items-center">
+<div class="col mr-2">
+<div class="text-xs fw-bold text-success text-uppercase mb-1">PPPK Aktif
+                                                </div>
+<div class="h5 mb-0 fw-bold text-gray-800" id="count-pppk">0</div>
+</div>
+<div class="col-auto">
+<i class="fas fa-users fa-2x text-gray-300"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PPPK Paruh Waktu Card -->
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card border-left-info shadow-sm h-100 py-2 custom-card">
+<div class="card-body">
+<div class="row no-gutters align-items-center">
+<div class="col mr-2">
+<div class="text-xs fw-bold text-info text-uppercase mb-1">PPPK Paruh
+                                                    Waktu</div>
+<div class="h5 mb-0 fw-bold text-gray-800" id="count-pppkpw">0</div>
+</div>
+<div class="col-auto">
+<i class="fas fa-user-clock fa-2x text-gray-300"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Honorer Card -->
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card border-left-warning shadow-sm h-100 py-2 custom-card">
+<div class="card-body">
+<div class="row no-gutters align-items-center">
+<div class="col mr-2">
+<div class="text-xs fw-bold text-warning text-uppercase mb-1">Honorer /
+                                                    THL</div>
+<div class="h5 mb-0 fw-bold text-gray-800" id="count-honorer">0</div>
+</div>
+<div class="col-auto">
+<i class="fas fa-user-tag fa-2x text-gray-300"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart Row -->
+<div class="row">
+<div class="col-xl-8 col-lg-7">
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+<h6 class="m-0 fw-bold text-primary">Komposisi Pegawai</h6>
+</div>
+<div class="card-body">
+<div class="chart-area" style="height: 300px;">
+<canvas id="pegawaiChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+<div class="col-xl-4 col-lg-5">
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<h6 class="m-0 fw-bold text-primary">Notifikasi Gaji Berkala</h6>
+</div>
+<div class="card-body" id="kgb-notifications">
+<div class="alert alert-warning">
+<i class="fas fa-bell"></i> <b>Budi Santoso</b> (PNS) - Gaji Berkala bulan
+                                            depan.
+                                        </div>
+<div class="alert alert-info">
+<i class="fas fa-bell"></i> <b>Siti Aminah</b> (PPPK) - Gaji Berkala dalam 2
+                                            bulan.
+                                        </div>
+<button class="btn btn-outline-primary btn-sm w-100" onclick="nav('gaji')">Lihat
+                                            Semua Data</button>
+</div>
+</div>
+</div>
+</div>
+</div>

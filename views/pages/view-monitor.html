@@ -1,0 +1,219 @@
+<div class="page-view d-none animate-fade-in" id="view-monitor">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Monitor Pegawai</h1>
+</div>
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<ul class="nav nav-tabs card-header-tabs" id="monitorTabs" role="tablist">
+<li class="nav-item"><button class="nav-link fw-bold" data-bs-target="#mon-skumptk" data-bs-toggle="tab" id="tab-mon-skumptk" type="button"><i class="fas fa-file-invoice me-1"></i> SKUMPTK</button></li>
+<li class="nav-item"><button class="nav-link active fw-bold" data-bs-target="#mon-duk" data-bs-toggle="tab" id="tab-mon-duk" type="button"><i class="fas fa-list-ol me-1"></i> DUK</button></li>
+<li class="nav-item"><button class="nav-link fw-bold" data-bs-target="#mon-gaji" data-bs-toggle="tab" id="tab-mon-gaji" type="button"><i class="fas fa-money-check-dollar me-1"></i> Gaji Berkala</button></li>
+<li class="nav-item"><button class="nav-link fw-bold" data-bs-target="#mon-pensiun" data-bs-toggle="tab" id="tab-mon-pensiun" type="button"><i class="fas fa-user-clock me-1"></i> Est. Pensiun</button></li>
+<li class="nav-item"><button class="nav-link fw-bold" data-bs-target="#mon-sertif" data-bs-toggle="tab" id="tab-mon-sertif" type="button"><i class="fas fa-chalkboard-teacher me-1"></i> Guru Sertif</button></li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content" id="monitorTabsContent">
+<!-- SKUMPTK Tab -->
+<div class="tab-pane fade" id="mon-skumptk" role="tabpanel">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h6 class="fw-bold mb-0 text-primary">Daftar Pegawai SKUMPTK</h6>
+</div>
+<ul class="nav nav-pills mb-3" id="pills-tab-skumptk" role="tablist">
+<li class="nav-item" role="presentation">
+<button class="nav-link active" data-bs-target="#pills-skumptk-pns" data-bs-toggle="pill" id="pills-skumptk-pns-tab" role="tab" type="button">PNS</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link" data-bs-target="#pills-skumptk-pppk" data-bs-toggle="pill" id="pills-skumptk-pppk-tab" role="tab" type="button">PPPK</button>
+</li>
+</ul>
+<div class="tab-content" id="pills-tabContent-skumptk">
+<div class="tab-pane fade show active" id="pills-skumptk-pns" role="tabpanel">
+<div class="table-responsive">
+<table class="table table-bordered table-striped w-100 table-sm text-center align-middle" id="tblSkumptkPns">
+<thead class="table-dark">
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>NIP</th>
+<th>Jabatan Terakhir</th>
+<th>Pangkat/Gol Terakhir</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="pills-skumptk-pppk" role="tabpanel">
+<div class="table-responsive">
+<table class="table table-bordered table-striped w-100 table-sm text-center align-middle" id="tblSkumptkPppk">
+<thead class="table-dark">
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>NIP</th>
+<th>Jabatan Terakhir</th>
+<th>Pangkat/Gol Terakhir</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- DUK TAB -->
+<div class="tab-pane fade show active" id="mon-duk" role="tabpanel">
+<ul class="nav nav-pills mt-2 mb-2 gap-1" id="monitorDukTabs">
+<li class="nav-item"><button class="nav-link active fw-bold btn-sm" data-bs-target="#duk-pns-tab" data-bs-toggle="tab" type="button">PNS</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#duk-pppk-tab" data-bs-toggle="tab" type="button">PPPK</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#duk-pppkpw-tab" data-bs-toggle="tab" type="button">PPPK Paruh Waktu</button></li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane fade show active" id="duk-pns-tab">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaDUKPNS" placeholder="Cari..." type="text"/>
+</div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblDUKPNS','DAFTAR URUT KEPANGKATAN (DUK) PNS')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblDUKPNS" width="100%">
+<thead>
+<tr>
+<th>No</th>
+<th>Nama &amp; NIP</th>
+<th>Jabatan</th>
+<th>Gol / TMT</th>
+<th>MK Keseluruhan</th>
+<th>MK Gol Ruang</th>
+<th>Usia</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="duk-pppk-tab">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaDUKPPPK" placeholder="Cari..." type="text"/>
+</div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblDUKPPPK','DAFTAR URUT KEPANGKATAN (DUK) PPPK')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblDUKPPPK" width="100%">
+<thead>
+<tr>
+<th>No</th>
+<th>Nama &amp; NIP</th>
+<th>Jabatan</th>
+<th>Gol / TMT</th>
+<th>MK Keseluruhan</th>
+<th>MK Gol Ruang</th>
+<th>Usia</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="duk-pppkpw-tab">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaDUKPPPKPW" placeholder="Cari..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblDUKPPPKPW','DAFTAR URUT KEPANGKATAN (DUK) PPPK PARUH WAKTU')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblDUKPPPKPW" width="100%">
+<thead>
+<tr>
+<th>No</th>
+<th>Nama &amp; NIP</th>
+<th>Jabatan</th>
+<th>Gol / TMT</th>
+<th>MK Keseluruhan</th>
+<th>MK Gol Ruang</th>
+<th>Usia</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- GAJI BERKALA TAB -->
+<div class="tab-pane fade" id="mon-gaji" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaKGB" placeholder="Cari..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblKGB','Gaji_Berkala')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblKGB" width="100%">
+<thead>
+<tr>
+<th>Nama</th>
+<th>Status Pegawai</th>
+<th>Gaji Pokok</th>
+<th>TMT KGB Lalu</th>
+<th>TMT KGB Baru</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<!-- ESTIMASI PENSIUN TAB -->
+<div class="tab-pane fade" id="mon-pensiun" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaEstPensiun" placeholder="Cari..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblEstPensiun','Est_Pensiun')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblEstPensiun" width="100%">
+<thead class="table-light">
+<tr>
+<th>No</th>
+<th>NIP</th>
+<th>Nama</th>
+<th>Gol/Jabatan</th>
+<th>Unit Kerja</th>
+<th>BUP</th>
+<th>Tgl Lahir</th>
+<th>Est. Pensiun</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<!-- GURU SERTIF TAB -->
+<div class="tab-pane fade" id="mon-sertif" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaGuruSertif" placeholder="Cari..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblGuruSertif','Guru_Sertif')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblGuruSertif" width="100%">
+<thead class="table-light">
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>NIP</th>
+<th>Status</th>
+<th>Jabatan Terakhir</th>
+<th>No Sertifikat</th>
+<th>Mapel</th>
+<th>Tahun Sertifikasi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

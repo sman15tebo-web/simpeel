@@ -1,0 +1,69 @@
+<div class="page-view d-none animate-fade-in" data-old-view="true" id="view-duk">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Daftar Urut Kepangkatan (DUK)</h1>
+</div>
+<div class="card shadow-sm mb-4">
+<div class="card-body p-0">
+<ul class="nav nav-tabs px-3 pt-3" id="dukTabs" role="tablist">
+<li class="nav-item" role="presentation">
+<button class="nav-link active fw-bold text-primary" data-bs-target="#duk-pns" data-bs-toggle="tab" role="tab" type="button">DUK PNS</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold text-primary" data-bs-target="#duk-pppk" data-bs-toggle="tab" role="tab" type="button">DUK PPPK</button>
+</li>
+</ul>
+<div class="tab-content p-3">
+<div class="tab-pane fade show active" id="duk-pns" role="tabpanel">
+<div class="row mb-3">
+<div class="col-md-4"><input class="form-control" id="filterNamaDUKPNS" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-3"><input class="form-control" id="filterGolDUKPNS" placeholder="Cari Golongan..." type="text"/></div>
+<div class="col-md-5 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblDUKPNS', 'Daftar_Urut_Kepangkatan_PNS')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped" id="old_tblDUKPNS" width="100%">
+<thead class="table-dark">
+<tr>
+<th>No Urut</th>
+<th>Nama / NIP</th>
+<th>Jabatan Terakhir</th>
+<th>Gol/Ruang/TMT</th>
+<th>MK Keseluruhan</th>
+<th>MK Gol/Ruang</th>
+<th>Usia</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="duk-pppk" role="tabpanel">
+<div class="row mb-3">
+<div class="col-md-4"><input class="form-control" id="filterNamaDUKPPPK" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-3"><input class="form-control" id="filterGolDUKPPPK" placeholder="Cari Golongan..." type="text"/></div>
+<div class="col-md-5 text-end">
+<button class="btn btn-success" onclick="exportToExcel('tblDUKPPPK', 'Daftar_Urut_Kepangkatan_PPPK')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+</div>
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-striped" id="old_tblDUKPPPK" width="100%">
+<thead class="table-dark">
+<tr>
+<th>No Urut</th>
+<th>Nama / NIP</th>
+<th>Jabatan Terakhir</th>
+<th>Gol/Ruang/TMT</th>
+<th>MK Keseluruhan</th>
+<th>MK Gol/Ruang</th>
+<th>Usia</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

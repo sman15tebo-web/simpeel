@@ -1,0 +1,151 @@
+<div class="page-view d-none animate-fade-in" id="view-data-induk">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 fw-bold">Data Induk Pegawai</h1>
+<div>
+<button class="btn btn-outline-primary shadow-sm me-2" data-bs-target="#modalImportAkun" data-bs-toggle="modal"><i class="fas fa-file-excel fa-sm"></i> Import Akun</button>
+<button class="btn btn-success shadow-sm me-2" data-bs-target="#modalImport" data-bs-toggle="modal"><i class="fas fa-file-excel fa-sm text-white-50"></i> Import Data Pegawai</button>
+<button class="btn btn-primary shadow-sm fw-bold" onclick="bukaModalTambahAkun()"><i class="fas fa-user-plus fa-sm text-white-50"></i> Tambah Akun</button>
+</div>
+</div>
+<div class="card shadow-sm mb-4">
+<div class="card-header py-3">
+<ul class="nav nav-tabs card-header-tabs" id="dataIndukTabs" role="tablist">
+<li class="nav-item" role="presentation">
+<button class="nav-link active fw-bold text-primary" data-bs-target="#di-akun" data-bs-toggle="tab" id="tab-di-akun" role="tab" type="button">
+<i class="fas fa-user-shield me-1"></i> Akun Pegawai
+                                        </button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link fw-bold text-dark" data-bs-target="#di-pegawai" data-bs-toggle="tab" id="tab-di-pegawai" role="tab" type="button">
+<i class="fas fa-users me-1"></i> Data Pegawai Lengkap
+                                        </button>
+</li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content" id="dataIndukTabsContent">
+<!-- TAB AKUN PEGAWAI -->
+<div class="tab-pane fade show active" id="di-akun" role="tabpanel">
+<div class="table-responsive mt-3">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblAkun" width="100%">
+<thead>
+<tr>
+<th>NIP / Username</th>
+<th>Nama</th>
+<th>Status Pegawai</th>
+<th>Tanggal Daftar</th>
+<th>Role</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<!-- TAB DATA PEGAWAI LENGKAP -->
+<div class="tab-pane fade" id="di-pegawai" role="tabpanel">
+<ul class="nav nav-pills mt-3 mb-2 gap-1" id="pegawaiSubTabs" role="tablist">
+<li class="nav-item"><button class="nav-link active fw-bold btn-sm" data-bs-target="#content-pns" data-bs-toggle="tab" id="sub-pns" type="button">PNS</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#content-pppk" data-bs-toggle="tab" id="sub-pppk" type="button">PPPK</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#content-pppkpw" data-bs-toggle="tab" id="sub-pppkpw" type="button">PPPK Paruh Waktu</button></li>
+<li class="nav-item"><button class="nav-link fw-bold btn-sm" data-bs-target="#content-honorer" data-bs-toggle="tab" id="sub-honorer" type="button">Honorer</button>
+</li>
+</ul>
+<div class="tab-content" id="pegawaiSubTabsContent">
+<div class="tab-pane fade show active" id="content-pns" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-3"><input class="form-control form-control-sm" id="filterNamaPNS" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-3"><select class="form-select form-select-sm" id="filterGolPNS">
+<option value="">Semua Golongan</option>
+<option value="I/">Gol I</option>
+<option value="II/">Gol II</option>
+<option value="III/">Gol III</option>
+<option value="IV/">Gol IV</option>
+</select></div>
+<div class="col-md-6 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblPNS','DATA INDUK PEGAWAI (PNS)')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblPNS" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-pppk" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaPPPK" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblPPPK','DATA INDUK PEGAWAI (PPPK)')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblPPPK" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-pppkpw" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaPPPKPW" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblPPPKPW','DATA INDUK PEGAWAI (PPPK PARUH WAKTU)')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblPPPKPW" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="tab-pane fade" id="content-honorer" role="tabpanel">
+<div class="row mt-2 mb-2">
+<div class="col-md-4"><input class="form-control form-control-sm" id="filterNamaHonorer" placeholder="Cari Nama/NIP..." type="text"/></div>
+<div class="col-md-8 text-end"><button class="btn btn-sm btn-success" onclick="exportToExcel('tblHonorer','Data_Honorer')"><i class="fas fa-file-excel"></i> Excel</button></div>
+</div>
+<div class="table-responsive">
+<table cellspacing="0" class="table table-bordered table-hover" id="tblHonorer" width="100%">
+<thead>
+<tr>
+<th>NIP</th>
+<th>Nama</th>
+<th>Golongan</th>
+<th>Jabatan</th>
+<th>Unit Kerja</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
