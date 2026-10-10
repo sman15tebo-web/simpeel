@@ -20,19 +20,61 @@ if (isElectron) {
     API_URL = "OFFLINE_MODE";
 } else {
     const urlParams = new URLSearchParams(window.location.search);
-    let currentTenantId = urlParams.get('id');
 
-    if (!currentTenantId) {
-        currentTenantId = localStorage.getItem('SIMPEEL_ACTIVE_ID');
+    // Prioritas 1: Parameter langsung ?exec=...
+    const paramExec = urlParams.get('exec');
+    if (paramExec && paramExec.startsWith('http')) {
+        API_URL = paramExec;
+        localStorage.setItem('simpeel_custom_sync_url', paramExec);
     }
 
-    if (!currentTenantId || !TENANT_CONFIG[currentTenantId]) {
-        document.body.innerHTML = '<h2 style="text-align:center; margin-top:50px; font-family:sans-serif;">Akses Ditolak. Harap sertakan ID Instansi yang valid di URL (contoh: ?id=demo).</h2>';
+    // Prioritas 2: Link Exec Kustom dari Pengaturan
+    if (!API_URL) {
+        const customUrl = localStorage.getItem('simpeel_custom_sync_url') || localStorage.getItem('customSyncLink');
+        if (customUrl && customUrl.startsWith('http')) {
+            API_URL = customUrl;
+        }
+    }
+
+    // Prioritas 3: Parameter ?id=...
+    let currentTenantId = urlParams.get('id');
+    if (!API_URL && currentTenantId) {
+        const cleanTenant = currentTenantId.trim().toLowerCase();
+        if (TENANT_CONFIG[cleanTenant]) {
+            API_URL = TENANT_CONFIG[cleanTenant];
+            localStorage.setItem('SIMPEEL_ACTIVE_ID', cleanTenant);
+        }
+    }
+
+    // Prioritas 4: Memori Tenant Terakhir / Nama Sekolah
+    if (!API_URL) {
+        currentTenantId = localStorage.getItem('SIMPEEL_ACTIVE_ID');
+        if (currentTenantId && TENANT_CONFIG[currentTenantId]) {
+            API_URL = TENANT_CONFIG[currentTenantId];
+        } else {
+            try {
+                const conf = JSON.parse(localStorage.getItem('simpeel_pengaturan') || '{}');
+                const sName = conf.namaInstansi || conf.namaSekolah || '';
+                if (sName) {
+                    const slug = sName.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    if (TENANT_CONFIG[slug]) {
+                        API_URL = TENANT_CONFIG[slug];
+                        localStorage.setItem('SIMPEEL_ACTIVE_ID', slug);
+                    }
+                }
+            } catch (e) { }
+        }
+    }
+
+    // Prioritas 5: Fallback Default
+    if (!API_URL) {
+        API_URL = TENANT_CONFIG["sman15tebo"] || Object.values(TENANT_CONFIG)[0] || "";
+    }
+
+    if (!API_URL) {
+        document.body.innerHTML = '<h2 style="text-align:center; margin-top:50px; font-family:sans-serif;">Akses Ditolak. Harap sertakan ID Instansi atau URL Exec yang valid di URL (contoh: ?id=sman15tebo atau ?exec=https://...).</h2>';
         throw new Error("Invalid Tenant ID");
     }
-
-    localStorage.setItem('SIMPEEL_ACTIVE_ID', currentTenantId);
-    API_URL = TENANT_CONFIG[currentTenantId];
 }
 
 async function apiCall(action, data = null) {
@@ -43,7 +85,7 @@ async function apiCall(action, data = null) {
             }
             const { ipcRenderer } = window.require ? window.require('electron') : (typeof require === 'function' ? require('electron') : {});
             if (ipcRenderer && typeof ipcRenderer.invoke === 'function') {
-                switch(action) {
+                switch (action) {
                     case 'login': return await ipcRenderer.invoke('simpeel-login', data);
                     case 'getAllPegawai': return await ipcRenderer.invoke('simpeel-get-all-pegawai');
                     case 'savePegawai': return await ipcRenderer.invoke('simpeel-save-pegawai', data);
@@ -68,9 +110,9 @@ async function apiCall(action, data = null) {
         }
     } else {
         try {
-            const payload = { 
+            const payload = {
                 apiKey: 'SIMPEEL_SECURE_2026_XYZ_999',
-                action: action 
+                action: action
             };
             if (data) payload.data = data;
             const controller = new AbortController();
@@ -78,7 +120,7 @@ async function apiCall(action, data = null) {
             const timeoutId = setTimeout(() => {
                 controller.abort(new Error(`Waktu request habis (${timeoutMs / 1000} detik). Periksa koneksi internet.`));
             }, timeoutMs);
-            
+
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -87,7 +129,7 @@ async function apiCall(action, data = null) {
             });
             clearTimeout(timeoutId);
             let result = await response.json();
-            
+
             // Normalize online response to match offline response for certain endpoints
             if (action === 'getAllPegawai' || action === 'getAllAkun') {
                 if (result && result.success && Array.isArray(result.data)) {
