@@ -337,6 +337,7 @@ async function simpanPegawai() {
 
         if (isPegawai) {
             if (typeof renderDashboardPegawai === 'function') renderDashboardPegawai();
+            if (typeof renderProfilPegawai === 'function') renderProfilPegawai();
             if (typeof nav === 'function') nav('dashboard-pegawai');
         } else {
             // Tutup modal jika mode admin
