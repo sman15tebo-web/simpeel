@@ -73,10 +73,16 @@ async function apiCall(action, data = null) {
                 action: action 
             };
             if (data) payload.data = data;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 35000);
+            
             const response = await fetch(API_URL, {
                 method: 'POST',
-                body: JSON.stringify(payload)
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload),
+                signal: controller.signal
             });
+            clearTimeout(timeoutId);
             let result = await response.json();
             
             // Normalize online response to match offline response for certain endpoints
