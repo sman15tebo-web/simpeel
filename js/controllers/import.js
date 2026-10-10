@@ -1218,19 +1218,19 @@ function ensureSimpeelViewerDOM() {
                 </button>
                 <main class="simpeel-viewer-body" id="simpeelViewerBody">
                     <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
-                        <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;"><span class="visually-hidden">Memuat berkas...</span></div>
-                        <div class="text-white-50 small mt-2">Memuat pratinjau berkas...</div>
+                        <div class="spinner-border text-primary" role="status" style="width: 2.2rem; height: 2.2rem;"><span class="visually-hidden">Memuat berkas...</span></div>
+                        <div class="text-secondary small mt-2">Memuat berkas...</div>
                     </div>
                     <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
-                        <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" style="display: none;" allow="autoplay" allowfullscreen></iframe>
+                        <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" allow="autoplay" allowfullscreen></iframe>
                         <div class="simpeel-viewer-img-container" id="simpeelViewerImgContainer" style="display: none;">
                             <img id="simpeelViewerImage" class="simpeel-viewer-img" alt="Pratinjau Berkas" />
                         </div>
                         <div class="simpeel-viewer-empty" id="simpeelViewerEmpty" style="display: none;">
                             <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
-                            <h5 class="fw-bold text-white mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
+                            <h5 class="fw-bold text-dark mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
                             <p class="text-muted small mb-3" id="simpeelViewerEmptyDesc">Berkas ini tidak dapat ditampilkan langsung di dalam halaman.</p>
-                            <button type="button" class="btn btn-outline-light btn-sm" id="simpeelBtnFallbackAction"><i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="simpeelBtnFallbackAction"><i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal</button>
                         </div>
                     </div>
                 </main>
@@ -1251,14 +1251,14 @@ function initSimpeelViewerEvents() {
     const btnClose = document.getElementById('simpeelBtnClose');
     if (btnClose) btnClose.onclick = closeSimpeelViewer;
 
-    // Tutup saat klik di luar kotak window (area backdrop gelap)
+    // Tutup saat klik di luar kotak window (area backdrop transparan)
     modal.onclick = function(e) {
         if (e.target === modal) {
             closeSimpeelViewer();
         }
     };
 
-    // Zoom Controls
+    // Zoom Controls (bila ada tombol / shortcut)
     const btnZoomIn = document.getElementById('simpeelBtnZoomIn');
     if (btnZoomIn) {
         btnZoomIn.onclick = () => {
@@ -1538,19 +1538,17 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
     };
     applySimpeelViewerTransform();
 
-    // Sembunyikan konten awal
-    frameEl.style.display = 'none';
-    frameEl.src = 'about:blank';
-    imgContainer.style.display = 'none';
-    imgEl.src = '';
-    emptyEl.style.display = 'none';
-    loadingEl.style.display = 'flex';
+    // Reset tampilan konten (bebas lag, langsung tampil polos)
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (imgContainer) imgContainer.style.display = 'none';
+    if (imgEl) imgEl.src = '';
 
-    // Tampilkan modal (80% centered)
+    // Tampilkan modal (80% lebar di tengah, 100vh tinggi)
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // 2. LOGIKA CERDAS: DETEKSI LINGKUNGAN (DESKTOP OFFLINE vs WEB ONLINE)
+    // 2. DETEKSI LINGKUNGAN (DESKTOP OFFLINE vs WEB ONLINE)
     const isDesktop = !!(window.electronAPI && typeof window.electronAPI.getFileData === 'function') || typeof window.require !== 'undefined';
 
     // ========================================================
@@ -1569,26 +1567,25 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
             }
 
             // Jika berkas fisik lokal ditemukan di laptop: TAMPILKAN LANGSUNG DARI DISK!
-            // Tanpa menyentuh Google Drive sama sekali, tanpa butuh internet, dan TIDAK MINTA LOGIN GOOGLE!
-            if (res && res.success && res.isLocal && res.dataUri) {
-                simpeelViewerState.currentUrl = res.dataUri;
+            // Tanpa menyentuh Google Drive, tanpa butuh internet, & TIDAK PERNAH MINTA LOGIN GOOGLE!
+            if (res && res.success && res.isLocal) {
                 simpeelViewerState.fileName = customTitle || res.fileName || 'Lampiran Berkas (Offline)';
                 if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
+                const localFileUrl = res.filePath ? ('file:///' + res.filePath.replace(/\\/g, '/')) : res.dataUri;
+                simpeelViewerState.currentUrl = localFileUrl;
 
                 if (res.mimeType && res.mimeType.startsWith('image/')) {
                     simpeelViewerState.isImage = true;
-                    if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
-                    imgEl.src = res.dataUri;
-                    imgEl.onload = () => {
-                        loadingEl.style.display = 'none';
-                        imgContainer.style.display = 'flex';
-                    };
+                    if (frameEl) frameEl.style.display = 'none';
+                    if (imgEl) imgEl.src = res.dataUri || localFileUrl;
+                    if (imgContainer) imgContainer.style.display = 'flex';
                 } else {
-                    if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
-                    frameEl.src = res.dataUri;
-                    frameEl.onload = () => { loadingEl.style.display = 'none'; };
-                    frameEl.style.display = 'block';
-                    setTimeout(() => { loadingEl.style.display = 'none'; }, 800);
+                    // Dokumen PDF Lokal: buka di iframe dengan PDF viewer bawaan Chromium Electron
+                    if (imgContainer) imgContainer.style.display = 'none';
+                    if (frameEl) {
+                        frameEl.style.display = 'block';
+                        frameEl.src = localFileUrl;
+                    }
                 }
                 return;
             }
@@ -1603,8 +1600,8 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
     }
 
     // ========================================================
-    // B. DI VERSI WEB ONLINE (Atau Desktop jika file fisik belum tersinkron):
-    //    GUNAKAN URL DRIVE / DATA CLOUD SECARA CERDAS
+    // B. DI VERSI WEB ONLINE (Atau Desktop jika file fisik belum ada di laptop):
+    //    TAMPILKAN LANGSUNG FRAME BAWAAN TANPA HANGING / DELAY
     // ========================================================
     const targetUrl = candidateUrl || (rawInput.startsWith('http') ? rawInput : '');
 
@@ -1619,45 +1616,17 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         simpeelViewerState.driveId = driveId;
         simpeelViewerState.fileName = customTitle || 'Dokumen Google Drive';
         if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
-        if (iconEl) iconEl.innerHTML = '<i class="fab fa-google-drive text-warning"></i>';
 
-        // Trik Cerdas: Di versi Web Online, jika apiCall tersedia, ambil data Base64 via GAS
-        // agar file langsung tampil tanpa terhambat login akun Google!
-        if (typeof apiCall === 'function' && driveId && !isDesktop) {
-            try {
-                const gasRes = await apiCall('getFile', { fileId: driveId });
-                if (gasRes && gasRes.success && gasRes.data && gasRes.data.base64Data) {
-                    const mime = gasRes.data.mimeType || 'application/pdf';
-                    const dataUri = `data:${mime};base64,${gasRes.data.base64Data}`;
-                    simpeelViewerState.currentUrl = dataUri;
-
-                    if (mime.startsWith('image/')) {
-                        simpeelViewerState.isImage = true;
-                        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
-                        imgEl.src = dataUri;
-                        imgEl.onload = () => {
-                            loadingEl.style.display = 'none';
-                            imgContainer.style.display = 'flex';
-                        };
-                    } else {
-                        frameEl.src = dataUri;
-                        frameEl.onload = () => { loadingEl.style.display = 'none'; };
-                        frameEl.style.display = 'block';
-                        setTimeout(() => { loadingEl.style.display = 'none'; }, 800);
-                    }
-                    return;
-                }
-            } catch (_) {}
-        }
-
-        // Fallback preview Google Drive
+        // URL Preview Bawaan Resmi Google Drive:
+        // Langsung tampil lengkap dengan tombol cetak, unduh, dan zoom bawaan Google Drive di dalam frame!
         const previewUrl = driveId ? `https://drive.google.com/file/d/${driveId}/preview` : targetUrl;
         simpeelViewerState.currentUrl = previewUrl;
 
-        frameEl.src = previewUrl;
-        frameEl.onload = () => { loadingEl.style.display = 'none'; };
-        frameEl.style.display = 'block';
-        setTimeout(() => { loadingEl.style.display = 'none'; }, 1200);
+        if (imgContainer) imgContainer.style.display = 'none';
+        if (frameEl) {
+            frameEl.style.display = 'block';
+            frameEl.src = previewUrl;
+        }
         return;
     }
 
@@ -1669,17 +1638,15 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         simpeelViewerState.currentUrl = isImageDataUri ? rawInput : targetUrl;
         simpeelViewerState.fileName = customTitle || 'Lampiran Gambar';
         if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
-        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
 
-        imgEl.src = simpeelViewerState.currentUrl;
-        imgEl.onload = () => {
-            loadingEl.style.display = 'none';
-            imgContainer.style.display = 'flex';
-        };
-        imgEl.onerror = () => {
-            loadingEl.style.display = 'none';
-            showEmptyViewer('Gagal Memuat Gambar', 'Gambar tidak dapat diakses atau format tidak valid.');
-        };
+        if (frameEl) frameEl.style.display = 'none';
+        if (imgEl) {
+            imgEl.src = simpeelViewerState.currentUrl;
+            imgEl.onerror = () => {
+                showEmptyViewer('Gagal Memuat Gambar', 'Gambar tidak dapat diakses atau format tidak valid.');
+            };
+        }
+        if (imgContainer) imgContainer.style.display = 'flex';
         return;
     }
 
@@ -1688,17 +1655,18 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         simpeelViewerState.currentUrl = targetUrl;
         simpeelViewerState.fileName = customTitle || 'Dokumen PDF Online';
         if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
-        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
 
-        frameEl.src = targetUrl;
-        frameEl.onload = () => { loadingEl.style.display = 'none'; };
-        frameEl.style.display = 'block';
-        setTimeout(() => { loadingEl.style.display = 'none'; }, 1500);
+        if (imgContainer) imgContainer.style.display = 'none';
+        if (frameEl) {
+            frameEl.style.display = 'block';
+            frameEl.src = targetUrl;
+        }
         return;
     }
 
     // Fallback: Berkas tidak ditemukan
-    loadingEl.style.display = 'none';
+    if (frameEl) frameEl.style.display = 'none';
+    if (imgContainer) imgContainer.style.display = 'none';
     showEmptyViewer(
         'Pratinjau Tidak Tersedia',
         'Berkas fisik belum diunduh ke laptop ini atau tautan berkas belum tersedia.'
