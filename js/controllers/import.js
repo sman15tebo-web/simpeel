@@ -1186,23 +1186,484 @@ async function handleFileUpload(inputElement) {
     reader.readAsDataURL(file);
 }
 
-function viewFileApp(fileUrlOrPath) {
-    if (!fileUrlOrPath) return;
+// ============================================================
+// GOOGLE DRIVE STYLE DARK FILE VIEWER ENGINE
+// Pratinjau Berkas Lampiran SiMPEEL (PDF, Gambar, Drive)
+// ============================================================
+let simpeelViewerState = {
+    zoom: 1.0,
+    rotate: 0,
+    currentUrl: '',
+    rawSource: '',
+    driveId: '',
+    mimeType: '',
+    isDrive: false,
+    isImage: false,
+    fileName: 'Lampiran Berkas'
+};
+
+function ensureSimpeelViewerDOM() {
+    let modal = document.getElementById('simpeelFileViewerModal');
+    if (!modal) {
+        const div = document.createElement('div');
+        div.id = 'simpeelFileViewerModal';
+        div.className = 'simpeel-viewer-backdrop';
+        div.style.display = 'none';
+        div.setAttribute('role', 'dialog');
+        div.setAttribute('aria-modal', 'true');
+        div.innerHTML = `
+            <header class="simpeel-viewer-header">
+                <div class="simpeel-viewer-title-group">
+                    <div class="simpeel-viewer-icon" id="simpeelViewerIcon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="simpeel-viewer-title" id="simpeelViewerTitle" title="Lampiran Berkas">Lampiran Berkas</div>
+                </div>
+                <div class="simpeel-viewer-zoom-controls">
+                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomOut" title="Perkecil Zoom (-)"><i class="fas fa-minus"></i></button>
+                    <div class="simpeel-viewer-zoom-level" id="simpeelViewerZoomLevel" title="Klik untuk Reset (100%)">100%</div>
+                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomIn" title="Perbesar Zoom (+)"><i class="fas fa-plus"></i></button>
+                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomReset" title="Ukuran Semula (Reset)"><i class="fas fa-compress"></i></button>
+                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnRotate" title="Putar 90°"><i class="fas fa-redo"></i></button>
+                </div>
+                <div class="simpeel-viewer-actions">
+                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnPrint" title="Cetak Dokumen"><i class="fas fa-print"></i><span>Cetak</span></button>
+                    <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-primary" id="simpeelBtnDownload" title="Unduh Berkas"><i class="fas fa-download"></i><span>Unduh</span></button>
+                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnExternal" title="Buka di Jendela Baru / Aplikasi Komputer"><i class="fas fa-external-link-alt"></i></button>
+                    <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-close" id="simpeelBtnClose" title="Tutup (Esc)"><i class="fas fa-times"></i></button>
+                </div>
+            </header>
+            <main class="simpeel-viewer-body" id="simpeelViewerBody">
+                <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
+                    <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;"><span class="visually-hidden">Memuat berkas...</span></div>
+                    <div class="text-white-50 small mt-1">Memuat pratinjau berkas...</div>
+                </div>
+                <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
+                    <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" style="display: none;" allow="autoplay" allowfullscreen></iframe>
+                    <div class="simpeel-viewer-img-container" id="simpeelViewerImgContainer" style="display: none;">
+                        <img id="simpeelViewerImage" class="simpeel-viewer-img" alt="Pratinjau Berkas" />
+                    </div>
+                    <div class="simpeel-viewer-empty" id="simpeelViewerEmpty" style="display: none;">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                        <h5 class="fw-bold text-white mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
+                        <p class="text-muted small mb-3" id="simpeelViewerEmptyDesc">Berkas ini tidak dapat ditampilkan langsung di dalam halaman.</p>
+                        <button type="button" class="btn btn-outline-light btn-sm" id="simpeelBtnFallbackAction"><i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal</button>
+                    </div>
+                </div>
+            </main>
+        `;
+        document.body.appendChild(div);
+        initSimpeelViewerEvents();
+    }
+    return document.getElementById('simpeelFileViewerModal');
+}
+
+function initSimpeelViewerEvents() {
+    const modal = document.getElementById('simpeelFileViewerModal');
+    if (!modal || modal._eventsBound) return;
+    modal._eventsBound = true;
+
+    // Tombol Tutup
+    const btnClose = document.getElementById('simpeelBtnClose');
+    if (btnClose) btnClose.onclick = closeSimpeelViewer;
+
+    // Tutup saat klik background luar
+    const bodyEl = document.getElementById('simpeelViewerBody');
+    if (bodyEl) {
+        bodyEl.onclick = function(e) {
+            if (e.target === bodyEl || e.target === document.getElementById('simpeelViewerContentContainer')) {
+                closeSimpeelViewer();
+            }
+        };
+    }
+
+    // Zoom Controls
+    const btnZoomIn = document.getElementById('simpeelBtnZoomIn');
+    if (btnZoomIn) {
+        btnZoomIn.onclick = () => {
+            simpeelViewerState.zoom = Math.min(3.0, +(simpeelViewerState.zoom + 0.2).toFixed(2));
+            applySimpeelViewerTransform();
+        };
+    }
+
+    const btnZoomOut = document.getElementById('simpeelBtnZoomOut');
+    if (btnZoomOut) {
+        btnZoomOut.onclick = () => {
+            simpeelViewerState.zoom = Math.max(0.3, +(simpeelViewerState.zoom - 0.2).toFixed(2));
+            applySimpeelViewerTransform();
+        };
+    }
+
+    const btnZoomReset = document.getElementById('simpeelBtnZoomReset');
+    if (btnZoomReset) {
+        btnZoomReset.onclick = () => {
+            simpeelViewerState.zoom = 1.0;
+            simpeelViewerState.rotate = 0;
+            applySimpeelViewerTransform();
+        };
+    }
+
+    const badgeZoom = document.getElementById('simpeelViewerZoomLevel');
+    if (badgeZoom) {
+        badgeZoom.onclick = () => {
+            simpeelViewerState.zoom = 1.0;
+            simpeelViewerState.rotate = 0;
+            applySimpeelViewerTransform();
+        };
+    }
+
+    const btnRotate = document.getElementById('simpeelBtnRotate');
+    if (btnRotate) {
+        btnRotate.onclick = () => {
+            simpeelViewerState.rotate = (simpeelViewerState.rotate + 90) % 360;
+            applySimpeelViewerTransform();
+        };
+    }
+
+    // Unduh & Cetak
+    const btnDownload = document.getElementById('simpeelBtnDownload');
+    if (btnDownload) btnDownload.onclick = handleSimpeelViewerDownload;
+
+    const btnPrint = document.getElementById('simpeelBtnPrint');
+    if (btnPrint) btnPrint.onclick = handleSimpeelViewerPrint;
+
+    const btnExternal = document.getElementById('simpeelBtnExternal');
+    if (btnExternal) btnExternal.onclick = handleSimpeelViewerExternal;
+
+    const btnFallback = document.getElementById('simpeelBtnFallbackAction');
+    if (btnFallback) btnFallback.onclick = handleSimpeelViewerExternal;
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+        const m = document.getElementById('simpeelFileViewerModal');
+        if (!m || m.style.display === 'none') return;
+
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeSimpeelViewer();
+        } else if (e.key === '+' || e.key === '=') {
+            e.preventDefault();
+            simpeelViewerState.zoom = Math.min(3.0, +(simpeelViewerState.zoom + 0.2).toFixed(2));
+            applySimpeelViewerTransform();
+        } else if (e.key === '-' || e.key === '_') {
+            e.preventDefault();
+            simpeelViewerState.zoom = Math.max(0.3, +(simpeelViewerState.zoom - 0.2).toFixed(2));
+            applySimpeelViewerTransform();
+        } else if (e.key === '0') {
+            e.preventDefault();
+            simpeelViewerState.zoom = 1.0;
+            simpeelViewerState.rotate = 0;
+            applySimpeelViewerTransform();
+        }
+    });
+}
+
+function applySimpeelViewerTransform() {
+    const container = document.getElementById('simpeelViewerContentContainer');
+    const badge = document.getElementById('simpeelViewerZoomLevel');
+    if (badge) badge.textContent = `${Math.round(simpeelViewerState.zoom * 100)}%`;
+    if (container) {
+        container.style.transform = `scale(${simpeelViewerState.zoom}) rotate(${simpeelViewerState.rotate}deg)`;
+    }
+}
+
+function closeSimpeelViewer() {
+    const modal = document.getElementById('simpeelFileViewerModal');
+    if (modal) {
+        modal.style.display = 'none';
+        const frame = document.getElementById('simpeelViewerFrame');
+        if (frame) frame.src = 'about:blank';
+        const img = document.getElementById('simpeelViewerImage');
+        if (img) img.src = '';
+        document.body.style.overflow = '';
+    }
+}
+
+function handleSimpeelViewerDownload() {
+    const { driveId, currentUrl, isImage, isDrive } = simpeelViewerState;
+    if (isDrive && driveId) {
+        const dlUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
+        const a = document.createElement('a');
+        a.href = dlUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+    }
+
+    if (currentUrl && (currentUrl.startsWith('data:') || currentUrl.startsWith('blob:'))) {
+        const a = document.createElement('a');
+        a.href = currentUrl;
+        a.download = simpeelViewerState.fileName ? `${simpeelViewerState.fileName.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf` : 'lampiran_berkas.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+    }
+
+    if (currentUrl && currentUrl.startsWith('http')) {
+        const a = document.createElement('a');
+        a.href = currentUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+    }
+
+    handleSimpeelViewerExternal();
+}
+
+function handleSimpeelViewerPrint() {
+    const { currentUrl, isImage, isDrive, driveId } = simpeelViewerState;
+    if (isImage && currentUrl) {
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Cetak Lampiran</title>
+                    <style>
+                        body { margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; background: #fff; }
+                        img { max-width: 100%; max-height: 100%; object-fit: contain; }
+                        @media print { body { height: auto; } }
+                    </style>
+                </head>
+                <body>
+                    <img src="${currentUrl}" onload="window.print(); window.close();" />
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            return;
+        }
+    }
+
+    const frame = document.getElementById('simpeelViewerFrame');
+    if (frame && frame.style.display !== 'none' && !isDrive) {
+        try {
+            frame.contentWindow.focus();
+            frame.contentWindow.print();
+            return;
+        } catch (_) {}
+    }
+
+    if (isDrive && driveId) {
+        window.open(`https://drive.google.com/file/d/${driveId}/view`, '_blank');
+        return;
+    }
+
+    window.print();
+}
+
+function handleSimpeelViewerExternal() {
+    const { rawSource, currentUrl } = simpeelViewerState;
+    const target = rawSource || currentUrl;
+    if (!target) return;
+
     const hasElectronAPI = window.electronAPI && typeof window.electronAPI.openFile === 'function';
     const hasRequire = typeof window.require !== 'undefined';
 
     if (hasElectronAPI) {
-        window.electronAPI.openFile(fileUrlOrPath).then(res => {
-            if (!res || !res.success) Swal.fire('File tidak dapat dibuka', res?.message || 'Terjadi kesalahan saat membuka file', 'warning');
+        window.electronAPI.openFile(target).then(res => {
+            if (!res || !res.success) {
+                if (currentUrl && currentUrl.startsWith('http')) window.open(currentUrl, '_blank');
+                else Swal.fire('Perhatian', res?.message || 'Tidak dapat membuka berkas', 'warning');
+            }
         });
     } else if (hasRequire) {
-        const { ipcRenderer } = window.require('electron');
-        ipcRenderer.invoke('simpeel-open-file', fileUrlOrPath).then(res => {
-            if (!res || !res.success) Swal.fire('File tidak dapat dibuka', res?.message || 'Terjadi kesalahan saat membuka file', 'warning');
-        });
-    } else if (fileUrlOrPath.startsWith('http')) {
-        window.open(fileUrlOrPath, '_blank');
+        try {
+            const { ipcRenderer } = window.require('electron');
+            ipcRenderer.invoke('simpeel-open-file', target).then(res => {
+                if (!res || !res.success) {
+                    if (currentUrl && currentUrl.startsWith('http')) window.open(currentUrl, '_blank');
+                    else Swal.fire('Perhatian', res?.message || 'Tidak dapat membuka berkas', 'warning');
+                }
+            });
+        } catch (_) {
+            if (currentUrl && currentUrl.startsWith('http')) window.open(currentUrl, '_blank');
+        }
+    } else if (currentUrl && currentUrl.startsWith('http')) {
+        window.open(currentUrl, '_blank');
     }
+}
+
+function showEmptyViewer(title, desc) {
+    const emptyEl = document.getElementById('simpeelViewerEmpty');
+    const titleEl = document.getElementById('simpeelViewerEmptyTitle');
+    const descEl = document.getElementById('simpeelViewerEmptyDesc');
+    if (titleEl) titleEl.textContent = title;
+    if (descEl) descEl.textContent = desc;
+    if (emptyEl) emptyEl.style.display = 'block';
+}
+
+async function viewFileApp(fileUrlOrPath, customTitle = '') {
+    if (!fileUrlOrPath) {
+        Swal.fire('Perhatian', 'Berkas belum dipilih atau tautan kosong', 'info');
+        return;
+    }
+
+    let source = String(fileUrlOrPath).trim();
+
+    // 1. Ekstrak URL online murni jika string mengandung https?:// (membersihkan prefix path lokal yang corrupt dari sync lama)
+    const urlMatch = source.match(/https?:\/\/[^\s"',;<>]+/);
+    if (urlMatch) {
+        source = urlMatch[0];
+    }
+
+    // Pastikan DOM modal sudah terdaftar
+    ensureSimpeelViewerDOM();
+    initSimpeelViewerEvents();
+
+    const modal = document.getElementById('simpeelFileViewerModal');
+    const titleEl = document.getElementById('simpeelViewerTitle');
+    const iconEl = document.getElementById('simpeelViewerIcon');
+    const loadingEl = document.getElementById('simpeelViewerLoading');
+    const frameEl = document.getElementById('simpeelViewerFrame');
+    const imgContainer = document.getElementById('simpeelViewerImgContainer');
+    const imgEl = document.getElementById('simpeelViewerImage');
+    const emptyEl = document.getElementById('simpeelViewerEmpty');
+
+    // Reset state viewer
+    simpeelViewerState = {
+        zoom: 1.0,
+        rotate: 0,
+        currentUrl: '',
+        rawSource: source,
+        driveId: '',
+        mimeType: '',
+        isDrive: false,
+        isImage: false,
+        fileName: customTitle || 'Lampiran Berkas'
+    };
+    applySimpeelViewerTransform();
+
+    // Sembunyikan konten awal
+    frameEl.style.display = 'none';
+    frameEl.src = 'about:blank';
+    imgContainer.style.display = 'none';
+    imgEl.src = '';
+    emptyEl.style.display = 'none';
+    loadingEl.style.display = 'flex';
+
+    // Tampilkan modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    // Kasus 1: Google Drive URL
+    const isDriveUrl = source.includes('drive.google.com') || source.includes('docs.google.com');
+    if (isDriveUrl) {
+        let driveId = '';
+        const idMatch = source.match(/[-\w]{25,}/);
+        if (idMatch) driveId = idMatch[0];
+
+        simpeelViewerState.isDrive = true;
+        simpeelViewerState.driveId = driveId;
+        simpeelViewerState.fileName = customTitle || 'Dokumen Google Drive';
+        if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
+        if (iconEl) iconEl.innerHTML = '<i class="fab fa-google-drive text-warning"></i>';
+
+        const previewUrl = driveId ? `https://drive.google.com/file/d/${driveId}/preview` : source;
+        simpeelViewerState.currentUrl = previewUrl;
+
+        frameEl.src = previewUrl;
+        frameEl.onload = () => { loadingEl.style.display = 'none'; };
+        frameEl.style.display = 'block';
+        setTimeout(() => { loadingEl.style.display = 'none'; }, 1200);
+        return;
+    }
+
+    // Kasus 2: Gambar (Data URI atau File Image)
+    const isImageDataUri = source.startsWith('data:image/');
+    const isImageFile = /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(source);
+    if (isImageDataUri || isImageFile) {
+        simpeelViewerState.isImage = true;
+        simpeelViewerState.currentUrl = source;
+        simpeelViewerState.fileName = customTitle || 'Lampiran Gambar';
+        if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
+        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
+
+        imgEl.src = source;
+        imgEl.onload = () => {
+            loadingEl.style.display = 'none';
+            imgContainer.style.display = 'flex';
+        };
+        imgEl.onerror = () => {
+            loadingEl.style.display = 'none';
+            showEmptyViewer('Gagal Memuat Gambar', 'Gambar tidak dapat diakses atau format tidak valid.');
+        };
+        return;
+    }
+
+    // Kasus 3: URL Online Umum (Web PDF / Link)
+    if (source.startsWith('http')) {
+        simpeelViewerState.currentUrl = source;
+        simpeelViewerState.fileName = customTitle || 'Dokumen PDF Online';
+        if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
+        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
+
+        frameEl.src = source;
+        frameEl.onload = () => { loadingEl.style.display = 'none'; };
+        frameEl.style.display = 'block';
+        setTimeout(() => { loadingEl.style.display = 'none'; }, 1500);
+        return;
+    }
+
+    // Kasus 4: Desktop Offline (Electron) Berkas Lokal
+    const hasElectronAPI = window.electronAPI && typeof window.electronAPI.getFileData === 'function';
+    const hasRequire = typeof window.require !== 'undefined';
+
+    if (hasElectronAPI || hasRequire) {
+        try {
+            let res = null;
+            if (hasElectronAPI) {
+                res = await window.electronAPI.getFileData(source);
+            } else {
+                const { ipcRenderer } = window.require('electron');
+                res = await ipcRenderer.invoke('simpeel-get-file-data', source);
+            }
+
+            if (res && res.success) {
+                if (res.isUrl && res.url) {
+                    viewFileApp(res.url, customTitle);
+                    return;
+                }
+                if (res.isLocal && res.dataUri) {
+                    simpeelViewerState.currentUrl = res.dataUri;
+                    simpeelViewerState.fileName = customTitle || res.fileName || 'Lampiran Berkas';
+                    if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
+
+                    if (res.mimeType && res.mimeType.startsWith('image/')) {
+                        simpeelViewerState.isImage = true;
+                        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
+                        imgEl.src = res.dataUri;
+                        imgEl.onload = () => {
+                            loadingEl.style.display = 'none';
+                            imgContainer.style.display = 'flex';
+                        };
+                    } else {
+                        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
+                        frameEl.src = res.dataUri;
+                        frameEl.onload = () => { loadingEl.style.display = 'none'; };
+                        frameEl.style.display = 'block';
+                        setTimeout(() => { loadingEl.style.display = 'none'; }, 1000);
+                    }
+                    return;
+                }
+            }
+        } catch (e) {
+            console.warn('[SiMPeEL Viewer] Gagal getFileData:', e);
+        }
+    }
+
+    // Fallback: Berkas tidak dapat dipratinjau langsung di modal
+    loadingEl.style.display = 'none';
+    showEmptyViewer(
+        'Pratinjau Tidak Tersedia',
+        'Berkas fisik tersimpan di penyimpanan offline atau memerlukan aplikasi pembuka eksternal.'
+    );
 }
 
 function toggleSertifikasiTab(riwayatJabatan = null) {
