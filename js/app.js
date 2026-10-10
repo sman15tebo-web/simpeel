@@ -3,23 +3,18 @@
 // 🚀 VIEW LOADER & INITIALIZATION
 // ==========================================
 async function loadViews() {
-    const includes = document.querySelectorAll('[data-include]');
-    for (const el of includes) {
+    const includes = Array.from(document.querySelectorAll('[data-include]'));
+    
+    // Muat semua view secara paralel agar landing page dan seluruh UI terbuka secepat kilat
+    await Promise.all(includes.map(async (el) => {
         const file = el.getAttribute('data-include');
         let html = '';
         try {
             if (typeof isElectron !== 'undefined' && isElectron) {
                 const fs = window.require ? window.require('fs') : require('fs');
                 const path = window.require ? window.require('path') : require('path');
-                // The current directory in Electron is the root of the app, so __dirname or similar
-                // We use process.cwd() or similar, but actually relative paths work with fs if we know the root.
-                // It's safer to use __dirname from the main process, but we are in renderer.
-                // Let's just try fetch first, because Electron often allows fetch on file:// for local files.
-                // Actually, Electron 30+ requires specific config for file:// fetch.
-                // Let's use IPC to read file if needed, or just path relative to app.
-                // Let's try fetch first, if it fails, fallback to fs.
                 const res = await fetch(file);
-                if(res.ok) {
+                if (res.ok) {
                     html = await res.text();
                 } else {
                     const absPath = path.join(process.cwd(), 'src', file);
@@ -30,16 +25,29 @@ async function loadViews() {
                 html = await res.text();
             }
             el.outerHTML = html;
+
+            // Jika view yang dimuat adalah landing view, segera render logo dan nama sekolah dari cache!
+            if (file.includes('landing.html')) {
+                try {
+                    const cached = localStorage.getItem('SIMPEEL_SETTINGS_CACHE');
+                    if (cached && typeof applyPengaturanToDOM === 'function') {
+                        applyPengaturanToDOM(JSON.parse(cached));
+                    }
+                } catch(e) {}
+            }
         } catch (e) {
             console.error('Failed to load view:', file, e);
         }
-    }
+    }));
 }
 
 // Modify window.onload to load views before initApp
 window.addEventListener('DOMContentLoaded', async () => {
     await loadViews();
-    if(typeof initEvents === 'function') {
+    if (typeof loadPengaturan === 'function') {
+        loadPengaturan();
+    }
+    if (typeof initEvents === 'function') {
         initEvents();
     }
 });
