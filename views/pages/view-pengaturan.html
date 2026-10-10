@@ -95,7 +95,10 @@
 <img alt="Logo Instansi" class="img-fluid" id="previewLogoInstansi" src="logo-simpeel.png" style="max-height: 100%;"/>
 </div>
 <input accept="image/*" class="d-none" id="inputLogoInstansi" onchange="openCropper(this, 'previewLogoInstansi', 1/1)" type="file"/>
-<button class="btn btn-sm btn-outline-primary py-0" onclick="document.getElementById('inputLogoInstansi').click()" type="button"><i class="fas fa-upload" style="font-size: 0.8rem;"></i></button>
+<div class="btn-group btn-group-sm">
+<button class="btn btn-outline-primary py-0" onclick="document.getElementById('inputLogoInstansi').click()" title="Unggah Logo Instansi" type="button"><i class="fas fa-upload" style="font-size: 0.8rem;"></i></button>
+<button class="btn btn-outline-secondary py-0" onclick="document.getElementById('previewLogoInstansi').src='logo-simpeel.png'" title="Reset Default" type="button"><i class="fas fa-undo" style="font-size: 0.8rem;"></i></button>
+</div>
 </div>
 <div class="col-6 text-center">
 <label class="form-label small fw-bold">Logo
@@ -104,8 +107,14 @@
 <img alt="Logo Sekolah" class="img-fluid" id="previewLogoSekolah" src="logo-simpeel.png" style="max-height: 100%;"/>
 </div>
 <input accept="image/*" class="d-none" id="inputLogoSekolah" onchange="openCropper(this, 'previewLogoSekolah', 1/1)" type="file"/>
-<button class="btn btn-sm btn-outline-primary py-0" onclick="document.getElementById('inputLogoSekolah').click()" type="button"><i class="fas fa-upload" style="font-size: 0.8rem;"></i></button>
+<div class="btn-group btn-group-sm">
+<button class="btn btn-outline-primary py-0" onclick="document.getElementById('inputLogoSekolah').click()" title="Unggah Logo Sekolah" type="button"><i class="fas fa-upload" style="font-size: 0.8rem;"></i></button>
+<button class="btn btn-outline-secondary py-0" onclick="document.getElementById('previewLogoSekolah').src='logo-simpeel.png'" title="Reset Default" type="button"><i class="fas fa-undo" style="font-size: 0.8rem;"></i></button>
 </div>
+</div>
+</div>
+<div class="text-center mt-2">
+<small class="text-muted" style="font-size: 0.72rem;"><i class="fas fa-shield-alt text-success"></i> Format Base64 otomatis &amp; terkompresi: 100% aman offline tanpa perlu koneksi Google Drive.</small>
 </div>
 </div>
 </div>
