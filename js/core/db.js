@@ -27,7 +27,8 @@ const dbManager = {
         // Refresh pengaturan dari server/SQLite
         try {
             const freshPeng = await apiCall('getPengaturan');
-            if (freshPeng && typeof freshPeng === 'object' && !freshPeng.message) {
+            if (this.isValidPengaturan(freshPeng)) {
+                this.sanitizePengaturan(freshPeng);
                 localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(freshPeng));
                 window.cachedPengaturan = freshPeng;
                 if (typeof applyPengaturanToDOM === 'function') {
@@ -35,6 +36,28 @@ const dbManager = {
                 }
             }
         } catch (ePeng) {}
+    },
+
+    isValidPengaturan: function (data) {
+        if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+        // Objek valid jika memiliki properti data instansi/sekolah atau key pengaturan utama
+        return Boolean(
+            data.sekolah || data.instansi || data.alamat || data.kepsekNama ||
+            data.namaSekolah || data.namaInstansi || data.email || data.hp ||
+            data.logoInstansi || data.logoSekolah || data.warnaTema
+        );
+    },
+
+    sanitizePengaturan: function (data) {
+        if (!data || typeof data !== 'object') return data;
+        delete data.apiKey;
+        delete data.action;
+        delete data.error;
+        if (data.sekolah || data.instansi || data.namaSekolah || data.namaInstansi || data.alamat) {
+            delete data.success;
+            delete data.message;
+        }
+        return data;
     },
 
     getAllPegawai: async function () {
@@ -75,24 +98,28 @@ const dbManager = {
         }
     },
 
-    // Pengaturan & Logo (Stale-While-Revalidate: baca instan dari localStorage, update di background)
+    // Pengaturan & Logo (Stale-While-Revalidate: baca instan dari localStorage jika valid, update di background)
     getPengaturan: async function (useCache = true) {
         if (useCache) {
             const cached = localStorage.getItem(SETTINGS_CACHE_KEY);
             if (cached) {
                 try {
                     const parsed = JSON.parse(cached);
-                    // Lakukan refresh senyap di latar belakang jika online
-                    this.refreshPengaturanInBackground();
-                    return parsed;
+                    if (this.isValidPengaturan(parsed)) {
+                        // Lakukan refresh senyap di latar belakang jika online
+                        this.refreshPengaturanInBackground();
+                        return parsed;
+                    }
                 } catch (e) {}
             }
         }
         if (!API_URL) return { success: false };
         const fresh = await apiCall('getPengaturan');
-        if (fresh && typeof fresh === 'object' && !fresh.message) {
+        if (this.isValidPengaturan(fresh)) {
+            this.sanitizePengaturan(fresh);
             localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(fresh));
             window.cachedPengaturan = fresh;
+            return fresh;
         }
         return fresh;
     },
@@ -101,7 +128,8 @@ const dbManager = {
         if (!API_URL) return;
         try {
             const fresh = await apiCall('getPengaturan');
-            if (fresh && typeof fresh === 'object' && !fresh.message) {
+            if (this.isValidPengaturan(fresh)) {
+                this.sanitizePengaturan(fresh);
                 const oldCache = localStorage.getItem(SETTINGS_CACHE_KEY);
                 const freshStr = JSON.stringify(fresh);
                 if (oldCache !== freshStr) {
