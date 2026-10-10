@@ -532,8 +532,10 @@ window.bukaModalSync = async function() {
         const m = document.getElementById('modalSync');
         if (m) {
             const config = await apiCall('getConfig');
-            if (config && config.syncUrl) {
-                document.getElementById('syncExecUrl').value = config.syncUrl;
+            const url = (config && (config.syncUrl || config.OFFLINE_EXEC_LINK || config.gasUrl || config.linkExec)) || '';
+            if (url) {
+                const el = document.getElementById('syncExecUrl');
+                if (el) el.value = url;
             }
             const modal = bootstrap.Modal.getInstance(m) || new bootstrap.Modal(m);
             modal.show();
