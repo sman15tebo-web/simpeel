@@ -46,10 +46,10 @@ async function simpanPengaturan() {
 
         const data = {
             ...existingData,
-            instansi: document.getElementById('set_instansi').value,
-            opd: document.getElementById('set_opd').value,
-            sekolah: document.getElementById('set_sekolah').value,
-            hp: document.getElementById('set_hp').value,
+            instansi: document.getElementById('set_instansi')?.value || '',
+            opd: document.getElementById('set_opd')?.value || '',
+            sekolah: document.getElementById('set_sekolah')?.value || '',
+            hp: document.getElementById('set_hp')?.value || '',
             alamat: (document.getElementById('set_alamat_text') || document.getElementById('set_alamat'))?.value || '',
             email: document.getElementById('set_email')?.value || '',
             web: document.getElementById('set_web')?.value || '',
@@ -61,6 +61,14 @@ async function simpanPengaturan() {
             logoSekolah: finalLogoSekolah,
             updatedAt: new Date().toISOString()
         };
+
+        // Bersihkan key kotor/error agar tidak tersimpan ke database/spreadsheet
+        delete data.success;
+        delete data.message;
+        delete data.error;
+        delete data.data;
+        delete data.apiKey;
+        delete data.action;
 
         window.cachedPengaturan = data;
         await dbManager.savePengaturan(data);
@@ -172,71 +180,94 @@ function applyPengaturanToDOM(data) {
     if (!data || typeof data !== 'object') return;
     window.cachedPengaturan = data;
 
-    if (data.instansi) {
+    const instansi = data.instansi || data.namaInstansi || '';
+    if (instansi) {
         const el = document.getElementById('set_instansi');
-        if (el) el.value = data.instansi;
+        if (el) el.value = instansi;
         const txtInstansi = document.getElementById('textInstansi');
-        if (txtInstansi) txtInstansi.innerText = data.instansi;
+        if (txtInstansi) txtInstansi.innerText = instansi;
     }
-    if (data.opd) {
+
+    const opd = data.opd || data.namaOpd || data.dinas || '';
+    if (opd) {
         const el = document.getElementById('set_opd');
-        if (el) el.value = data.opd;
+        if (el) el.value = opd;
     }
-    if (data.sekolah) {
+
+    const sekolah = data.sekolah || data.namaSekolah || '';
+    if (sekolah) {
         const el = document.getElementById('set_sekolah');
-        if (el) el.value = data.sekolah;
+        if (el) el.value = sekolah;
         const txtSekolah = document.getElementById('textSekolah');
-        if (txtSekolah) txtSekolah.innerText = data.sekolah;
+        if (txtSekolah) txtSekolah.innerText = sekolah;
         const sideNama = document.getElementById('sidebar-sekolah-nama');
-        if (sideNama) sideNama.innerText = data.sekolah;
+        if (sideNama) sideNama.innerText = sekolah;
         const mobTopNama = document.getElementById('mobile-top-sekolah-nama');
-        if (mobTopNama) mobTopNama.innerText = data.sekolah;
+        if (mobTopNama) mobTopNama.innerText = sekolah;
     }
-    if (data.hp) {
+
+    const hp = data.hp || data.telepon || data.noHp || '';
+    if (hp) {
         const el = document.getElementById('set_hp');
-        if (el) el.value = data.hp;
+        if (el) el.value = hp;
     }
-    if (data.alamat) {
+
+    const alamat = data.alamat || data.alamatSekolah || '';
+    if (alamat) {
         const el = document.getElementById('set_alamat_text') || document.getElementById('set_alamat');
-        if (el) el.value = data.alamat;
+        if (el) el.value = alamat;
     }
-    if (data.email) {
+
+    const email = data.email || '';
+    if (email) {
         const el = document.getElementById('set_email');
-        if (el) el.value = data.email;
+        if (el) el.value = email;
     }
-    if (data.web) {
+
+    const web = data.web || data.website || '';
+    if (web) {
         const el = document.getElementById('set_web');
-        if (el) el.value = data.web;
+        if (el) el.value = web;
     }
-    if (data.kepsekNama) {
+
+    const kepsekNama = data.kepsekNama || data.kepalaSekolah || data.namaKepsek || '';
+    if (kepsekNama) {
         const el = document.getElementById('set_kepsek_nama');
-        if (el) el.value = data.kepsekNama;
+        if (el) el.value = kepsekNama;
     }
-    if (data.kepsekNip) {
+
+    const kepsekNip = data.kepsekNip || data.nipKepsek || data.nipKepalaSekolah || '';
+    if (kepsekNip) {
         const el = document.getElementById('set_kepsek_nip');
-        if (el) el.value = data.kepsekNip;
+        if (el) el.value = kepsekNip;
     }
-    if (data.bendaharaNama) {
+
+    const bendaharaNama = data.bendaharaNama || data.namaBendahara || '';
+    if (bendaharaNama) {
         const el = document.getElementById('set_bendahara_nama');
-        if (el) el.value = data.bendaharaNama;
+        if (el) el.value = bendaharaNama;
     }
-    if (data.bendaharaNip) {
+
+    const bendaharaNip = data.bendaharaNip || data.nipBendahara || '';
+    if (bendaharaNip) {
         const el = document.getElementById('set_bendahara_nip');
-        if (el) el.value = data.bendaharaNip;
+        if (el) el.value = bendaharaNip;
     }
 
     // Tampilkan Logo Instansi
     const defLogo = 'logo-simpeel.png';
-    const isInstansiValid = data.logoInstansi && (data.logoInstansi.startsWith('data:') || data.logoInstansi.startsWith('http'));
-    const finalInstLogo = isInstansiValid ? data.logoInstansi : defLogo;
+    const logoInstansi = data.logoInstansi || '';
+    const isInstansiValid = logoInstansi && (logoInstansi.startsWith('data:') || logoInstansi.startsWith('http'));
+    const finalInstLogo = isInstansiValid ? logoInstansi : defLogo;
     const prevInst = document.getElementById('previewLogoInstansi');
     if (prevInst) prevInst.src = finalInstLogo;
     const imgInst = document.getElementById('imgInstansi');
     if (imgInst) imgInst.src = finalInstLogo;
 
     // Tampilkan Logo Sekolah
-    const isSekolahValid = data.logoSekolah && (data.logoSekolah.startsWith('data:') || data.logoSekolah.startsWith('http'));
-    const finalSekLogo = isSekolahValid ? data.logoSekolah : defLogo;
+    const logoSekolah = data.logoSekolah || '';
+    const isSekolahValid = logoSekolah && (logoSekolah.startsWith('data:') || logoSekolah.startsWith('http'));
+    const finalSekLogo = isSekolahValid ? logoSekolah : defLogo;
     const prevSek = document.getElementById('previewLogoSekolah');
     if (prevSek) prevSek.src = finalSekLogo;
     const imgSek = document.getElementById('imgSekolah');
@@ -265,13 +296,23 @@ async function loadPengaturan() {
     const cached = localStorage.getItem('SIMPEEL_SETTINGS_CACHE');
     if (cached) {
         try {
-            applyPengaturanToDOM(JSON.parse(cached));
+            const parsed = JSON.parse(cached);
+            if (parsed && typeof parsed === 'object') {
+                applyPengaturanToDOM(parsed);
+            }
         } catch(e) {}
     }
 
-    // 2. Ambil data terbaru (jika cache kosong akan menunggu, jika ada cache getPengaturan refresh senyap di background)
-    const data = await dbManager.getPengaturan() || {};
-    applyPengaturanToDOM(data);
+    // 2. Ambil data terbaru dari Server/DB (force refresh live untuk halaman pengaturan agar data spreadsheet selalu tampil)
+    let data = null;
+    try {
+        data = await dbManager.getPengaturan(false);
+    } catch(err) {
+        data = await dbManager.getPengaturan(true);
+    }
+    if (data && typeof data === 'object') {
+        applyPengaturanToDOM(data);
+    }
 
     // Auto-convert link web/Drive legacy ke Base64 secara senyap jika online
     if (data.logoInstansi && data.logoInstansi.startsWith('http') && !data.logoInstansi.includes('logo-simpeel.png') && typeof convertImageToBase64 === 'function') {
