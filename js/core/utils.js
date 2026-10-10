@@ -275,36 +275,55 @@ function convertImageToBase64(urlOrData, maxDim = 250, mimeType = 'image/png') {
             try {
                 let w = img.width;
                 let h = img.height;
-                if (w > maxDim || h > maxDim) {
+                let dim = maxDim;
+                if (w > dim || h > dim) {
                     if (w >= h) {
-                        h = Math.round((h * maxDim) / w);
-                        w = maxDim;
+                        h = Math.round((h * dim) / w);
+                        w = dim;
                     } else {
-                        w = Math.round((w * maxDim) / h);
-                        h = maxDim;
+                        w = Math.round((w * dim) / h);
+                        h = dim;
                     }
                 }
                 const canvas = document.createElement('canvas');
                 canvas.width = Math.max(1, w);
                 canvas.height = Math.max(1, h);
                 const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Pastikan 100% transparan
+
                 if (mimeType === 'image/jpeg') {
                     ctx.fillStyle = '#ffffff';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                 }
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                let res = canvas.toDataURL(mimeType, 0.85);
-                // Jika masih melebihi 40.000 karakter, fallback kompresi JPEG agar aman untuk Google Sheets
-                if (res.length > 40000) {
-                    const fbCanvas = document.createElement('canvas');
-                    fbCanvas.width = canvas.width;
-                    fbCanvas.height = canvas.height;
-                    const fbCtx = fbCanvas.getContext('2d');
-                    fbCtx.fillStyle = '#ffffff';
-                    fbCtx.fillRect(0, 0, fbCanvas.width, fbCanvas.height);
-                    fbCtx.drawImage(canvas, 0, 0);
-                    res = fbCanvas.toDataURL('image/jpeg', 0.75);
+
+                let res = canvas.toDataURL(mimeType);
+
+                // Jika untuk logo (image/png) dan melebihi 48.000 karakter (limit Google Sheets ~49k):
+                // Kecilkan dimensi bertahap AGAR TETAP TRANSPARAN (JANGAN dijadikan JPEG agar tidak ada background putih!)
+                if (mimeType === 'image/png') {
+                    let iterDim = dim;
+                    while (res.length > 48000 && iterDim > 120) {
+                        iterDim -= 20;
+                        let newW = img.width;
+                        let newH = img.height;
+                        if (newW >= newH) {
+                            newH = Math.round((newH * iterDim) / newW);
+                            newW = iterDim;
+                        } else {
+                            newW = Math.round((newW * iterDim) / newH);
+                            newH = iterDim;
+                        }
+                        canvas.width = Math.max(1, newW);
+                        canvas.height = Math.max(1, newH);
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        res = canvas.toDataURL('image/png');
+                    }
+                } else if (res.length > 48000 && mimeType === 'image/jpeg') {
+                    res = canvas.toDataURL('image/jpeg', 0.7);
                 }
+
                 resolve(res);
             } catch (err) {
                 resolve(urlOrData.startsWith('data:') ? urlOrData : '');
@@ -319,13 +338,17 @@ function convertImageToBase64(urlOrData, maxDim = 250, mimeType = 'image/png') {
 
 function doCrop() {
     if (!cropper) return;
-    const rawCanvas = cropper.getCroppedCanvas();
+    const rawCanvas = cropper.getCroppedCanvas({
+        fillColor: 'transparent',
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high'
+    });
     if (!rawCanvas) return;
 
-    // Tentukan batasan dimensi & format optimal berdasarkan target preview
+    // Tentukan batasan dimensi & format optimal (Logo: 250px x 250px PNG transparan murni)
     let maxDim = 250;
     let mimeType = 'image/png';
-    let quality = 0.85;
+    let quality = 0.9;
 
     if (currentPreviewId === 'previewBgLanding') {
         maxDim = 800;
@@ -336,21 +359,21 @@ function doCrop() {
         mimeType = 'image/jpeg';
         quality = 0.8;
     } else {
-        // Logo Instansi & Logo Sekolah (1:1 ratio)
-        maxDim = 200;
+        // Logo Instansi & Logo Sekolah (250px x 250px transparan)
+        maxDim = 250;
         mimeType = 'image/png';
-        quality = 0.85;
     }
 
     let w = rawCanvas.width;
     let h = rawCanvas.height;
-    if (w > maxDim || h > maxDim) {
+    let dim = maxDim;
+    if (w > dim || h > dim) {
         if (w >= h) {
-            h = Math.round((h * maxDim) / w);
-            w = maxDim;
+            h = Math.round((h * dim) / w);
+            w = dim;
         } else {
-            w = Math.round((w * maxDim) / h);
-            h = maxDim;
+            w = Math.round((w * dim) / h);
+            h = dim;
         }
     }
 
@@ -358,6 +381,7 @@ function doCrop() {
     scaledCanvas.width = Math.max(1, w);
     scaledCanvas.height = Math.max(1, h);
     const ctx = scaledCanvas.getContext('2d');
+    ctx.clearRect(0, 0, scaledCanvas.width, scaledCanvas.height); // Wajib transparan murni
 
     if (mimeType === 'image/jpeg') {
         ctx.fillStyle = '#ffffff';
@@ -366,16 +390,27 @@ function doCrop() {
     ctx.drawImage(rawCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
 
     let base64Image = scaledCanvas.toDataURL(mimeType, quality);
-    // Jika ukuran base64 PNG masih > 40.000 karakter, fallback ke JPEG terkompresi
-    if (base64Image.length > 40000 && mimeType === 'image/png') {
-        const fbCanvas = document.createElement('canvas');
-        fbCanvas.width = scaledCanvas.width;
-        fbCanvas.height = scaledCanvas.height;
-        const fbCtx = fbCanvas.getContext('2d');
-        fbCtx.fillStyle = '#ffffff';
-        fbCtx.fillRect(0, 0, fbCanvas.width, fbCanvas.height);
-        fbCtx.drawImage(scaledCanvas, 0, 0);
-        base64Image = fbCanvas.toDataURL('image/jpeg', 0.8);
+
+    // Untuk logo PNG: jika ukuran > 48.000 karakter, kecilkan dimensi bertahap TANPA latar belakang putih!
+    if (mimeType === 'image/png' && base64Image.length > 48000) {
+        let iterDim = dim;
+        while (base64Image.length > 48000 && iterDim > 120) {
+            iterDim -= 20;
+            let nw = rawCanvas.width;
+            let nh = rawCanvas.height;
+            if (nw >= nh) {
+                nh = Math.round((nh * iterDim) / nw);
+                nw = iterDim;
+            } else {
+                nw = Math.round((nw * iterDim) / nh);
+                nh = iterDim;
+            }
+            scaledCanvas.width = Math.max(1, nw);
+            scaledCanvas.height = Math.max(1, nh);
+            ctx.clearRect(0, 0, scaledCanvas.width, scaledCanvas.height);
+            ctx.drawImage(rawCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+            base64Image = scaledCanvas.toDataURL('image/png');
+        }
     }
 
     if (currentPreviewId && document.getElementById(currentPreviewId)) {
