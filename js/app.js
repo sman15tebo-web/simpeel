@@ -422,6 +422,7 @@ function nav(page) {
     if (page === 'pensiun') renderTabelPensiun();
     if (page === 'guru-sertif') renderTabelGuruSertif();
     if (page === 'akun') renderTabelAkun();
+    if (page === 'pengaturan') { if(typeof loadPengaturan === 'function') loadPengaturan(); }
     if (page === 'profil-pegawai') { if(typeof renderProfilPegawai === 'function') renderProfilPegawai(); }
     if (page === 'pegawai-input') { if(typeof loadInputDataPegawai === 'function') loadInputDataPegawai(); }
     if (page === 'dashboard-pegawai') { if(typeof renderDashboardPegawai === 'function') renderDashboardPegawai(); }
