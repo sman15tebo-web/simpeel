@@ -1,0 +1,88 @@
+<!-- ============================================================
+     GOOGLE DRIVE STYLE DARK FILE VIEWER MODAL
+     Pratinjau Berkas Lampiran SiMPEEL (PDF, Gambar, Google Drive)
+     Fitur: Dark theme, Zoom In/Out/Reset, Cetak, Unduh, Fullscreen
+     ============================================================ -->
+<div id="simpeelFileViewerModal" class="simpeel-viewer-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="simpeelViewerTitle">
+    <!-- TOOLBAR HEADER -->
+    <header class="simpeel-viewer-header">
+        <!-- Title & Icon -->
+        <div class="simpeel-viewer-title-group">
+            <div class="simpeel-viewer-icon" id="simpeelViewerIcon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="simpeel-viewer-title" id="simpeelViewerTitle" title="Lampiran Berkas">
+                Lampiran Berkas
+            </div>
+        </div>
+
+        <!-- Zoom Controls -->
+        <div class="simpeel-viewer-zoom-controls">
+            <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomOut" title="Perkecil Zoom (-)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <div class="simpeel-viewer-zoom-level" id="simpeelViewerZoomLevel" title="Klik untuk Reset (100%)">
+                100%
+            </div>
+            <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomIn" title="Perbesar Zoom (+)">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomReset" title="Ukuran Semula (Reset)">
+                <i class="fas fa-compress"></i>
+            </button>
+            <button type="button" class="simpeel-viewer-btn" id="simpeelBtnRotate" title="Putar 90°">
+                <i class="fas fa-redo"></i>
+            </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="simpeel-viewer-actions">
+            <button type="button" class="simpeel-viewer-btn" id="simpeelBtnPrint" title="Cetak Dokumen">
+                <i class="fas fa-print"></i>
+                <span>Cetak</span>
+            </button>
+            <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-primary" id="simpeelBtnDownload" title="Unduh Berkas">
+                <i class="fas fa-download"></i>
+                <span>Unduh</span>
+            </button>
+            <button type="button" class="simpeel-viewer-btn" id="simpeelBtnExternal" title="Buka di Jendela Baru / Aplikasi Komputer">
+                <i class="fas fa-external-link-alt"></i>
+            </button>
+            <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-close" id="simpeelBtnClose" title="Tutup (Esc)">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- VIEWER BODY -->
+    <main class="simpeel-viewer-body" id="simpeelViewerBody">
+        <!-- Loading State -->
+        <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
+            <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;">
+                <span class="visually-hidden">Memuat berkas...</span>
+            </div>
+            <div class="text-white-50 small mt-1">Memuat pratinjau berkas...</div>
+        </div>
+
+        <!-- Content Container (Transformed via Zoom & Rotate) -->
+        <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
+            <!-- Iframe Viewer (Google Drive / Embedded PDF) -->
+            <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" style="display: none;" allow="autoplay" allowfullscreen></iframe>
+
+            <!-- Image Viewer (JPG / PNG / WebP) -->
+            <div class="simpeel-viewer-img-container" id="simpeelViewerImgContainer" style="display: none;">
+                <img id="simpeelViewerImage" class="simpeel-viewer-img" alt="Pratinjau Berkas" />
+            </div>
+
+            <!-- Empty / Error Fallback -->
+            <div class="simpeel-viewer-empty" id="simpeelViewerEmpty" style="display: none;">
+                <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                <h5 class="fw-bold text-white mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
+                <p class="text-muted small mb-3" id="simpeelViewerEmptyDesc">Berkas ini tidak dapat ditampilkan langsung di dalam halaman.</p>
+                <button type="button" class="btn btn-outline-light btn-sm" id="simpeelBtnFallbackAction">
+                    <i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
