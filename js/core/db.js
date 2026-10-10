@@ -1,9 +1,14 @@
+const SETTINGS_CACHE_KEY = "SIMPEEL_SETTINGS_CACHE";
+
 const dbManager = {
     // Cache Lokal HANYA untuk kecepatan BACA data di layar
     localData: JSON.parse(localStorage.getItem(CACHE_KEY)) || [],
 
     init: async function () {
-        if (API_URL) await this.forceFetchFromServer();
+        // Jalankan pengambilan data terbaru di latar belakang secara asynchronous agar halaman utama terbuka instan
+        if (API_URL) {
+            this.forceFetchFromServer().catch(e => console.warn('Background sync error:', e));
+        }
         return true;
     },
 
@@ -14,7 +19,7 @@ const dbManager = {
         if (Array.isArray(res)) {
             this.localData = res;
             localStorage.setItem(CACHE_KEY, JSON.stringify(res));
-            // Otomatis refresh UI 
+            // Otomatis refresh UI jika berada di dalam dashboard
             if (document.getElementById('wrapper').classList.contains('d-none') === false) {
                 initApp();
             }
@@ -59,10 +64,44 @@ const dbManager = {
         }
     },
 
-    // Pengaturan & Keamanan (Langsung ke Server)
-    getPengaturan: async function () {
+    // Pengaturan & Logo (Stale-While-Revalidate: baca instan dari localStorage, update di background)
+    getPengaturan: async function (useCache = true) {
+        if (useCache) {
+            const cached = localStorage.getItem(SETTINGS_CACHE_KEY);
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    // Lakukan refresh senyap di latar belakang jika online
+                    this.refreshPengaturanInBackground();
+                    return parsed;
+                } catch (e) {}
+            }
+        }
         if (!API_URL) return { success: false };
-        return await apiCall('getPengaturan');
+        const fresh = await apiCall('getPengaturan');
+        if (fresh && typeof fresh === 'object' && !fresh.message) {
+            localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(fresh));
+            window.cachedPengaturan = fresh;
+        }
+        return fresh;
+    },
+
+    refreshPengaturanInBackground: async function () {
+        if (!API_URL) return;
+        try {
+            const fresh = await apiCall('getPengaturan');
+            if (fresh && typeof fresh === 'object' && !fresh.message) {
+                const oldCache = localStorage.getItem(SETTINGS_CACHE_KEY);
+                const freshStr = JSON.stringify(fresh);
+                if (oldCache !== freshStr) {
+                    localStorage.setItem(SETTINGS_CACHE_KEY, freshStr);
+                    window.cachedPengaturan = fresh;
+                    if (typeof applyPengaturanToDOM === 'function') {
+                        applyPengaturanToDOM(fresh);
+                    }
+                }
+            }
+        } catch (e) {}
     },
 
     getAllAkun: async function () {
@@ -97,6 +136,9 @@ const dbManager = {
 
     savePengaturan: async function (data) {
         if (!API_URL) return { success: false };
+        // Segera perbarui cache lokal agar UI seketika terupdate tanpa tunggu roundtrip jaringan
+        localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(data));
+        window.cachedPengaturan = data;
         return await apiCall('savePengaturan', data);
     }
 };
