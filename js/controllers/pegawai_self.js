@@ -96,7 +96,10 @@ window.loadInputDataPegawai = async function() {
 
         container.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary"></div><p class="mt-2 text-muted">Memuat data pegawai...</p></div>';
 
-        const allPegawai = await apiCall('getAllPegawai');
+        let allPegawai = await dbManager.getAllPegawai();
+        if (!allPegawai || allPegawai.length === 0) {
+            allPegawai = await apiCall('getAllPegawai');
+        }
         const pegawai = Array.isArray(allPegawai) ? allPegawai.find(p => String(p.nip) === String(nip)) : null;
 
         if (!pegawai) {
