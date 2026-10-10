@@ -74,7 +74,10 @@ async function apiCall(action, data = null) {
             };
             if (data) payload.data = data;
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 35000);
+            const timeoutMs = (action === 'uploadFile' || action === 'batchSync') ? 90000 : 45000;
+            const timeoutId = setTimeout(() => {
+                controller.abort(new Error(`Waktu request habis (${timeoutMs / 1000} detik). Periksa koneksi internet.`));
+            }, timeoutMs);
             
             const response = await fetch(API_URL, {
                 method: 'POST',
