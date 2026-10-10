@@ -336,6 +336,34 @@
                             </table>
                         </div>
                     </div>
+                    <!-- TAB RIWAYAT KGB -->
+                    <div class="tab-pane fade" id="f-kgb" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat KGB</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelKGB')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelKGB">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nomor SK KGB</th>
+                                        <th>Tgl SK</th>
+                                        <th>TMT KGB</th>
+                                        <th>Jumlah Gaji Pokok</th>
+                                        <th>Masa Kerja (Thn)</th>
+                                        <th>Masa Kerja (Bln)</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <!-- TAB 4: RIWAYAT JABATAN -->
                     <div class="tab-pane fade" id="f-jabatan" role="tabpanel">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -401,34 +429,6 @@
                                         type="button"><i class="fas fa-eye"></i></button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- TAB BARU: RIWAYAT KGB -->
-                    <div class="tab-pane fade" id="f-kgb" role="tabpanel">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold text-primary mb-0">Riwayat KGB</h5>
-                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelKGB')"
-                                type="button"><i class="fas fa-plus"></i> Tambah
-                                Data</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm" id="tabelKGB">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Nomor SK KGB</th>
-                                        <th>Tgl SK</th>
-                                        <th>TMT KGB</th>
-                                        <th>Jumlah Gaji Pokok</th>
-                                        <th>Masa Kerja (Thn)</th>
-                                        <th>Masa Kerja (Bln)</th>
-                                        <th>Upload (PDF)</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Baris dinamis -->
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                     <!-- TAB 5: RIWAYAT PENDIDIKAN -->
