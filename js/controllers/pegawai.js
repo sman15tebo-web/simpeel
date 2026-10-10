@@ -181,172 +181,145 @@ async function simpanPegawai() {
         }
     });
 
-    // Extract array data
-    const extractTableData = (tableId) => {
-        const rows = document.querySelectorAll(`#${tableId} tbody tr`);
-        return Array.from(rows).map(row => {
-            const inputs = row.querySelectorAll('input:not([type="file"]), select');
-            return Array.from(inputs).map(i => i.value);
-        });
-    };
-
-    let riwayatPangkat = extractTableData('tabelPangkat');
-    let riwayatKontrak = extractTableData('tabelKontrak');
-    let riwayatJabatan = extractTableData('tabelJabatan');
-    let riwayatKGB = extractTableData('tabelKGB');
-    let riwayatPendidikan = extractTableData('tabelPendidikan');
-    let riwayatAnak = extractTableData('tabelAnak');
-    let riwayatDiklat = extractTableData('tabelDiklat');
-
-    riwayatPangkat = sortRiwayatArray(riwayatPangkat, 1);
-    riwayatKontrak = sortRiwayatArray(riwayatKontrak, 2);
-    riwayatJabatan = sortRiwayatArray(riwayatJabatan, 4);
-    riwayatKGB = sortRiwayatArray(riwayatKGB, 2);
-    riwayatPendidikan = sortRiwayatArray(riwayatPendidikan, 4, true);
-    riwayatAnak = sortRiwayatArray(riwayatAnak, 2).map(r => {
-        if (r[0]) r[0] = r[0].toUpperCase();
-        return r;
-    });
-    riwayatDiklat = sortRiwayatArray(riwayatDiklat, 2, true);
-
-    // Get latest data for main table
-    let golongan = '';
-    let jabatan = '';
-    let tmtJabatan = '';
-    let tmtKgbLalu = '';
-    let gajiPokok = '';
-
-    let unitKerja = '';
-    const latestPendidikan = getLatestRiwayat(riwayatPendidikan, 4, true);
-    if (latestPendidikan) {
-        pendidikan = latestPendidikan[0];
-    }
-
-    const latestPangkat = getLatestRiwayat(riwayatPangkat, 1);
-    const latestKontrak = getLatestRiwayat(riwayatKontrak, 2);
-
-    if (latestPangkat) {
-        golongan = latestPangkat[0]; // Golongan
-    } else if (latestKontrak) {
-        golongan = latestKontrak[1]; // Golongan Kontrak
-    }
-
-    const latestJabatan = getLatestRiwayat(riwayatJabatan, 4);
-    if (latestJabatan) {
-        jabatan = latestJabatan[2]; // Nama Jabatan
-        unitKerja = latestJabatan[3]; // Unit Kerja
-        tmtJabatan = latestJabatan[4]; // TMT Jabatan
-    } else if (latestKontrak) {
-        jabatan = latestKontrak[0]; // Nama Jabatan Kontrak
-    }
-
-    const latestKGB = getLatestRiwayat(riwayatKGB, 2);
-    if (latestKGB) {
-        tmtKgbLalu = latestKGB[2]; // TMT KGB
-        gajiPokok = latestKGB[3]; // Jumlah Gaji Pokok
-    }
-    let kgbDate = tmtKgbLalu
-        ? (parseInt(tmtKgbLalu.substring(0, 4)) + 2) + tmtKgbLalu.substring(4)
-        : '';
-
-    // --- FOTO PROCESSING ---
-    const imgEl = document.getElementById('previewFotoPegawai');
-    let fotoData = '';
-    if (imgEl && !imgEl.src.includes('placeholder.com')) {
-        if (imgEl.src.startsWith('data:image/')) {
-            try {
-                // Compress photo to ensure it stays < 50,000 chars for Google Sheets
-                fotoData = await new Promise((resolve) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        let width = img.width;
-                        let height = img.height;
-                        const MAX_SIZE = 250;
-                        if (width > height) {
-                            if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
-                        } else {
-                            if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
-                        // Convert to highly compressed JPEG
-                        let compressed = canvas.toDataURL('image/jpeg', 0.7);
-                        resolve(compressed);
-                    };
-                    img.onerror = () => resolve(imgEl.src);
-                    img.src = imgEl.src;
-                });
-            } catch (e) {
-                fotoData = imgEl.src;
-            }
-        } else {
-            fotoData = imgEl.src; // if it's already a link/path
-        }
-    }
-
-    const data = {
-        foto: fotoData,
-        nip: nipValFinal,
-        nik: nikVal,
-        nama: namaValFinal,
-        tempatLahir: document.getElementById('peg_tempat_lahir')?.value || '',
-        tglLahir: tglLahirFinal,
-        kelamin: kelamin,
-        agama: document.getElementById('peg_agama')?.value || '',
-        statusKawin: document.getElementById('peg_status_kawin')?.value || '',
-        alamat: document.getElementById('peg_alamat')?.value || '',
-        alamatProvinsi: document.getElementById('peg_alamat_provinsi')?.value || '',
-        alamatKabKota: document.getElementById('peg_alamat_kabkota')?.value || '',
-        nipLama: document.getElementById('peg_nip_lama')?.value || '',
-        noHp: document.getElementById('peg_no_hp')?.value || '',
-        email: document.getElementById('peg_email')?.value || '',
-        golDarah: document.getElementById('peg_gol_darah')?.value || '',
-        tinggiBadan: document.getElementById('peg_tinggi_badan')?.value || '',
-        beratBadan: document.getElementById('peg_berat_badan')?.value || '',
-        hobby: document.getElementById('peg_hobby')?.value || '',
-        isKebutuhanKhusus: document.getElementById('peg_is_kebutuhan_khusus')?.value || 'Tidak',
-        uraianKebutuhanKhusus: document.getElementById('peg_uraian_kebutuhan_khusus')?.value || '',
-        statusPegawai: statusPgwFinal,
-        golongan: golongan,
-        jabatan: jabatan,
-        tmtJabatan: tmtJabatan,
-        pendidikan: pendidikan,
-        unitKerja: unitKerja || 'Dinas',
-        statusKepegawaian: 'Aktif',
-        gajiPokok: gajiPokok,
-        tmtKgbLalu: tmtKgbLalu,
-        tmtKgbBaru: kgbDate,
-        tmtPensiun: '',
-        pasanganNama: document.getElementById('peg_pasangan_nama')?.value || '',
-        pasanganNik: document.getElementById('peg_pasangan_nik')?.value || '',
-        pasanganTmptLahir: document.getElementById('peg_pasangan_tmpt_lahir')?.value || '',
-        pasanganTglLahir: document.getElementById('peg_pasangan_tgl_lahir')?.value || '',
-        pasanganPekerjaan: document.getElementById('peg_pasangan_pekerjaan')?.value || '',
-        pasanganNip: document.getElementById('peg_pasangan_nip')?.value || '',
-        pasanganBukuNikah: document.getElementById('file_buku_nikah')?.value || '',
-        riwayatPangkat: riwayatPangkat,
-        riwayatKontrak: riwayatKontrak,
-        riwayatJabatan: riwayatJabatan,
-        riwayatKGB: riwayatKGB,
-        riwayatPendidikan: riwayatPendidikan,
-        riwayatAnak: riwayatAnak,
-        riwayatDiklat: riwayatDiklat,
-
-        certNo: (document.getElementById('cert_no')?.value || ''),
-        certTgl: (document.getElementById('cert_tgl')?.value || ''),
-        certNrg: (document.getElementById('cert_nrg')?.value || ''),
-        certNuptk: (document.getElementById('cert_nuptk')?.value || ''),
-        certTahun: (document.getElementById('cert_tahun')?.value || ''),
-        certMapel: (document.getElementById('cert_mapel')?.value || ''),
-        certLptk: (document.getElementById('cert_lptk')?.value || ''),
-        certPejabat: (document.getElementById('cert_pejabat')?.value || ''),
-        certFileData: (document.getElementById('cert_file_data')?.value || '')
-    };
-
     try {
+        // Extract array data
+        const extractTableData = (tableId) => {
+            const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+            return Array.from(rows).map(row => {
+                const inputs = row.querySelectorAll('input:not([type="file"]), select');
+                return Array.from(inputs).map(i => i.value);
+            });
+        };
+
+        let riwayatPangkat = extractTableData('tabelPangkat');
+        let riwayatKontrak = extractTableData('tabelKontrak');
+        let riwayatJabatan = extractTableData('tabelJabatan');
+        let riwayatKGB = extractTableData('tabelKGB');
+        let riwayatPendidikan = extractTableData('tabelPendidikan');
+        let riwayatAnak = extractTableData('tabelAnak');
+        let riwayatDiklat = extractTableData('tabelDiklat');
+
+        riwayatPangkat = sortRiwayatArray(riwayatPangkat, 1);
+        riwayatKontrak = sortRiwayatArray(riwayatKontrak, 2);
+        riwayatJabatan = sortRiwayatArray(riwayatJabatan, 4);
+        riwayatKGB = sortRiwayatArray(riwayatKGB, 2);
+        riwayatPendidikan = sortRiwayatArray(riwayatPendidikan, 4, true);
+        riwayatAnak = sortRiwayatArray(riwayatAnak, 2).map(r => {
+            if (r[0]) r[0] = r[0].toUpperCase();
+            return r;
+        });
+        riwayatDiklat = sortRiwayatArray(riwayatDiklat, 2, true);
+
+        // Get latest data for main table
+        let golongan = '';
+        let jabatan = '';
+        let tmtJabatan = '';
+        let tmtKgbLalu = '';
+        let gajiPokok = '';
+        let unitKerja = '';
+        let pendidikan = (document.getElementById('peg_pendidikan')?.value || '');
+
+        const latestPendidikan = getLatestRiwayat(riwayatPendidikan, 4, true);
+        if (latestPendidikan && latestPendidikan[0]) {
+            pendidikan = latestPendidikan[0];
+        }
+
+        const latestPangkat = getLatestRiwayat(riwayatPangkat, 1);
+        const latestKontrak = getLatestRiwayat(riwayatKontrak, 2);
+
+        if (latestPangkat) {
+            golongan = latestPangkat[0]; // Golongan
+        } else if (latestKontrak) {
+            golongan = latestKontrak[1]; // Golongan Kontrak
+        }
+
+        const latestJabatan = getLatestRiwayat(riwayatJabatan, 4);
+        if (latestJabatan) {
+            jabatan = latestJabatan[2]; // Nama Jabatan
+            unitKerja = latestJabatan[3]; // Unit Kerja
+            tmtJabatan = latestJabatan[4]; // TMT Jabatan
+        } else if (latestKontrak) {
+            jabatan = latestKontrak[0]; // Nama Jabatan Kontrak
+        }
+
+        const latestKGB = getLatestRiwayat(riwayatKGB, 2);
+        if (latestKGB) {
+            tmtKgbLalu = latestKGB[2]; // TMT KGB
+            gajiPokok = latestKGB[3]; // Jumlah Gaji Pokok
+        }
+        let kgbDate = tmtKgbLalu
+            ? (parseInt(tmtKgbLalu.substring(0, 4)) + 2) + tmtKgbLalu.substring(4)
+            : '';
+
+        // --- FOTO PROCESSING (Aman & Instan tanpa Promise deadlock) ---
+        const imgEl = document.getElementById('previewFotoPegawai');
+        let fotoData = '';
+        if (imgEl && imgEl.src && !imgEl.src.includes('placeholder.com') && !imgEl.src.includes('logo-simpeel.png')) {
+            fotoData = imgEl.src;
+        } else if (window.currentEditUtamaNip) {
+            const existPeg = allPegawai.find(p => p.nip === window.currentEditUtamaNip);
+            if (existPeg && existPeg.foto) fotoData = existPeg.foto;
+        }
+
+        const data = {
+            foto: fotoData,
+            nip: nipValFinal,
+            nik: nikVal,
+            nama: namaValFinal,
+            tempatLahir: document.getElementById('peg_tempat_lahir')?.value || '',
+            tglLahir: tglLahirFinal,
+            kelamin: kelamin,
+            agama: document.getElementById('peg_agama')?.value || '',
+            statusKawin: document.getElementById('peg_status_kawin')?.value || '',
+            alamat: document.getElementById('peg_alamat')?.value || '',
+            alamatProvinsi: document.getElementById('peg_alamat_provinsi')?.value || '',
+            alamatKabKota: document.getElementById('peg_alamat_kabkota')?.value || '',
+            nipLama: document.getElementById('peg_nip_lama')?.value || '',
+            noHp: document.getElementById('peg_no_hp')?.value || '',
+            email: document.getElementById('peg_email')?.value || '',
+            golDarah: document.getElementById('peg_gol_darah')?.value || '',
+            tinggiBadan: document.getElementById('peg_tinggi_badan')?.value || '',
+            beratBadan: document.getElementById('peg_berat_badan')?.value || '',
+            hobby: document.getElementById('peg_hobby')?.value || '',
+            isKebutuhanKhusus: document.getElementById('peg_is_kebutuhan_khusus')?.value || 'Tidak',
+            uraianKebutuhanKhusus: document.getElementById('peg_uraian_kebutuhan_khusus')?.value || '',
+            statusPegawai: statusPgwFinal,
+            golongan: golongan,
+            jabatan: jabatan,
+            tmtJabatan: tmtJabatan,
+            pendidikan: pendidikan,
+            unitKerja: unitKerja || 'Dinas',
+            statusKepegawaian: 'Aktif',
+            gajiPokok: gajiPokok,
+            tmtKgbLalu: tmtKgbLalu,
+            tmtKgbBaru: kgbDate,
+            tmtPensiun: '',
+            pasanganNama: document.getElementById('peg_pasangan_nama')?.value || '',
+            pasanganNik: document.getElementById('peg_pasangan_nik')?.value || '',
+            pasanganTmptLahir: document.getElementById('peg_pasangan_tmpt_lahir')?.value || '',
+            pasanganTglLahir: document.getElementById('peg_pasangan_tgl_lahir')?.value || '',
+            pasanganPekerjaan: document.getElementById('peg_pasangan_pekerjaan')?.value || '',
+            pasanganNip: document.getElementById('peg_pasangan_nip')?.value || '',
+            pasanganBukuNikah: document.getElementById('file_buku_nikah')?.value || '',
+            riwayatPangkat: riwayatPangkat,
+            riwayatKontrak: riwayatKontrak,
+            riwayatJabatan: riwayatJabatan,
+            riwayatKGB: riwayatKGB,
+            riwayatPendidikan: riwayatPendidikan,
+            riwayatAnak: riwayatAnak,
+            riwayatDiklat: riwayatDiklat,
+
+            certNo: (document.getElementById('cert_no')?.value || ''),
+            certTgl: (document.getElementById('cert_tgl')?.value || ''),
+            certNrg: (document.getElementById('cert_nrg')?.value || ''),
+            certNuptk: (document.getElementById('cert_nuptk')?.value || ''),
+            certTahun: (document.getElementById('cert_tahun')?.value || ''),
+            certMapel: (document.getElementById('cert_mapel')?.value || ''),
+            certLptk: (document.getElementById('cert_lptk')?.value || ''),
+            certPejabat: (document.getElementById('cert_pejabat')?.value || ''),
+            certFileData: (document.getElementById('cert_file_data')?.value || '')
+        };
+
         const res = await dbManager.savePegawai(data);
         if (res && res.success === false) {
             Swal.fire('Error', 'Gagal menyimpan data: ' + res.message, 'error');
