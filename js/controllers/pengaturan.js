@@ -168,17 +168,23 @@ function togglePasswordVisibility() {
     p.type = (p.type === 'password') ? 'text' : 'password';
 }
 
-async function loadPengaturan() {
-    const data = await dbManager.getPengaturan() || {};
+function applyPengaturanToDOM(data) {
+    if (!data || typeof data !== 'object') return;
     window.cachedPengaturan = data;
+
     if (data.instansi) {
-        document.getElementById('set_instansi').value = data.instansi;
+        const el = document.getElementById('set_instansi');
+        if (el) el.value = data.instansi;
         const txtInstansi = document.getElementById('textInstansi');
         if (txtInstansi) txtInstansi.innerText = data.instansi;
     }
-    if (data.opd) document.getElementById('set_opd').value = data.opd;
+    if (data.opd) {
+        const el = document.getElementById('set_opd');
+        if (el) el.value = data.opd;
+    }
     if (data.sekolah) {
-        document.getElementById('set_sekolah').value = data.sekolah;
+        const el = document.getElementById('set_sekolah');
+        if (el) el.value = data.sekolah;
         const txtSekolah = document.getElementById('textSekolah');
         if (txtSekolah) txtSekolah.innerText = data.sekolah;
         const sideNama = document.getElementById('sidebar-sekolah-nama');
@@ -186,19 +192,39 @@ async function loadPengaturan() {
         const mobTopNama = document.getElementById('mobile-top-sekolah-nama');
         if (mobTopNama) mobTopNama.innerText = data.sekolah;
     }
-    if (data.hp) document.getElementById('set_hp').value = data.hp;
+    if (data.hp) {
+        const el = document.getElementById('set_hp');
+        if (el) el.value = data.hp;
+    }
     if (data.alamat) {
         const el = document.getElementById('set_alamat_text') || document.getElementById('set_alamat');
         if (el) el.value = data.alamat;
     }
-    if (data.email && document.getElementById('set_email')) document.getElementById('set_email').value = data.email;
-    if (data.web && document.getElementById('set_web')) document.getElementById('set_web').value = data.web;
-    if (data.kepsekNama && document.getElementById('set_kepsek_nama')) document.getElementById('set_kepsek_nama').value = data.kepsekNama;
-    if (data.kepsekNip && document.getElementById('set_kepsek_nip')) document.getElementById('set_kepsek_nip').value = data.kepsekNip;
-    if (data.bendaharaNama && document.getElementById('set_bendahara_nama')) document.getElementById('set_bendahara_nama').value = data.bendaharaNama;
-    if (data.bendaharaNip && document.getElementById('set_bendahara_nip')) document.getElementById('set_bendahara_nip').value = data.bendaharaNip;
-    if (data.email) document.getElementById('set_email').value = data.email;
-    if (data.web) document.getElementById('set_web').value = data.web;
+    if (data.email) {
+        const el = document.getElementById('set_email');
+        if (el) el.value = data.email;
+    }
+    if (data.web) {
+        const el = document.getElementById('set_web');
+        if (el) el.value = data.web;
+    }
+    if (data.kepsekNama) {
+        const el = document.getElementById('set_kepsek_nama');
+        if (el) el.value = data.kepsekNama;
+    }
+    if (data.kepsekNip) {
+        const el = document.getElementById('set_kepsek_nip');
+        if (el) el.value = data.kepsekNip;
+    }
+    if (data.bendaharaNama) {
+        const el = document.getElementById('set_bendahara_nama');
+        if (el) el.value = data.bendaharaNama;
+    }
+    if (data.bendaharaNip) {
+        const el = document.getElementById('set_bendahara_nip');
+        if (el) el.value = data.bendaharaNip;
+    }
+
     // Tampilkan Logo Instansi
     const defLogo = 'logo-simpeel.png';
     const isInstansiValid = data.logoInstansi && (data.logoInstansi.startsWith('data:') || data.logoInstansi.startsWith('http'));
@@ -220,6 +246,33 @@ async function loadPengaturan() {
     const mobTopLogo = document.getElementById('mobile-top-sekolah-logo');
     if (mobTopLogo) mobTopLogo.src = finalSekLogo;
 
+    if (data.warnaTema) {
+        const el = document.getElementById('set_warna_tema');
+        if (el) el.value = data.warnaTema;
+    }
+    if (data.bgLanding && (data.bgLanding.startsWith('data:') || data.bgLanding.startsWith('http'))) {
+        const prevBg = document.getElementById('previewBgLanding');
+        if (prevBg) prevBg.src = data.bgLanding;
+    }
+
+    if (typeof applyTheme === 'function') {
+        applyTheme(data.warnaTema, data.bgLanding, data.warnaTema2, data.warnaTema3);
+    }
+}
+
+async function loadPengaturan() {
+    // 1. Terapkan seketika dari cache jika ada (0 ms render)
+    const cached = localStorage.getItem('SIMPEEL_SETTINGS_CACHE');
+    if (cached) {
+        try {
+            applyPengaturanToDOM(JSON.parse(cached));
+        } catch(e) {}
+    }
+
+    // 2. Ambil data terbaru (jika cache kosong akan menunggu, jika ada cache getPengaturan refresh senyap di background)
+    const data = await dbManager.getPengaturan() || {};
+    applyPengaturanToDOM(data);
+
     // Auto-convert link web/Drive legacy ke Base64 secara senyap jika online
     if (data.logoInstansi && data.logoInstansi.startsWith('http') && !data.logoInstansi.includes('logo-simpeel.png') && typeof convertImageToBase64 === 'function') {
         convertImageToBase64(data.logoInstansi, 250, 'image/png').then(b64 => {
@@ -236,23 +289,18 @@ async function loadPengaturan() {
         }).catch(() => {});
     }
 
-    if (data.warnaTema) document.getElementById('set_warna_tema').value = data.warnaTema;
-    if (data.bgLanding && (data.bgLanding.startsWith('data:') || data.bgLanding.startsWith('http'))) {
-        const prevBg = document.getElementById('previewBgLanding');
-        if (prevBg) prevBg.src = data.bgLanding;
-    }
-
-    applyTheme(data.warnaTema, data.bgLanding, data.warnaTema2, data.warnaTema3);
-
     if (API_URL) {
-        const config = await apiCall('getConfig');
-        if (config && config.username) {
-            document.getElementById('set_username').value = config.username;
-            document.getElementById('set_password').value = config.password;
-        }
-        if (config && config.defaultSyncUrl) {
-            const defUrlEl = document.getElementById('defaultSyncUrlReadonly');
-            if (defUrlEl) defUrlEl.value = config.defaultSyncUrl;
-        }
+        apiCall('getConfig').then(config => {
+            if (config && config.username) {
+                const uEl = document.getElementById('set_username');
+                if (uEl) uEl.value = config.username;
+                const pEl = document.getElementById('set_password');
+                if (pEl) pEl.value = config.password;
+            }
+            if (config && config.defaultSyncUrl) {
+                const defUrlEl = document.getElementById('defaultSyncUrlReadonly');
+                if (defUrlEl) defUrlEl.value = config.defaultSyncUrl;
+            }
+        }).catch(() => {});
     }
 }
