@@ -246,21 +246,17 @@ body.splash-screen-active::before {
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 0;
-        flex: 0 0 0;
-        overflow: hidden;
-        position: fixed;
-        inset: 0 auto 0 0;
-        z-index: 1080;
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
-        transition: width 0.25s ease, flex-basis 0.25s ease;
+    /* Khusus tampilan HP / layar kecil: Sembunyikan sidebar kiri & tombol toggle karena sudah ada menu navigasi bawah */
+    .sidebar,
+    .sidebar.toggled {
+        display: none !important;
+        width: 0 !important;
+        flex: 0 0 0 !important;
+        overflow: hidden !important;
     }
 
-    .sidebar.toggled {
-        width: 250px;
-        flex-basis: 250px;
-        overflow-y: auto;
+    #sidebarToggleTop {
+        display: none !important;
     }
 
     #wrapper {
@@ -893,9 +889,7 @@ body.splash-screen-active::before {
     }
 
     #sidebarToggleTop {
-        flex: 0 0 auto;
-        margin: 0 0.35rem 0 0 !important;
-        padding: 0.4rem;
+        display: none !important;
     }
 
     .topbar .navbar-nav {
