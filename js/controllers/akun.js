@@ -248,18 +248,20 @@ async function renderTabelAkun() {
 
     const formatted = [];
     dataAkun.forEach(a => {
+        const nip = String(a.nip || a.username || '').trim();
+        const nama = String(a.nama || a.namaLengkap || '').trim();
         const aksi = `
-            <button class="btn btn-sm btn-info me-1" title="Reset Password" onclick="resetPasswordAkun('${a.nip}')"><i class="fas fa-key text-white"></i></button>
-            <button class="btn btn-sm btn-warning me-1" title="Edit Akun" onclick="editAkun('${a.nip}')"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-sm btn-danger" title="Hapus Akun" onclick="hapusAkun('${a.nip}')"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-sm btn-info me-1" title="Reset Password" onclick="resetPasswordAkun('${nip}')"><i class="fas fa-key text-white"></i></button>
+            <button class="btn btn-sm btn-warning me-1" title="Edit Akun" onclick="editAkun('${nip}')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger" title="Hapus Akun" onclick="hapusAkun('${nip}')"><i class="fas fa-trash"></i></button>
         `;
         const roleBadge = a.role === 'admin'
             ? '<span class="badge bg-danger">Admin</span>'
             : '<span class="badge bg-secondary">Pegawai</span>';
 
         formatted.push([
-            a.nip || '-',
-            a.nama || '-',
+            nip || '-',
+            nama || '-',
             a.statusPegawai || '-',
             a.createdAt ? new Date(a.createdAt).toLocaleDateString('id-ID') : '-',
             roleBadge,
