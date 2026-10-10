@@ -24,6 +24,17 @@ const dbManager = {
                 initApp();
             }
         }
+        // Refresh pengaturan dari server/SQLite
+        try {
+            const freshPeng = await apiCall('getPengaturan');
+            if (freshPeng && typeof freshPeng === 'object' && !freshPeng.message) {
+                localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(freshPeng));
+                window.cachedPengaturan = freshPeng;
+                if (typeof applyPengaturanToDOM === 'function') {
+                    applyPengaturanToDOM(freshPeng);
+                }
+            }
+        } catch (ePeng) {}
     },
 
     getAllPegawai: async function () {
