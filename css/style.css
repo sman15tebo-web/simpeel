@@ -1034,8 +1034,11 @@ body.splash-screen-active::before {
 }
 
 /* ============================================================
-   GOOGLE DRIVE STYLE DARK FILE VIEWER MODAL (85% FLOATING)
-   Latar belakang transparan agar halaman yang dibuka tetap terlihat
+   GOOGLE DRIVE STYLE CLEAN FILE VIEWER (SINGLE FRAME)
+   - Kanan-Kiri 80% di Bagian Tengah (Sisi Kiri/Kanan Terlihat Halaman)
+   - Atas-Bawah Mentok Layar (100vh Penuh)
+   - Frame Polos Bersih (Langsung Iframe, Tidak Dobel Header)
+   - Versi HP: Full Layar 100%
    ============================================================ */
 .simpeel-viewer-backdrop {
     position: fixed;
@@ -1044,13 +1047,14 @@ body.splash-screen-active::before {
     width: 100vw;
     height: 100vh;
     z-index: 99999;
-    background: rgba(0, 0, 0, 0.15); /* Transparan ringan: halaman belakang tetap terlihat jelas */
-    backdrop-filter: none; /* Tanpa blur tebal agar halaman belakang tidak buram */
+    background: rgba(0, 0, 0, 0.28); /* Transparan ringan: sisi kanan & kiri halaman belakang tetap terlihat */
+    backdrop-filter: none;
     -webkit-backdrop-filter: none;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
+    align-items: stretch; /* Mentok dari ujung atas sampai ujung bawah layar */
+    justify-content: center; /* Di tengah secara horizontal */
+    padding: 0; /* Tanpa celah atas-bawah */
+    margin: 0;
     color: #f1f5f9;
     animation: simpeelViewerBackdropFade 0.18s ease-out;
 }
@@ -1061,198 +1065,109 @@ body.splash-screen-active::before {
 }
 
 @keyframes simpeelModalPopIn {
-    from { opacity: 0; transform: scale(0.96) translateY(8px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .simpeel-viewer-window {
-    width: 85vw;
-    max-width: 1350px;
-    height: 85vh;
-    max-height: 920px;
+    width: 80vw;
+    max-width: 1300px;
+    height: 100vh;
+    max-height: 100vh;
     background: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 16px;
-    /* Efek melayang dramatis dengan bayangan tebal */
-    box-shadow: 0 30px 65px -10px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 15px 35px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.75);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    animation: simpeelModalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: none;
+    border-bottom: none;
+    border-radius: 0;
+    animation: simpeelModalPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.simpeel-viewer-header {
-    height: 56px;
-    background: #1e293b;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.25rem;
-    gap: 1rem;
-    flex-shrink: 0;
-    user-select: none;
-}
-
-.simpeel-viewer-title-group {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 0;
-    flex: 1;
-}
-
-.simpeel-viewer-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-}
-
-.simpeel-viewer-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #f8fafc;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 340px;
-}
-
-.simpeel-viewer-zoom-controls {
-    display: flex;
-    align-items: center;
-    background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
-    padding: 2px 6px;
-    gap: 4px;
-}
-
-.simpeel-viewer-btn {
-    background: transparent;
-    border: none;
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    padding: 6px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    line-height: 1;
-}
-
-.simpeel-viewer-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-}
-
-.simpeel-viewer-btn:active {
-    transform: scale(0.96);
-}
-
-.simpeel-viewer-zoom-level {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #94a3b8;
-    min-width: 44px;
-    text-align: center;
-    cursor: pointer;
-    padding: 4px 6px;
-    border-radius: 6px;
-}
-
-.simpeel-viewer-zoom-level:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.simpeel-viewer-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    flex-shrink: 0;
-}
-
-.simpeel-viewer-btn-primary {
-    background: #3b82f6;
-    color: #ffffff;
-}
-.simpeel-viewer-btn-primary:hover {
-    background: #2563eb;
-    color: #ffffff;
-}
-
-.simpeel-viewer-btn-close {
-    width: 34px;
-    height: 34px;
-    padding: 0;
+/* Floating Close Button di pojok kanan atas frame */
+.simpeel-viewer-floating-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 100;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    color: #94a3b8;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #f1f5f9;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    transition: all 0.15s ease;
 }
-.simpeel-viewer-btn-close:hover {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
+
+.simpeel-viewer-floating-close:hover {
+    background: #ef4444;
+    color: #ffffff;
+    transform: scale(1.08);
+    border-color: #ef4444;
 }
 
 .simpeel-viewer-body {
     flex: 1;
-    overflow: auto;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 1rem;
+    padding: 0;
+    margin: 0;
     background: #0b1120;
 }
 
 .simpeel-viewer-content-container {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
     position: relative;
-    transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1);
-    transform-origin: center center;
 }
 
 .simpeel-viewer-frame {
     width: 100%;
     height: 100%;
     border: none;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 0;
     background: #ffffff;
-    transition: transform 0.15s ease;
 }
 
 .simpeel-viewer-img-container {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 1rem;
+    overflow: auto;
+    background: #0b1120;
 }
 
 .simpeel-viewer-img {
     max-width: 100%;
-    max-height: 70vh;
-    border-radius: 8px;
-    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6);
+    max-height: 96vh;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     object-fit: contain;
     user-select: none;
-    pointer-events: auto;
 }
 
 .simpeel-viewer-loading {
@@ -1262,69 +1177,52 @@ body.splash-screen-active::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.75);
     z-index: 10;
     gap: 0.75rem;
 }
 
 .simpeel-viewer-empty {
     text-align: center;
-    padding: 2rem;
-    background: rgba(30, 41, 59, 0.7);
+    padding: 2.5rem;
+    background: rgba(30, 41, 59, 0.88);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     max-width: 440px;
+    margin: 1.5rem;
 }
 
+/* Versi HP: Full Layar 100% Mentok Seluruh Layar HP */
 @media (max-width: 768px) {
-    .simpeel-viewer-backdrop {
-        padding: 0.5rem;
-    }
     .simpeel-viewer-window {
-        width: 96vw;
-        height: 92vh;
-        border-radius: 12px;
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        border-left: none;
+        border-right: none;
     }
-    .simpeel-viewer-header {
-        padding: 0 0.75rem;
-        gap: 0.5rem;
-        height: 50px;
-    }
-    .simpeel-viewer-title {
-        max-width: 130px;
-        font-size: 0.85rem;
-    }
-    .simpeel-viewer-btn span {
-        display: none;
+    .simpeel-viewer-floating-close {
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
     }
 }
 
 @media print {
-    .simpeel-viewer-header,
-    .simpeel-viewer-zoom-controls,
-    .simpeel-viewer-actions,
+    .simpeel-viewer-floating-close,
     .simpeel-viewer-loading {
         display: none !important;
     }
     .simpeel-viewer-backdrop {
         position: static !important;
         background: transparent !important;
-        padding: 0 !important;
     }
     .simpeel-viewer-window {
         width: 100% !important;
         height: auto !important;
+        box-shadow: none !important;
         border: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
-    }
-    .simpeel-viewer-body {
-        padding: 0 !important;
-        background: transparent !important;
-    }
-    .simpeel-viewer-img {
-        max-width: 100% !important;
-        max-height: 100% !important;
-        box-shadow: none !important;
     }
 }
