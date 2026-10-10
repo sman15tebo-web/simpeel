@@ -1130,11 +1130,18 @@ async function handleFileUpload(inputElement) {
         // Upload logic
         Swal.showLoading();
         try {
-            if (typeof window.require !== 'undefined') { // Local Electron version
+            const hasElectronAPI = window.electronAPI && typeof window.electronAPI.saveFile === 'function';
+            const hasRequire = typeof window.require !== 'undefined';
+
+            if (hasElectronAPI) {
+                const res = await window.electronAPI.saveFile(file.name, base64Data);
+                if (!res || !res.success) throw new Error(res?.message || 'Gagal menyimpan file secara lokal');
+                fileIdOrUrl = res.filePath || res.path || file.name;
+            } else if (hasRequire) {
                 const { ipcRenderer } = window.require('electron');
                 const res = await ipcRenderer.invoke('simpeel-save-file', file.name, base64Data);
-                if (!res || !res.success || !res.filePath) throw new Error(res?.message || 'Gagal menyimpan file secara lokal');
-                fileIdOrUrl = res.filePath;
+                if (!res || !res.success) throw new Error(res?.message || 'Gagal menyimpan file secara lokal');
+                fileIdOrUrl = res.filePath || res.path || file.name;
             } else if (typeof apiCall === 'function') { // Online version
                 const res = await apiCall('uploadFile', {
                     filename: file.name,
@@ -1163,7 +1170,8 @@ async function handleFileUpload(inputElement) {
             // Show view button
             const viewBtn = inputElement.parentElement.querySelector('.btn-view-file');
             if (viewBtn) viewBtn.classList.remove('d-none');
-            Swal.fire('Berhasil', typeof window.require !== 'undefined' ? 'File tersimpan di desktop' : 'File berhasil diunggah ke Drive', 'success');
+            const isDesktop = hasElectronAPI || hasRequire;
+            Swal.fire('Berhasil', isDesktop ? 'File berhasil disimpan di penyimpanan offline' : 'File berhasil diunggah ke Google Drive', 'success');
         } catch (err) {
             Swal.fire('Gagal menyimpan file', err.message, 'error');
         }
@@ -1173,7 +1181,14 @@ async function handleFileUpload(inputElement) {
 
 function viewFileApp(fileUrlOrPath) {
     if (!fileUrlOrPath) return;
-    if (typeof window.require !== 'undefined') {
+    const hasElectronAPI = window.electronAPI && typeof window.electronAPI.openFile === 'function';
+    const hasRequire = typeof window.require !== 'undefined';
+
+    if (hasElectronAPI) {
+        window.electronAPI.openFile(fileUrlOrPath).then(res => {
+            if (!res || !res.success) Swal.fire('File tidak dapat dibuka', res?.message || 'Terjadi kesalahan saat membuka file', 'warning');
+        });
+    } else if (hasRequire) {
         const { ipcRenderer } = window.require('electron');
         ipcRenderer.invoke('simpeel-open-file', fileUrlOrPath).then(res => {
             if (!res || !res.success) Swal.fire('File tidak dapat dibuka', res?.message || 'Terjadi kesalahan saat membuka file', 'warning');
