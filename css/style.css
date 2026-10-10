@@ -1047,15 +1047,15 @@ body.splash-screen-active::before {
     width: 100vw;
     height: 100vh;
     z-index: 99999;
-    background: rgba(0, 0, 0, 0.28); /* Transparan ringan: sisi kanan & kiri halaman belakang tetap terlihat */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.42); /* Transparan ringan: sisi kanan & kiri halaman belakang tetap terlihat */
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
     display: flex;
-    align-items: stretch; /* Mentok dari ujung atas sampai ujung bawah layar */
-    justify-content: center; /* Di tengah secara horizontal */
+    align-items: stretch; /* Mentok dari ujung atas sampai ujung bawah layar (100vh) */
+    justify-content: center; /* Di tengah secara horizontal (80vw) */
     padding: 0; /* Tanpa celah atas-bawah */
     margin: 0;
-    color: #f1f5f9;
+    color: #1e293b;
     animation: simpeelViewerBackdropFade 0.18s ease-out;
 }
 
@@ -1065,7 +1065,7 @@ body.splash-screen-active::before {
 }
 
 @keyframes simpeelModalPopIn {
-    from { opacity: 0; transform: scale(0.98); }
+    from { opacity: 0; transform: scale(0.99); }
     to { opacity: 1; transform: scale(1); }
 }
 
@@ -1074,14 +1074,14 @@ body.splash-screen-active::before {
     max-width: 1300px;
     height: 100vh;
     max-height: 100vh;
-    background: #0f172a;
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.75);
+    background: #ffffff; /* Bersih polos dokumen */
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.65);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
     border-top: none;
     border-bottom: none;
     border-radius: 0;
@@ -1091,31 +1091,31 @@ body.splash-screen-active::before {
 /* Floating Close Button di pojok kanan atas frame */
 .simpeel-viewer-floating-close {
     position: absolute;
-    top: 12px;
-    right: 16px;
+    top: 10px;
+    right: 14px;
     z-index: 100;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(15, 23, 42, 0.88);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #f1f5f9;
-    font-size: 1.15rem;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
     transition: all 0.15s ease;
 }
 
 .simpeel-viewer-floating-close:hover {
-    background: #ef4444;
+    background: #dc2626;
     color: #ffffff;
     transform: scale(1.08);
-    border-color: #ef4444;
+    border-color: #dc2626;
 }
 
 .simpeel-viewer-body {
@@ -1129,7 +1129,7 @@ body.splash-screen-active::before {
     position: relative;
     padding: 0;
     margin: 0;
-    background: #0b1120;
+    background: #ffffff;
 }
 
 .simpeel-viewer-content-container {
@@ -1139,6 +1139,7 @@ body.splash-screen-active::before {
     align-items: center;
     justify-content: center;
     position: relative;
+    background: #ffffff;
 }
 
 .simpeel-viewer-frame {
@@ -1148,6 +1149,7 @@ body.splash-screen-active::before {
     margin: 0;
     padding: 0;
     background: #ffffff;
+    display: block;
 }
 
 .simpeel-viewer-img-container {
@@ -1158,14 +1160,14 @@ body.splash-screen-active::before {
     justify-content: center;
     padding: 1rem;
     overflow: auto;
-    background: #0b1120;
+    background: #f1f5f9;
 }
 
 .simpeel-viewer-img {
     max-width: 100%;
     max-height: 96vh;
     border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     object-fit: contain;
     user-select: none;
 }
@@ -1177,7 +1179,7 @@ body.splash-screen-active::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     z-index: 10;
     gap: 0.75rem;
 }
@@ -1185,9 +1187,10 @@ body.splash-screen-active::before {
 .simpeel-viewer-empty {
     text-align: center;
     padding: 2.5rem;
-    background: rgba(30, 41, 59, 0.88);
+    background: #ffffff;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     max-width: 440px;
     margin: 1.5rem;
 }
@@ -1204,9 +1207,9 @@ body.splash-screen-active::before {
     .simpeel-viewer-floating-close {
         top: 8px;
         right: 8px;
-        width: 32px;
-        height: 32px;
-        font-size: 0.95rem;
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
     }
 }
 
