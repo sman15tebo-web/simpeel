@@ -138,7 +138,17 @@ async function apiCall(action, data = null) {
                     return result.data;
                 }
             } else if (action === 'getPengaturan' || action === 'getConfig') {
-                if (result && result.data) return result.data;
+                if (result && result.data && typeof result.data === 'object') {
+                    const cleaned = { ...result.data };
+                    delete cleaned.apiKey;
+                    delete cleaned.action;
+                    if (cleaned.sekolah || cleaned.instansi || cleaned.alamat || cleaned.namaSekolah || cleaned.namaInstansi || cleaned.kepsekNama) {
+                        delete cleaned.success;
+                        delete cleaned.message;
+                        delete cleaned.error;
+                    }
+                    return cleaned;
+                }
             }
             return result;
         } catch (error) {
