@@ -949,37 +949,38 @@ async function cetakCV(nip) {
         </table>
         <br>
         
-        <div class="section-title">III. RIWAYAT PANGKAT / GOLONGAN</div>
+        <div class="section-title">III. RIWAYAT PANGKAT / GOLONGAN (PNS)</div>
         <table>
             <tr><th>Pangkat/Golongan</th><th>TMT</th><th>Nomor SK</th><th>Tanggal SK</th><th>Masa Kerja</th></tr>
             ${(p.riwayatPangkat && p.riwayatPangkat.length > 0) ? p.riwayatPangkat.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[1]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[5]} Thn ${r[6]} Bln</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
         </table>
         <br>
-        
-        <div class="section-title">IV. RIWAYAT JABATAN</div>
+
+        <div class="section-title">IV. RIWAYAT KONTRAK (PPPK/HONORER)</div>
         <table>
-            <tr><th>Jenis Jabatan</th><th>Eselon</th><th>Nama Jabatan</th><th>Unit Kerja</th><th>TMT</th></tr>
-            ${(p.riwayatJabatan && p.riwayatJabatan.length > 0) ? p.riwayatJabatan.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[1]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
-        </table>
-        <br>
-        <div class="section-title">V. RIWAYAT PENDIDIKAN</div>
-        <table>
-            <tr><th>Tingkat</th><th>Nama Sekolah/Univ</th><th>Jurusan</th><th>Tahun Masuk</th><th>Tahun Lulus</th></tr>
-            ${(p.riwayatPendidikan && p.riwayatPendidikan.length > 0) ? p.riwayatPendidikan.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[1]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
+            <tr><th>Jabatan</th><th>TMT Mulai</th><th>TMT Selesai</th><th>No SK</th><th>Gaji/Honor</th></tr>
+            ${(p.riwayatKontrak && p.riwayatKontrak.length > 0) ? p.riwayatKontrak.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]}</td><td style="text-align: center;">${r[7]}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
         </table>
         <br>
         
-        <div class="section-title">VI. RIWAYAT GAJI BERKALA (KGB)</div>
+        <div class="section-title">V. RIWAYAT GAJI BERKALA (KGB)</div>
         <table>
             <tr><th>No SK</th><th>Tanggal SK</th><th>TMT KGB</th><th>Gaji Pokok</th><th>Masa Kerja</th></tr>
             ${(p.riwayatKGB && p.riwayatKGB.length > 0) ? p.riwayatKGB.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[1]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]} Thn ${r[5]} Bln</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
         </table>
         <br>
 
-        <div class="section-title">VII. RIWAYAT KONTRAK (PPPK/HONORER)</div>
+        <div class="section-title">VI. RIWAYAT JABATAN</div>
         <table>
-            <tr><th>Jabatan</th><th>TMT Mulai</th><th>TMT Selesai</th><th>No SK</th><th>Gaji/Honor</th></tr>
-            ${(p.riwayatKontrak && p.riwayatKontrak.length > 0) ? p.riwayatKontrak.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]}</td><td style="text-align: center;">${r[7]}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
+            <tr><th>Jenis Jabatan</th><th>Eselon</th><th>Nama Jabatan</th><th>Unit Kerja</th><th>TMT</th></tr>
+            ${(p.riwayatJabatan && p.riwayatJabatan.length > 0) ? p.riwayatJabatan.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[1]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
+        </table>
+        <br>
+
+        <div class="section-title">VII. RIWAYAT PENDIDIKAN</div>
+        <table>
+            <tr><th>Tingkat</th><th>Nama Sekolah/Univ</th><th>Jurusan</th><th>Tahun Masuk</th><th>Tahun Lulus</th></tr>
+            ${(p.riwayatPendidikan && p.riwayatPendidikan.length > 0) ? p.riwayatPendidikan.map(r => `<tr><td style="text-align: center;">${r[0]}</td><td style="text-align: center;">${r[1]}</td><td style="text-align: center;">${r[2]}</td><td style="text-align: center;">${r[3]}</td><td style="text-align: center;">${r[4]}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Tidak ada data</td></tr>'}
         </table>
         <br>
 
