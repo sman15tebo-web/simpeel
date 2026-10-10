@@ -1,10 +1,8 @@
-const isElectron = (() => {
-    try {
-        if (typeof window !== 'undefined' && typeof window.require === 'function') return true;
-        if (typeof require === 'function') return true;
-    } catch(e) {}
-    return false;
-})();
+const isElectron = Boolean(
+    (typeof window !== 'undefined' && (window.isElectron === true || typeof window.electronAPI !== 'undefined' || typeof window.require === 'function')) ||
+    (typeof require === 'function') ||
+    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().includes('electron'))
+);
 
 const TOKEN_KEY = isElectron ? "SIMPEEL_TOKEN_OFFLINE" : "SIMPEEL_TOKEN_ONLINE";
 const CACHE_KEY = isElectron ? "SIMPEEL_CACHE_OFFLINE" : "SIMPEEL_CACHE_ONLINE";
@@ -40,24 +38,30 @@ if (isElectron) {
 async function apiCall(action, data = null) {
     if (isElectron) {
         try {
-            const { ipcRenderer } = window.require ? window.require('electron') : require('electron');
-            switch(action) {
-                case 'login': return await ipcRenderer.invoke('simpeel-login', data);
-                case 'getAllPegawai': return await ipcRenderer.invoke('simpeel-get-all-pegawai');
-                case 'savePegawai': return await ipcRenderer.invoke('simpeel-save-pegawai', data);
-                case 'deletePegawai': return await ipcRenderer.invoke('simpeel-delete-pegawai', data);
-                case 'getPengaturan': return await ipcRenderer.invoke('simpeel-get-pengaturan');
-                case 'getAllAkun': return await ipcRenderer.invoke('simpeel-get-all-akun');
-                case 'saveAkun': return await ipcRenderer.invoke('simpeel-save-akun', data);
-                case 'batchSaveAkun': return await ipcRenderer.invoke('simpeel-batch-save-akun', data);
-                case 'deleteAkun': return await ipcRenderer.invoke('simpeel-delete-akun', data);
-                case 'savePengaturan': return await ipcRenderer.invoke('simpeel-save-pengaturan', data);
-                case 'saveConfig': return await ipcRenderer.invoke('simpeel-save-config', data);
-                case 'getConfig': return await ipcRenderer.invoke('simpeel-get-config');
-                case 'saveSyncUrl': return await ipcRenderer.invoke('simpeel-save-sync-url', data);
-                case 'sinkronisasi': return await ipcRenderer.invoke('simpeel-sinkronisasi', data);
-                default: return null;
+            if (window.electronAPI && typeof window.electronAPI[action] === 'function') {
+                return await window.electronAPI[action](data);
             }
+            const { ipcRenderer } = window.require ? window.require('electron') : (typeof require === 'function' ? require('electron') : {});
+            if (ipcRenderer && typeof ipcRenderer.invoke === 'function') {
+                switch(action) {
+                    case 'login': return await ipcRenderer.invoke('simpeel-login', data);
+                    case 'getAllPegawai': return await ipcRenderer.invoke('simpeel-get-all-pegawai');
+                    case 'savePegawai': return await ipcRenderer.invoke('simpeel-save-pegawai', data);
+                    case 'deletePegawai': return await ipcRenderer.invoke('simpeel-delete-pegawai', data);
+                    case 'getPengaturan': return await ipcRenderer.invoke('simpeel-get-pengaturan');
+                    case 'getAllAkun': return await ipcRenderer.invoke('simpeel-get-all-akun');
+                    case 'saveAkun': return await ipcRenderer.invoke('simpeel-save-akun', data);
+                    case 'batchSaveAkun': return await ipcRenderer.invoke('simpeel-batch-save-akun', data);
+                    case 'deleteAkun': return await ipcRenderer.invoke('simpeel-delete-akun', data);
+                    case 'savePengaturan': return await ipcRenderer.invoke('simpeel-save-pengaturan', data);
+                    case 'saveConfig': return await ipcRenderer.invoke('simpeel-save-config', data);
+                    case 'getConfig': return await ipcRenderer.invoke('simpeel-get-config');
+                    case 'saveSyncUrl': return await ipcRenderer.invoke('simpeel-save-sync-url', data);
+                    case 'sinkronisasi': return await ipcRenderer.invoke('simpeel-sinkronisasi', data);
+                    default: return null;
+                }
+            }
+            return { success: false, message: 'IPC bridge tidak tersedia.' };
         } catch (e) {
             console.error("IPC Call Error:", e);
             return { success: false, message: e.message };
