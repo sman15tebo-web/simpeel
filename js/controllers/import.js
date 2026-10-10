@@ -1149,7 +1149,13 @@ async function handleFileUpload(inputElement) {
                     mimeType: file.type,
                     base64Data: base64Data.split(',')[1]
                 });
-                if (!res || !res.success || !res.data?.url) throw new Error(res?.message || 'Gagal mengunggah file ke Drive');
+                if (!res || !res.success || !res.data?.url) {
+                    const msg = res?.message || 'Gagal mengunggah file ke Drive';
+                    if (msg.includes('DriveApp') || msg.includes('Akses ditolak') || msg.includes('permission')) {
+                        throw new Error('Akses DriveApp belum diizinkan di Apps Script! Silakan buka editor Apps Script, pilih fungsi "otorisasiGoogleDrive", klik Run ▶️ sekali untuk mengizinkan, lalu Deploy versi baru.');
+                    }
+                    throw new Error(msg);
+                }
                 fileIdOrUrl = res.data.url;
             } else {
                 throw new Error('Mode penyimpanan file tidak tersedia');
