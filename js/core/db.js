@@ -45,7 +45,7 @@ const dbManager = {
     savePegawai: async function (data) {
         const savedData = {
             ...data,
-            updatedAt: data.updatedAt || new Date().toISOString()
+            updatedAt: new Date().toISOString()
         };
         const res = await apiCall('savePegawai', savedData);
 
@@ -124,7 +124,7 @@ const dbManager = {
         if (!API_URL) return { success: false, message: "API URL tidak terdefinisi" };
         const savedData = {
             ...data,
-            updatedAt: data.updatedAt || new Date().toISOString()
+            updatedAt: new Date().toISOString()
         };
         if (showLoading) {
             Swal.fire({ title: 'Menyimpan Akun...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
@@ -135,7 +135,7 @@ const dbManager = {
         if (!API_URL) return { success: false, message: "API URL tidak terdefinisi" };
         const savedData = dataArr.map(data => ({
             ...data,
-            updatedAt: data.updatedAt || new Date().toISOString()
+            updatedAt: new Date().toISOString()
         }));
         return await apiCall('batchSaveAkun', savedData);
     },
