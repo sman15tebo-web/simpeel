@@ -845,8 +845,30 @@ window.mulaiSinkronisasi = async function() {
                     </div>`,
                 icon: 'success'
             });
-            // Refresh data lokal
+            // 1. Bersihkan cache dan perbarui DOM Pengaturan secara instan
+            localStorage.removeItem('SIMPEEL_SETTINGS_CACHE');
+            if (result.pengaturan && typeof result.pengaturan === 'object') {
+                localStorage.setItem('SIMPEEL_SETTINGS_CACHE', JSON.stringify(result.pengaturan));
+                window.cachedPengaturan = result.pengaturan;
+                if (typeof applyPengaturanToDOM === 'function') {
+                    applyPengaturanToDOM(result.pengaturan);
+                }
+            }
+            if (typeof loadPengaturan === 'function') {
+                await loadPengaturan();
+            }
+
+            // 2. Refresh data pegawai lokal
             await dbManager.forceFetchFromServer();
+
+            // 3. Refresh tabel akun dan data induk jika sedang terbuka
+            if (typeof renderTabelAkun === 'function') {
+                await renderTabelAkun();
+            }
+            if (typeof renderTabelPNS === 'function') {
+                await renderTabelPNS();
+            }
+
             const modal = bootstrap.Modal.getInstance(document.getElementById('modalSync'));
             if (modal) modal.hide();
         } else {
