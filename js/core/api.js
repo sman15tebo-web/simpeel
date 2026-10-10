@@ -9,7 +9,7 @@ const CACHE_KEY = isElectron ? "SIMPEEL_CACHE_OFFLINE" : "SIMPEEL_CACHE_ONLINE";
 
 // Online Config
 const TENANT_CONFIG = {
-    "sman15tebo": "https://script.google.com/macros/s/AKfycbwvCnvmAiV6rb3OP7gU-P2RYRc-oCQhyKuOlLKw_Knr0ttdZ2dbuV8_a2sr1okogEz5/exec",
+    "sman15tebo": "https://script.google.com/macros/s/AKfycbyLSfL6mIS4mVyB1D1KoTq49PPYMWAm8-VFJ78U4Y5EN2ZoByp27V7bLdh3roFIzQ7U/exec",
     "sekolah2": "https://script.google.com/macros/s/AKfycb..._link_sekolah2/exec",
     "dinas": "https://script.google.com/macros/s/AKfycb..._link_dinas/exec"
 };
