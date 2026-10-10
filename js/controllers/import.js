@@ -1212,43 +1212,45 @@ function ensureSimpeelViewerDOM() {
         div.setAttribute('role', 'dialog');
         div.setAttribute('aria-modal', 'true');
         div.innerHTML = `
-            <header class="simpeel-viewer-header">
-                <div class="simpeel-viewer-title-group">
-                    <div class="simpeel-viewer-icon" id="simpeelViewerIcon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="simpeel-viewer-title" id="simpeelViewerTitle" title="Lampiran Berkas">Lampiran Berkas</div>
-                </div>
-                <div class="simpeel-viewer-zoom-controls">
-                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomOut" title="Perkecil Zoom (-)"><i class="fas fa-minus"></i></button>
-                    <div class="simpeel-viewer-zoom-level" id="simpeelViewerZoomLevel" title="Klik untuk Reset (100%)">100%</div>
-                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomIn" title="Perbesar Zoom (+)"><i class="fas fa-plus"></i></button>
-                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomReset" title="Ukuran Semula (Reset)"><i class="fas fa-compress"></i></button>
-                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnRotate" title="Putar 90°"><i class="fas fa-redo"></i></button>
-                </div>
-                <div class="simpeel-viewer-actions">
-                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnPrint" title="Cetak Dokumen"><i class="fas fa-print"></i><span>Cetak</span></button>
-                    <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-primary" id="simpeelBtnDownload" title="Unduh Berkas"><i class="fas fa-download"></i><span>Unduh</span></button>
-                    <button type="button" class="simpeel-viewer-btn" id="simpeelBtnExternal" title="Buka di Jendela Baru / Aplikasi Komputer"><i class="fas fa-external-link-alt"></i></button>
-                    <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-close" id="simpeelBtnClose" title="Tutup (Esc)"><i class="fas fa-times"></i></button>
-                </div>
-            </header>
-            <main class="simpeel-viewer-body" id="simpeelViewerBody">
-                <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
-                    <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;"><span class="visually-hidden">Memuat berkas...</span></div>
-                    <div class="text-white-50 small mt-1">Memuat pratinjau berkas...</div>
-                </div>
-                <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
-                    <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" style="display: none;" allow="autoplay" allowfullscreen></iframe>
-                    <div class="simpeel-viewer-img-container" id="simpeelViewerImgContainer" style="display: none;">
-                        <img id="simpeelViewerImage" class="simpeel-viewer-img" alt="Pratinjau Berkas" />
+            <div class="simpeel-viewer-window" id="simpeelViewerWindow">
+                <header class="simpeel-viewer-header">
+                    <div class="simpeel-viewer-title-group">
+                        <div class="simpeel-viewer-icon" id="simpeelViewerIcon"><i class="fas fa-file-pdf"></i></div>
+                        <div class="simpeel-viewer-title" id="simpeelViewerTitle" title="Lampiran Berkas">Lampiran Berkas</div>
                     </div>
-                    <div class="simpeel-viewer-empty" id="simpeelViewerEmpty" style="display: none;">
-                        <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
-                        <h5 class="fw-bold text-white mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
-                        <p class="text-muted small mb-3" id="simpeelViewerEmptyDesc">Berkas ini tidak dapat ditampilkan langsung di dalam halaman.</p>
-                        <button type="button" class="btn btn-outline-light btn-sm" id="simpeelBtnFallbackAction"><i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal</button>
+                    <div class="simpeel-viewer-zoom-controls">
+                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomOut" title="Perkecil Zoom (-)"><i class="fas fa-minus"></i></button>
+                        <div class="simpeel-viewer-zoom-level" id="simpeelViewerZoomLevel" title="Klik untuk Reset (100%)">100%</div>
+                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomIn" title="Perbesar Zoom (+)"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomReset" title="Ukuran Semula (Reset)"><i class="fas fa-compress"></i></button>
+                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnRotate" title="Putar 90°"><i class="fas fa-redo"></i></button>
                     </div>
-                </div>
-            </main>
+                    <div class="simpeel-viewer-actions">
+                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnPrint" title="Cetak Dokumen"><i class="fas fa-print"></i><span>Cetak</span></button>
+                        <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-primary" id="simpeelBtnDownload" title="Unduh Berkas"><i class="fas fa-download"></i><span>Unduh</span></button>
+                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnExternal" title="Buka di Jendela Baru / Aplikasi Komputer"><i class="fas fa-external-link-alt"></i></button>
+                        <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-close" id="simpeelBtnClose" title="Tutup (Esc)"><i class="fas fa-times"></i></button>
+                    </div>
+                </header>
+                <main class="simpeel-viewer-body" id="simpeelViewerBody">
+                    <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
+                        <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;"><span class="visually-hidden">Memuat berkas...</span></div>
+                        <div class="text-white-50 small mt-1">Memuat pratinjau berkas...</div>
+                    </div>
+                    <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
+                        <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" style="display: none;" allow="autoplay" allowfullscreen></iframe>
+                        <div class="simpeel-viewer-img-container" id="simpeelViewerImgContainer" style="display: none;">
+                            <img id="simpeelViewerImage" class="simpeel-viewer-img" alt="Pratinjau Berkas" />
+                        </div>
+                        <div class="simpeel-viewer-empty" id="simpeelViewerEmpty" style="display: none;">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                            <h5 class="fw-bold text-white mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
+                            <p class="text-muted small mb-3" id="simpeelViewerEmptyDesc">Berkas ini tidak dapat ditampilkan langsung di dalam halaman.</p>
+                            <button type="button" class="btn btn-outline-light btn-sm" id="simpeelBtnFallbackAction"><i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
         `;
         document.body.appendChild(div);
         initSimpeelViewerEvents();
@@ -1265,15 +1267,12 @@ function initSimpeelViewerEvents() {
     const btnClose = document.getElementById('simpeelBtnClose');
     if (btnClose) btnClose.onclick = closeSimpeelViewer;
 
-    // Tutup saat klik background luar
-    const bodyEl = document.getElementById('simpeelViewerBody');
-    if (bodyEl) {
-        bodyEl.onclick = function(e) {
-            if (e.target === bodyEl || e.target === document.getElementById('simpeelViewerContentContainer')) {
-                closeSimpeelViewer();
-            }
-        };
-    }
+    // Tutup saat klik di luar kotak window (area backdrop gelap)
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            closeSimpeelViewer();
+        }
+    };
 
     // Zoom Controls
     const btnZoomIn = document.getElementById('simpeelBtnZoomIn');
@@ -1505,12 +1504,27 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         return;
     }
 
-    let source = String(fileUrlOrPath).trim();
+    const rawInput = String(fileUrlOrPath).trim();
 
-    // 1. Ekstrak URL online murni jika string mengandung https?:// (membersihkan prefix path lokal yang corrupt dari sync lama)
-    const urlMatch = source.match(/https?:\/\/[^\s"',;<>]+/);
-    if (urlMatch) {
-        source = urlMatch[0];
+    // 1. Parser Cerdas Dual-Reference (versi Drive dan versi Path Laptop)
+    let candidateLocal = '';
+    let candidateUrl = '';
+
+    if (rawInput.includes('|')) {
+        const parts = rawInput.split('|').map(s => s.trim());
+        for (const p of parts) {
+            if (p.startsWith('http')) candidateUrl = p;
+            else candidateLocal = p;
+        }
+    } else {
+        const urlMatch = rawInput.match(/https?:\/\/[^\s"',;<>]+/);
+        if (urlMatch) {
+            candidateUrl = urlMatch[0];
+            const leftover = rawInput.replace(candidateUrl, '').trim().replace(/[\\/]+$/, '');
+            if (leftover && /^[a-zA-Z]:[\\/]/.test(leftover)) candidateLocal = leftover;
+        } else {
+            candidateLocal = rawInput;
+        }
     }
 
     // Pastikan DOM modal sudah terdaftar
@@ -1531,7 +1545,7 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         zoom: 1.0,
         rotate: 0,
         currentUrl: '',
-        rawSource: source,
+        rawSource: rawInput,
         driveId: '',
         mimeType: '',
         isDrive: false,
@@ -1548,15 +1562,73 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
     emptyEl.style.display = 'none';
     loadingEl.style.display = 'flex';
 
-    // Tampilkan modal
+    // Tampilkan modal (80% centered)
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Kasus 1: Google Drive URL
-    const isDriveUrl = source.includes('drive.google.com') || source.includes('docs.google.com');
+    // 2. LOGIKA CERDAS: DETEKSI LINGKUNGAN (DESKTOP OFFLINE vs WEB ONLINE)
+    const isDesktop = !!(window.electronAPI && typeof window.electronAPI.getFileData === 'function') || typeof window.require !== 'undefined';
+
+    // ========================================================
+    // A. DI VERSI DESKTOP: PRIORITASKAN BERKAS FISIK LOKAL DI LAPTOP!
+    // ========================================================
+    if (isDesktop) {
+        try {
+            let res = null;
+            const lookupTarget = candidateLocal || rawInput;
+
+            if (window.electronAPI && typeof window.electronAPI.getFileData === 'function') {
+                res = await window.electronAPI.getFileData(lookupTarget);
+            } else if (typeof window.require !== 'undefined') {
+                const { ipcRenderer } = window.require('electron');
+                res = await ipcRenderer.invoke('simpeel-get-file-data', lookupTarget);
+            }
+
+            // Jika berkas fisik lokal ditemukan di laptop: TAMPILKAN LANGSUNG DARI DISK!
+            // Tanpa menyentuh Google Drive sama sekali, tanpa butuh internet, dan TIDAK MINTA LOGIN GOOGLE!
+            if (res && res.success && res.isLocal && res.dataUri) {
+                simpeelViewerState.currentUrl = res.dataUri;
+                simpeelViewerState.fileName = customTitle || res.fileName || 'Lampiran Berkas (Offline)';
+                if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
+
+                if (res.mimeType && res.mimeType.startsWith('image/')) {
+                    simpeelViewerState.isImage = true;
+                    if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
+                    imgEl.src = res.dataUri;
+                    imgEl.onload = () => {
+                        loadingEl.style.display = 'none';
+                        imgContainer.style.display = 'flex';
+                    };
+                } else {
+                    if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
+                    frameEl.src = res.dataUri;
+                    frameEl.onload = () => { loadingEl.style.display = 'none'; };
+                    frameEl.style.display = 'block';
+                    setTimeout(() => { loadingEl.style.display = 'none'; }, 800);
+                }
+                return;
+            }
+
+            // Jika backend memberitahu bahwa berkas fisik belum ada di laptop tetapi ada URL Drive
+            if (res && res.isUrl && res.url) {
+                candidateUrl = res.url;
+            }
+        } catch (eDesktop) {
+            console.warn('[SiMPeEL Desktop] Gagal baca file lokal:', eDesktop);
+        }
+    }
+
+    // ========================================================
+    // B. DI VERSI WEB ONLINE (Atau Desktop jika file fisik belum tersinkron):
+    //    GUNAKAN URL DRIVE / DATA CLOUD SECARA CERDAS
+    // ========================================================
+    const targetUrl = candidateUrl || (rawInput.startsWith('http') ? rawInput : '');
+
+    // Cek apakah Google Drive URL
+    const isDriveUrl = targetUrl.includes('drive.google.com') || targetUrl.includes('docs.google.com');
     if (isDriveUrl) {
         let driveId = '';
-        const idMatch = source.match(/[-\w]{25,}/);
+        const idMatch = targetUrl.match(/[-\w]{25,}/);
         if (idMatch) driveId = idMatch[0];
 
         simpeelViewerState.isDrive = true;
@@ -1565,7 +1637,37 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
         if (iconEl) iconEl.innerHTML = '<i class="fab fa-google-drive text-warning"></i>';
 
-        const previewUrl = driveId ? `https://drive.google.com/file/d/${driveId}/preview` : source;
+        // Trik Cerdas: Di versi Web Online, jika apiCall tersedia, ambil data Base64 via GAS
+        // agar file langsung tampil tanpa terhambat login akun Google!
+        if (typeof apiCall === 'function' && driveId && !isDesktop) {
+            try {
+                const gasRes = await apiCall('getFile', { fileId: driveId });
+                if (gasRes && gasRes.success && gasRes.data && gasRes.data.base64Data) {
+                    const mime = gasRes.data.mimeType || 'application/pdf';
+                    const dataUri = `data:${mime};base64,${gasRes.data.base64Data}`;
+                    simpeelViewerState.currentUrl = dataUri;
+
+                    if (mime.startsWith('image/')) {
+                        simpeelViewerState.isImage = true;
+                        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
+                        imgEl.src = dataUri;
+                        imgEl.onload = () => {
+                            loadingEl.style.display = 'none';
+                            imgContainer.style.display = 'flex';
+                        };
+                    } else {
+                        frameEl.src = dataUri;
+                        frameEl.onload = () => { loadingEl.style.display = 'none'; };
+                        frameEl.style.display = 'block';
+                        setTimeout(() => { loadingEl.style.display = 'none'; }, 800);
+                    }
+                    return;
+                }
+            } catch (_) {}
+        }
+
+        // Fallback preview Google Drive
+        const previewUrl = driveId ? `https://drive.google.com/file/d/${driveId}/preview` : targetUrl;
         simpeelViewerState.currentUrl = previewUrl;
 
         frameEl.src = previewUrl;
@@ -1575,17 +1677,17 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         return;
     }
 
-    // Kasus 2: Gambar (Data URI atau File Image)
-    const isImageDataUri = source.startsWith('data:image/');
-    const isImageFile = /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(source);
+    // Cek apakah Gambar (Data URI atau File Image)
+    const isImageDataUri = rawInput.startsWith('data:image/');
+    const isImageFile = /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(targetUrl || rawInput);
     if (isImageDataUri || isImageFile) {
         simpeelViewerState.isImage = true;
-        simpeelViewerState.currentUrl = source;
+        simpeelViewerState.currentUrl = isImageDataUri ? rawInput : targetUrl;
         simpeelViewerState.fileName = customTitle || 'Lampiran Gambar';
         if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
         if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
 
-        imgEl.src = source;
+        imgEl.src = simpeelViewerState.currentUrl;
         imgEl.onload = () => {
             loadingEl.style.display = 'none';
             imgContainer.style.display = 'flex';
@@ -1597,72 +1699,25 @@ async function viewFileApp(fileUrlOrPath, customTitle = '') {
         return;
     }
 
-    // Kasus 3: URL Online Umum (Web PDF / Link)
-    if (source.startsWith('http')) {
-        simpeelViewerState.currentUrl = source;
+    // Cek URL Online Umum (PDF / link langsung)
+    if (targetUrl) {
+        simpeelViewerState.currentUrl = targetUrl;
         simpeelViewerState.fileName = customTitle || 'Dokumen PDF Online';
         if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
         if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
 
-        frameEl.src = source;
+        frameEl.src = targetUrl;
         frameEl.onload = () => { loadingEl.style.display = 'none'; };
         frameEl.style.display = 'block';
         setTimeout(() => { loadingEl.style.display = 'none'; }, 1500);
         return;
     }
 
-    // Kasus 4: Desktop Offline (Electron) Berkas Lokal
-    const hasElectronAPI = window.electronAPI && typeof window.electronAPI.getFileData === 'function';
-    const hasRequire = typeof window.require !== 'undefined';
-
-    if (hasElectronAPI || hasRequire) {
-        try {
-            let res = null;
-            if (hasElectronAPI) {
-                res = await window.electronAPI.getFileData(source);
-            } else {
-                const { ipcRenderer } = window.require('electron');
-                res = await ipcRenderer.invoke('simpeel-get-file-data', source);
-            }
-
-            if (res && res.success) {
-                if (res.isUrl && res.url) {
-                    viewFileApp(res.url, customTitle);
-                    return;
-                }
-                if (res.isLocal && res.dataUri) {
-                    simpeelViewerState.currentUrl = res.dataUri;
-                    simpeelViewerState.fileName = customTitle || res.fileName || 'Lampiran Berkas';
-                    if (titleEl) titleEl.textContent = simpeelViewerState.fileName;
-
-                    if (res.mimeType && res.mimeType.startsWith('image/')) {
-                        simpeelViewerState.isImage = true;
-                        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-image text-success"></i>';
-                        imgEl.src = res.dataUri;
-                        imgEl.onload = () => {
-                            loadingEl.style.display = 'none';
-                            imgContainer.style.display = 'flex';
-                        };
-                    } else {
-                        if (iconEl) iconEl.innerHTML = '<i class="fas fa-file-pdf text-danger"></i>';
-                        frameEl.src = res.dataUri;
-                        frameEl.onload = () => { loadingEl.style.display = 'none'; };
-                        frameEl.style.display = 'block';
-                        setTimeout(() => { loadingEl.style.display = 'none'; }, 1000);
-                    }
-                    return;
-                }
-            }
-        } catch (e) {
-            console.warn('[SiMPeEL Viewer] Gagal getFileData:', e);
-        }
-    }
-
-    // Fallback: Berkas tidak dapat dipratinjau langsung di modal
+    // Fallback: Berkas tidak ditemukan
     loadingEl.style.display = 'none';
     showEmptyViewer(
         'Pratinjau Tidak Tersedia',
-        'Berkas fisik tersimpan di penyimpanan offline atau memerlukan aplikasi pembuka eksternal.'
+        'Berkas fisik belum diunduh ke laptop ini atau tautan berkas belum tersedia.'
     );
 }
 
