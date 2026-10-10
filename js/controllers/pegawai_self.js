@@ -17,13 +17,13 @@ window.togglePassVisibility = function(inputId, btn) {
 /**
  * Render halaman Profil Saya - isi nama dan NIP dari session
  */
-window.renderProfilPegawai = function() {
+window.renderProfilPegawai = async function() {
     try {
         const ssoToken = localStorage.getItem(TOKEN_KEY);
         if (!ssoToken) return;
         const session = JSON.parse(ssoToken);
         const nama = session.displayName || '-';
-        const nip = session.nip || '-';
+        const nip = session.nip || session.username || '-';
 
         const elNama = document.getElementById('profil-nama');
         const elNip = document.getElementById('profil-nip');
@@ -32,6 +32,37 @@ window.renderProfilPegawai = function() {
         if (elNama) elNama.value = nama;
         if (elNip) elNip.value = nip;
         if (elDisplay) elDisplay.textContent = nama;
+
+        // Tampilkan foto profil wajah di frame bulat
+        const imgEl = document.getElementById('profil-foto-img');
+        const iconEl = document.getElementById('profil-foto-icon');
+
+        if (typeof dbManager !== 'undefined' && nip && nip !== '-') {
+            const allPegawai = await dbManager.getAllPegawai();
+            const pegawai = Array.isArray(allPegawai) ? allPegawai.find(p => String(p.nip) === String(nip)) : null;
+
+            if (pegawai && pegawai.foto && !pegawai.foto.includes('placeholder.com') && !pegawai.foto.includes('logo-simpeel.png') && (pegawai.foto.startsWith('data:image/') || pegawai.foto.startsWith('http'))) {
+                if (imgEl) {
+                    imgEl.src = pegawai.foto;
+                    imgEl.classList.remove('d-none');
+                }
+                if (iconEl) iconEl.classList.add('d-none');
+
+                const topImg = document.getElementById('topAvatarImg');
+                const topIcon = document.getElementById('topAvatarIcon');
+                if (topImg) {
+                    topImg.src = pegawai.foto;
+                    topImg.classList.remove('d-none');
+                }
+                if (topIcon) topIcon.classList.add('d-none');
+            } else {
+                if (imgEl) {
+                    imgEl.src = '';
+                    imgEl.classList.add('d-none');
+                }
+                if (iconEl) iconEl.classList.remove('d-none');
+            }
+        }
 
         // Clear password fields
         const elPass = document.getElementById('profil-password-baru');
@@ -618,10 +649,18 @@ async function renderDashboardPegawai() {
     let kgbDateStr = "-";
     let gajiPokok = "-";
     
+    let fotoPegawai = null;
     try {
         if (typeof dbManager !== 'undefined' && nip) {
             const allPegawai = await dbManager.getAllPegawai();
             const pegawaiData = allPegawai.find(p => p.nip === nip);
+            if (pegawaiData && pegawaiData.foto && !pegawaiData.foto.includes('placeholder.com') && !pegawaiData.foto.includes('logo-simpeel.png') && (pegawaiData.foto.startsWith('data:image/') || pegawaiData.foto.startsWith('http'))) {
+                fotoPegawai = pegawaiData.foto;
+                const topImg = document.getElementById('topAvatarImg');
+                const topIcon = document.getElementById('topAvatarIcon');
+                if (topImg) { topImg.src = fotoPegawai; topImg.classList.remove('d-none'); }
+                if (topIcon) topIcon.classList.add('d-none');
+            }
             if (pegawaiData && pegawaiData.riwayatKGB && pegawaiData.riwayatKGB.length > 0) {
                 // Ambil data terbaru (terakhir di array jika sudah disort)
                 const riwayatKGB = pegawaiData.riwayatKGB;
@@ -675,7 +714,10 @@ async function renderDashboardPegawai() {
                                 <div class="mt-2 text-sm text-muted">Akses informasi data kepegawaian Anda di sini.</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-user-circle fa-3x text-gray-300"></i>
+                                ${fotoPegawai 
+                                    ? `<img src="${fotoPegawai}" alt="Foto Profil" class="rounded-circle shadow-sm border border-3 border-primary" style="width:65px;height:65px;object-fit:cover;object-position:center top;">`
+                                    : `<i class="fas fa-user-circle fa-3x text-gray-300"></i>`
+                                }
                             </div>
                         </div>
                     </div>
