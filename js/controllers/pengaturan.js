@@ -10,34 +10,34 @@ async function simpanPengaturan() {
     try {
         const existingData = window.cachedPengaturan || await dbManager.getPengaturan() || {};
 
-        // 1. Proses Logo Instansi (Wajib Base64 murni & terkompresi)
+        // 1. Proses Logo Instansi (Wajib Base64 murni PNG 250x250 transparan)
         const rawLogoInstansi = document.getElementById('previewLogoInstansi')?.src || '';
         let finalLogoInstansi = existingData.logoInstansi || '';
         if (rawLogoInstansi.startsWith('data:image/')) {
             finalLogoInstansi = (typeof convertImageToBase64 === 'function')
-                ? await convertImageToBase64(rawLogoInstansi, 200, 'image/png')
+                ? await convertImageToBase64(rawLogoInstansi, 250, 'image/png')
                 : rawLogoInstansi;
         } else if (rawLogoInstansi.startsWith('http') && !rawLogoInstansi.includes('logo-simpeel.png')) {
             // Jika berupa link Drive / Web, konversi ke Base64 agar offline mode bisa membaca
             const converted = (typeof convertImageToBase64 === 'function')
-                ? await convertImageToBase64(rawLogoInstansi, 200, 'image/png')
+                ? await convertImageToBase64(rawLogoInstansi, 250, 'image/png')
                 : '';
             if (converted) finalLogoInstansi = converted;
         } else if (rawLogoInstansi.includes('logo-simpeel.png') && (!existingData.logoInstansi || existingData.logoInstansi.includes('logo-simpeel.png'))) {
             finalLogoInstansi = '';
         }
 
-        // 2. Proses Logo Sekolah (Wajib Base64 murni & terkompresi)
+        // 2. Proses Logo Sekolah (Wajib Base64 murni PNG 250x250 transparan)
         const rawLogoSekolah = document.getElementById('previewLogoSekolah')?.src || '';
         let finalLogoSekolah = existingData.logoSekolah || '';
         if (rawLogoSekolah.startsWith('data:image/')) {
             finalLogoSekolah = (typeof convertImageToBase64 === 'function')
-                ? await convertImageToBase64(rawLogoSekolah, 200, 'image/png')
+                ? await convertImageToBase64(rawLogoSekolah, 250, 'image/png')
                 : rawLogoSekolah;
         } else if (rawLogoSekolah.startsWith('http') && !rawLogoSekolah.includes('logo-simpeel.png')) {
             // Jika berupa link Drive / Web, konversi ke Base64 agar offline mode bisa membaca
             const converted = (typeof convertImageToBase64 === 'function')
-                ? await convertImageToBase64(rawLogoSekolah, 200, 'image/png')
+                ? await convertImageToBase64(rawLogoSekolah, 250, 'image/png')
                 : '';
             if (converted) finalLogoSekolah = converted;
         } else if (rawLogoSekolah.includes('logo-simpeel.png') && (!existingData.logoSekolah || existingData.logoSekolah.includes('logo-simpeel.png'))) {
@@ -222,14 +222,14 @@ async function loadPengaturan() {
 
     // Auto-convert link web/Drive legacy ke Base64 secara senyap jika online
     if (data.logoInstansi && data.logoInstansi.startsWith('http') && !data.logoInstansi.includes('logo-simpeel.png') && typeof convertImageToBase64 === 'function') {
-        convertImageToBase64(data.logoInstansi, 200, 'image/png').then(b64 => {
+        convertImageToBase64(data.logoInstansi, 250, 'image/png').then(b64 => {
             if (b64 && b64.startsWith('data:')) {
                 dbManager.savePengaturan({ ...data, logoInstansi: b64, updatedAt: new Date().toISOString() });
             }
         }).catch(() => {});
     }
     if (data.logoSekolah && data.logoSekolah.startsWith('http') && !data.logoSekolah.includes('logo-simpeel.png') && typeof convertImageToBase64 === 'function') {
-        convertImageToBase64(data.logoSekolah, 200, 'image/png').then(b64 => {
+        convertImageToBase64(data.logoSekolah, 250, 'image/png').then(b64 => {
             if (b64 && b64.startsWith('data:')) {
                 dbManager.savePengaturan({ ...data, logoSekolah: b64, updatedAt: new Date().toISOString() });
             }
