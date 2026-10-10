@@ -262,13 +262,131 @@ function openCropper(input, previewId, ratio) {
     input.value = '';
 }
 
+function convertImageToBase64(urlOrData, maxDim = 250, mimeType = 'image/png') {
+    if (!urlOrData || typeof urlOrData !== 'string') return Promise.resolve('');
+    if (urlOrData.includes('logo-simpeel.png') || urlOrData.includes('placeholder.com')) {
+        return Promise.resolve('');
+    }
+
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+            try {
+                let w = img.width;
+                let h = img.height;
+                if (w > maxDim || h > maxDim) {
+                    if (w >= h) {
+                        h = Math.round((h * maxDim) / w);
+                        w = maxDim;
+                    } else {
+                        w = Math.round((w * maxDim) / h);
+                        h = maxDim;
+                    }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.max(1, w);
+                canvas.height = Math.max(1, h);
+                const ctx = canvas.getContext('2d');
+                if (mimeType === 'image/jpeg') {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                let res = canvas.toDataURL(mimeType, 0.85);
+                // Jika masih melebihi 40.000 karakter, fallback kompresi JPEG agar aman untuk Google Sheets
+                if (res.length > 40000) {
+                    const fbCanvas = document.createElement('canvas');
+                    fbCanvas.width = canvas.width;
+                    fbCanvas.height = canvas.height;
+                    const fbCtx = fbCanvas.getContext('2d');
+                    fbCtx.fillStyle = '#ffffff';
+                    fbCtx.fillRect(0, 0, fbCanvas.width, fbCanvas.height);
+                    fbCtx.drawImage(canvas, 0, 0);
+                    res = fbCanvas.toDataURL('image/jpeg', 0.75);
+                }
+                resolve(res);
+            } catch (err) {
+                resolve(urlOrData.startsWith('data:') ? urlOrData : '');
+            }
+        };
+        img.onerror = () => {
+            resolve(urlOrData.startsWith('data:') ? urlOrData : '');
+        };
+        img.src = urlOrData;
+    });
+}
+
 function doCrop() {
     if (!cropper) return;
-    const canvas = cropper.getCroppedCanvas();
-    const base64Image = canvas.toDataURL('image/png');
-    document.getElementById(currentPreviewId).src = base64Image;
+    const rawCanvas = cropper.getCroppedCanvas();
+    if (!rawCanvas) return;
 
-    bootstrap.Modal.getInstance(document.getElementById('modalCropper')).hide();
+    // Tentukan batasan dimensi & format optimal berdasarkan target preview
+    let maxDim = 250;
+    let mimeType = 'image/png';
+    let quality = 0.85;
+
+    if (currentPreviewId === 'previewBgLanding') {
+        maxDim = 800;
+        mimeType = 'image/jpeg';
+        quality = 0.75;
+    } else if (currentPreviewId === 'previewFotoPegawai') {
+        maxDim = 300;
+        mimeType = 'image/jpeg';
+        quality = 0.8;
+    } else {
+        // Logo Instansi & Logo Sekolah (1:1 ratio)
+        maxDim = 200;
+        mimeType = 'image/png';
+        quality = 0.85;
+    }
+
+    let w = rawCanvas.width;
+    let h = rawCanvas.height;
+    if (w > maxDim || h > maxDim) {
+        if (w >= h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+        } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+        }
+    }
+
+    const scaledCanvas = document.createElement('canvas');
+    scaledCanvas.width = Math.max(1, w);
+    scaledCanvas.height = Math.max(1, h);
+    const ctx = scaledCanvas.getContext('2d');
+
+    if (mimeType === 'image/jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, scaledCanvas.width, scaledCanvas.height);
+    }
+    ctx.drawImage(rawCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+
+    let base64Image = scaledCanvas.toDataURL(mimeType, quality);
+    // Jika ukuran base64 PNG masih > 40.000 karakter, fallback ke JPEG terkompresi
+    if (base64Image.length > 40000 && mimeType === 'image/png') {
+        const fbCanvas = document.createElement('canvas');
+        fbCanvas.width = scaledCanvas.width;
+        fbCanvas.height = scaledCanvas.height;
+        const fbCtx = fbCanvas.getContext('2d');
+        fbCtx.fillStyle = '#ffffff';
+        fbCtx.fillRect(0, 0, fbCanvas.width, fbCanvas.height);
+        fbCtx.drawImage(scaledCanvas, 0, 0);
+        base64Image = fbCanvas.toDataURL('image/jpeg', 0.8);
+    }
+
+    if (currentPreviewId && document.getElementById(currentPreviewId)) {
+        document.getElementById(currentPreviewId).src = base64Image;
+    }
+
+    const modalCropper = document.getElementById('modalCropper');
+    if (modalCropper) {
+        const inst = bootstrap.Modal.getInstance(modalCropper);
+        if (inst) inst.hide();
+    }
     if (cropper) {
         cropper.destroy();
         cropper = null;
