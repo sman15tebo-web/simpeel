@@ -1213,29 +1213,13 @@ function ensureSimpeelViewerDOM() {
         div.setAttribute('aria-modal', 'true');
         div.innerHTML = `
             <div class="simpeel-viewer-window" id="simpeelViewerWindow">
-                <header class="simpeel-viewer-header">
-                    <div class="simpeel-viewer-title-group">
-                        <div class="simpeel-viewer-icon" id="simpeelViewerIcon"><i class="fas fa-file-pdf"></i></div>
-                        <div class="simpeel-viewer-title" id="simpeelViewerTitle" title="Lampiran Berkas">Lampiran Berkas</div>
-                    </div>
-                    <div class="simpeel-viewer-zoom-controls">
-                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomOut" title="Perkecil Zoom (-)"><i class="fas fa-minus"></i></button>
-                        <div class="simpeel-viewer-zoom-level" id="simpeelViewerZoomLevel" title="Klik untuk Reset (100%)">100%</div>
-                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomIn" title="Perbesar Zoom (+)"><i class="fas fa-plus"></i></button>
-                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnZoomReset" title="Ukuran Semula (Reset)"><i class="fas fa-compress"></i></button>
-                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnRotate" title="Putar 90°"><i class="fas fa-redo"></i></button>
-                    </div>
-                    <div class="simpeel-viewer-actions">
-                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnPrint" title="Cetak Dokumen"><i class="fas fa-print"></i><span>Cetak</span></button>
-                        <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-primary" id="simpeelBtnDownload" title="Unduh Berkas"><i class="fas fa-download"></i><span>Unduh</span></button>
-                        <button type="button" class="simpeel-viewer-btn" id="simpeelBtnExternal" title="Buka di Jendela Baru / Aplikasi Komputer"><i class="fas fa-external-link-alt"></i></button>
-                        <button type="button" class="simpeel-viewer-btn simpeel-viewer-btn-close" id="simpeelBtnClose" title="Tutup (Esc)"><i class="fas fa-times"></i></button>
-                    </div>
-                </header>
+                <button type="button" class="simpeel-viewer-floating-close" id="simpeelBtnClose" title="Tutup Pratinjau (Esc)">
+                    <i class="fas fa-times"></i>
+                </button>
                 <main class="simpeel-viewer-body" id="simpeelViewerBody">
                     <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
                         <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;"><span class="visually-hidden">Memuat berkas...</span></div>
-                        <div class="text-white-50 small mt-1">Memuat pratinjau berkas...</div>
+                        <div class="text-white-50 small mt-2">Memuat pratinjau berkas...</div>
                     </div>
                     <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
                         <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" style="display: none;" allow="autoplay" allowfullscreen></iframe>
