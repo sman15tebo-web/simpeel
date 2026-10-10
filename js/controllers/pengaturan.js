@@ -289,17 +289,30 @@ async function loadPengaturan() {
         }).catch(() => {});
     }
 
+    // Isi Standar Sync URL bawaan secara instan dari cache / pengaturan / APP_CONFIG
+    const defUrlEl = document.getElementById('defaultSyncUrlReadonly');
+    const immediateSyncUrl = (window.APP_CONFIG && (window.APP_CONFIG.defaultSyncUrl || window.APP_CONFIG.OFFLINE_EXEC_LINK || window.APP_CONFIG.syncUrl)) || data.syncUrl || data.gasUrl || data.linkExec || '';
+    if (defUrlEl && immediateSyncUrl) {
+        defUrlEl.value = immediateSyncUrl;
+    }
+
     if (API_URL) {
         apiCall('getConfig').then(config => {
-            if (config && config.username) {
-                const uEl = document.getElementById('set_username');
-                if (uEl) uEl.value = config.username;
-                const pEl = document.getElementById('set_password');
-                if (pEl) pEl.value = config.password;
-            }
-            if (config && config.defaultSyncUrl) {
-                const defUrlEl = document.getElementById('defaultSyncUrlReadonly');
-                if (defUrlEl) defUrlEl.value = config.defaultSyncUrl;
+            if (config) {
+                const u = config.username || config.OFFLINE_ADMIN_USER || (config.admin && config.admin.username);
+                const p = config.password || config.OFFLINE_ADMIN_PASS || (config.admin && config.admin.password);
+                if (u) {
+                    const uEl = document.getElementById('set_username');
+                    if (uEl) uEl.value = u;
+                }
+                if (p) {
+                    const pEl = document.getElementById('set_password');
+                    if (pEl) pEl.value = p;
+                }
+                const syncUrl = config.defaultSyncUrl || config.OFFLINE_EXEC_LINK || config.syncUrl || config.gasUrl || config.linkExec || immediateSyncUrl;
+                if (defUrlEl && syncUrl) {
+                    defUrlEl.value = syncUrl;
+                }
             }
         }).catch(() => {});
     }
