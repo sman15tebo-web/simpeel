@@ -39,29 +39,39 @@ function sortRiwayatArray(riwayatArray, dateIndex, isYear = false) {
 async function getPrimaryDataLock(nip) {
     if (!nip) return null;
 
-    const akunList = await dbManager.getAllAkun();
-    const fromAkun = Array.isArray(akunList) ? akunList.find(a => a.nip === nip) : null;
-    if (fromAkun) {
-        return {
-            nip: fromAkun.nip || nip,
-            nama: fromAkun.nama || '',
-            nik: fromAkun.nik || '',
-            tglLahir: fromAkun.tglLahir || '',
-            statusPegawai: fromAkun.statusPegawai || 'PNS'
-        };
+    // 1. Ambil dari data lokal pegawai di memori (instan 0 ms tanpa request jaringan)
+    if (typeof dbManager !== 'undefined') {
+        const pegList = await dbManager.getAllPegawai();
+        const fromPegawai = Array.isArray(pegList) ? pegList.find(p => String(p.nip) === String(nip)) : null;
+        if (fromPegawai) {
+            return {
+                nip: fromPegawai.nip || nip,
+                nama: fromPegawai.nama || '',
+                nik: fromPegawai.nik || '',
+                tglLahir: fromPegawai.tglLahir || '',
+                statusPegawai: fromPegawai.statusPegawai || 'PNS'
+            };
+        }
     }
 
-    const pegList = await dbManager.getAllPegawai();
-    const fromPegawai = Array.isArray(pegList) ? pegList.find(p => p.nip === nip) : null;
-    if (!fromPegawai) return null;
+    // 2. Fallback ke token sesi login jika belum ada di memori
+    try {
+        const ssoToken = localStorage.getItem('SIMPEEL_TOKEN_ONLINE') || localStorage.getItem('SIMPEEL_TOKEN_OFFLINE');
+        if (ssoToken) {
+            const user = JSON.parse(ssoToken);
+            if (String(user.nip || user.username) === String(nip)) {
+                return {
+                    nip: user.nip || user.username || nip,
+                    nama: user.displayName || user.nama || '',
+                    nik: user.nik || '',
+                    tglLahir: user.tglLahir || '',
+                    statusPegawai: user.statusPegawai || 'PNS'
+                };
+            }
+        }
+    } catch (e) { }
 
-    return {
-        nip: fromPegawai.nip || nip,
-        nama: fromPegawai.nama || '',
-        nik: fromPegawai.nik || '',
-        tglLahir: fromPegawai.tglLahir || '',
-        statusPegawai: fromPegawai.statusPegawai || 'PNS'
-    };
+    return null;
 }
 
 async function simpanPegawai() {
@@ -144,20 +154,32 @@ async function simpanPegawai() {
         return;
     }
 
-    // KONFIRMASI SEBELUM SIMPAN
+    // KONFIRMASI SEBELUM SIMPAN (MUNCUL INSTAN TANPA JEDA)
     const confirmSave = await Swal.fire({
         title: 'Konfirmasi Simpan',
-        text: 'Pastikan data NIP dan data lainnya sudah benar. Yakin ingin menyimpan?',
+        text: 'Pastikan data NIP dan data lainnya sudah benar. Yakin ingin menyimpan perubahan data Anda?',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: 'Ya, Simpan',
-        cancelButtonText: 'Tidak',
+        confirmButtonText: '<i class="fas fa-check me-1"></i> Ya, Simpan',
+        cancelButtonText: 'Batal',
         reverseButtons: true
     });
 
     if (!confirmSave.isConfirmed) {
         return;
     }
+
+    // TAMPILKAN LOADING SEGERA AGAR PENGGUNA TIDAK MENUNGGU DALAM KEGELAPAN
+    Swal.fire({
+        title: 'Menyimpan Data...',
+        html: '<div class="text-muted small mt-2"><i class="fas fa-spinner fa-spin me-2 text-primary"></i>Sedang memproses dan menyimpan perubahan data ke server...</div>',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
     // Extract array data
     const extractTableData = (tableId) => {
@@ -232,7 +254,6 @@ async function simpanPegawai() {
     let fotoData = '';
     if (imgEl && !imgEl.src.includes('placeholder.com')) {
         if (imgEl.src.startsWith('data:image/')) {
-            Swal.fire({ title: 'Memproses Foto...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
                 // Compress photo to ensure it stays < 50,000 chars for Google Sheets
                 fotoData = await new Promise((resolve) => {
@@ -331,17 +352,31 @@ async function simpanPegawai() {
             Swal.fire('Error', 'Gagal menyimpan data: ' + res.message, 'error');
             return;
         }
-        Swal.fire('Berhasil!', 'Data Pegawai berhasil disimpan!', 'success');
-        // Tutup modal jika ada
-        const modal = bootstrap?.Modal?.getInstance(document.getElementById('modalTambahPegawai'))
-            || bootstrap?.Modal?.getInstance(document.getElementById('modalPegawai'));
-        if (modal) modal.hide();
-        // Refresh semua tabel
-        renderTabelPNS();
-        renderTabelDUK();
-        renderTabelKGB();
-        renderTabelRekap();
-        renderTabelRiwayat();
+
+        const ssoToken = localStorage.getItem('SIMPEEL_TOKEN_ONLINE') || localStorage.getItem('SIMPEEL_TOKEN_OFFLINE');
+        let session = null;
+        if (ssoToken) {
+            try { session = JSON.parse(ssoToken); } catch (e) { }
+        }
+        const isPegawai = session && session.role === 'pegawai';
+
+        Swal.fire('Berhasil!', 'Data Kepegawaian berhasil disimpan!', 'success');
+
+        if (isPegawai) {
+            if (typeof renderDashboardPegawai === 'function') renderDashboardPegawai();
+            if (typeof nav === 'function') nav('dashboard-pegawai');
+        } else {
+            // Tutup modal jika mode admin
+            const modal = bootstrap?.Modal?.getInstance(document.getElementById('modalTambahPegawai'))
+                || bootstrap?.Modal?.getInstance(document.getElementById('modalPegawai'));
+            if (modal) modal.hide();
+            // Refresh semua tabel admin
+            if (typeof renderTabelPNS === 'function') renderTabelPNS();
+            if (typeof renderTabelDUK === 'function') renderTabelDUK();
+            if (typeof renderTabelKGB === 'function') renderTabelKGB();
+            if (typeof renderTabelRekap === 'function') renderTabelRekap();
+            if (typeof renderTabelRiwayat === 'function') renderTabelRiwayat();
+        }
     } catch (e) {
         Swal.fire('Gagal!', 'Gagal menyimpan data: ' + e.message, 'error');
     }
