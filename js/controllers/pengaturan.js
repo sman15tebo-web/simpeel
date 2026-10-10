@@ -1,5 +1,42 @@
 async function simpanPengaturan() {
     const existingData = await dbManager.getPengaturan();
+
+    Swal.fire({ title: 'Menyimpan Pengaturan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+
+    // 1. Proses Logo Instansi (Wajib Base64 murni & terkompresi)
+    const rawLogoInstansi = document.getElementById('previewLogoInstansi')?.src || '';
+    let finalLogoInstansi = existingData.logoInstansi || '';
+    if (rawLogoInstansi.startsWith('data:image/')) {
+        finalLogoInstansi = (typeof convertImageToBase64 === 'function')
+            ? await convertImageToBase64(rawLogoInstansi, 200, 'image/png')
+            : rawLogoInstansi;
+    } else if (rawLogoInstansi.startsWith('http') && !rawLogoInstansi.includes('logo-simpeel.png')) {
+        // Jika berupa link Drive / Web, konversi ke Base64 agar offline mode bisa membaca
+        const converted = (typeof convertImageToBase64 === 'function')
+            ? await convertImageToBase64(rawLogoInstansi, 200, 'image/png')
+            : '';
+        if (converted) finalLogoInstansi = converted;
+    } else if (rawLogoInstansi.includes('logo-simpeel.png') && (!existingData.logoInstansi || existingData.logoInstansi.includes('logo-simpeel.png'))) {
+        finalLogoInstansi = '';
+    }
+
+    // 2. Proses Logo Sekolah (Wajib Base64 murni & terkompresi)
+    const rawLogoSekolah = document.getElementById('previewLogoSekolah')?.src || '';
+    let finalLogoSekolah = existingData.logoSekolah || '';
+    if (rawLogoSekolah.startsWith('data:image/')) {
+        finalLogoSekolah = (typeof convertImageToBase64 === 'function')
+            ? await convertImageToBase64(rawLogoSekolah, 200, 'image/png')
+            : rawLogoSekolah;
+    } else if (rawLogoSekolah.startsWith('http') && !rawLogoSekolah.includes('logo-simpeel.png')) {
+        // Jika berupa link Drive / Web, konversi ke Base64 agar offline mode bisa membaca
+        const converted = (typeof convertImageToBase64 === 'function')
+            ? await convertImageToBase64(rawLogoSekolah, 200, 'image/png')
+            : '';
+        if (converted) finalLogoSekolah = converted;
+    } else if (rawLogoSekolah.includes('logo-simpeel.png') && (!existingData.logoSekolah || existingData.logoSekolah.includes('logo-simpeel.png'))) {
+        finalLogoSekolah = '';
+    }
+
     const data = {
         ...existingData,
         instansi: document.getElementById('set_instansi').value,
@@ -13,21 +50,32 @@ async function simpanPengaturan() {
         kepsekNip: document.getElementById('set_kepsek_nip')?.value || '',
         bendaharaNama: document.getElementById('set_bendahara_nama')?.value || '',
         bendaharaNip: document.getElementById('set_bendahara_nip')?.value || '',
-        logoInstansi: document.getElementById('previewLogoInstansi').src,
-        logoSekolah: document.getElementById('previewLogoSekolah').src,
+        logoInstansi: finalLogoInstansi,
+        logoSekolah: finalLogoSekolah,
         updatedAt: new Date().toISOString()
     };
 
-    Swal.fire({ title: 'Menyimpan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
     await dbManager.savePengaturan(data);
-    loadPengaturan();
-    Swal.fire('Berhasil!', 'Pengaturan berhasil disimpan ke Server!', 'success');
+    await loadPengaturan();
+    Swal.fire('Berhasil!', 'Pengaturan dan Logo (Base64) berhasil disimpan!', 'success');
 }
 
 async function simpanTemaBackground() {
     const existingData = await dbManager.getPengaturan();
-    const bgImg = document.getElementById('previewBgLanding').src;
-    const bgToSave = bgImg.includes('logo-simpeel.png') ? '' : bgImg;
+    const bgImg = document.getElementById('previewBgLanding')?.src || '';
+    let bgToSave = '';
+
+    if (bgImg && !bgImg.includes('logo-simpeel.png')) {
+        if (bgImg.startsWith('data:image/')) {
+            bgToSave = (typeof convertImageToBase64 === 'function')
+                ? await convertImageToBase64(bgImg, 800, 'image/jpeg')
+                : bgImg;
+        } else if (bgImg.startsWith('http')) {
+            bgToSave = (typeof convertImageToBase64 === 'function')
+                ? await convertImageToBase64(bgImg, 800, 'image/jpeg')
+                : '';
+        }
+    }
 
     const data = {
         ...existingData,
@@ -41,7 +89,7 @@ async function simpanTemaBackground() {
     Swal.fire({ title: 'Menyimpan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
     await dbManager.savePengaturan(data);
     applyTheme(data.warnaTema, data.bgLanding, data.warnaTema2, data.warnaTema3);
-    Swal.fire('Berhasil!', 'Tema dan Background berhasil disimpan ke Server!', 'success');
+    Swal.fire('Berhasil!', 'Tema dan Background berhasil disimpan!', 'success');
 }
 
 function adjustColor(color, amount) {
@@ -125,23 +173,48 @@ async function loadPengaturan() {
     if (data.bendaharaNip && document.getElementById('set_bendahara_nip')) document.getElementById('set_bendahara_nip').value = data.bendaharaNip;
     if (data.email) document.getElementById('set_email').value = data.email;
     if (data.web) document.getElementById('set_web').value = data.web;
-    if (data.logoInstansi && data.logoInstansi.startsWith('data:')) {
-        document.getElementById('previewLogoInstansi').src = data.logoInstansi;
-        const imgInst = document.getElementById('imgInstansi');
-        if (imgInst) imgInst.src = data.logoInstansi;
+    // Tampilkan Logo Instansi
+    const defLogo = 'logo-simpeel.png';
+    const isInstansiValid = data.logoInstansi && (data.logoInstansi.startsWith('data:') || data.logoInstansi.startsWith('http'));
+    const finalInstLogo = isInstansiValid ? data.logoInstansi : defLogo;
+    const prevInst = document.getElementById('previewLogoInstansi');
+    if (prevInst) prevInst.src = finalInstLogo;
+    const imgInst = document.getElementById('imgInstansi');
+    if (imgInst) imgInst.src = finalInstLogo;
+
+    // Tampilkan Logo Sekolah
+    const isSekolahValid = data.logoSekolah && (data.logoSekolah.startsWith('data:') || data.logoSekolah.startsWith('http'));
+    const finalSekLogo = isSekolahValid ? data.logoSekolah : defLogo;
+    const prevSek = document.getElementById('previewLogoSekolah');
+    if (prevSek) prevSek.src = finalSekLogo;
+    const imgSek = document.getElementById('imgSekolah');
+    if (imgSek) imgSek.src = finalSekLogo;
+    const sideLogo = document.getElementById('sidebar-sekolah-logo');
+    if (sideLogo) sideLogo.src = finalSekLogo;
+    const mobTopLogo = document.getElementById('mobile-top-sekolah-logo');
+    if (mobTopLogo) mobTopLogo.src = finalSekLogo;
+
+    // Auto-convert link web/Drive legacy ke Base64 secara senyap jika online
+    if (data.logoInstansi && data.logoInstansi.startsWith('http') && !data.logoInstansi.includes('logo-simpeel.png') && typeof convertImageToBase64 === 'function') {
+        convertImageToBase64(data.logoInstansi, 200, 'image/png').then(b64 => {
+            if (b64 && b64.startsWith('data:')) {
+                dbManager.savePengaturan({ ...data, logoInstansi: b64, updatedAt: new Date().toISOString() });
+            }
+        }).catch(() => {});
     }
-    if (data.logoSekolah && data.logoSekolah.startsWith('data:')) {
-        document.getElementById('previewLogoSekolah').src = data.logoSekolah;
-        const imgSek = document.getElementById('imgSekolah');
-        if (imgSek) imgSek.src = data.logoSekolah;
-        const sideLogo = document.getElementById('sidebar-sekolah-logo');
-        if (sideLogo) sideLogo.src = data.logoSekolah;
-        const mobTopLogo = document.getElementById('mobile-top-sekolah-logo');
-        if (mobTopLogo) mobTopLogo.src = data.logoSekolah;
+    if (data.logoSekolah && data.logoSekolah.startsWith('http') && !data.logoSekolah.includes('logo-simpeel.png') && typeof convertImageToBase64 === 'function') {
+        convertImageToBase64(data.logoSekolah, 200, 'image/png').then(b64 => {
+            if (b64 && b64.startsWith('data:')) {
+                dbManager.savePengaturan({ ...data, logoSekolah: b64, updatedAt: new Date().toISOString() });
+            }
+        }).catch(() => {});
     }
 
     if (data.warnaTema) document.getElementById('set_warna_tema').value = data.warnaTema;
-    if (data.bgLanding && data.bgLanding.startsWith('data:')) document.getElementById('previewBgLanding').src = data.bgLanding;
+    if (data.bgLanding && (data.bgLanding.startsWith('data:') || data.bgLanding.startsWith('http'))) {
+        const prevBg = document.getElementById('previewBgLanding');
+        if (prevBg) prevBg.src = data.bgLanding;
+    }
 
     applyTheme(data.warnaTema, data.bgLanding, data.warnaTema2, data.warnaTema3);
 
