@@ -1,576 +1,700 @@
 <div aria-hidden="true" class="modal fade" data-bs-backdrop="static" id="modalPegawai" tabindex="-1">
-<div class="modal-dialog modal-xl modal-dialog-scrollable" style="margin: 0 auto; height: 100%; max-height: 100%;">
-<div class="modal-content" style="height: 100%; border-radius: 0;">
-<div class="modal-header text-white" style="background: linear-gradient(135deg, #4e73df, #224abe); border-bottom: 0; padding: 0.5rem 1rem;">
-<h6 class="modal-title fw-normal"><i class="fas fa-user-plus"></i> Form Pegawai Lengkap</h6>
-<button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal" type="button"></button>
-</div>
-<div class="modal-body p-0">
-<!-- Nav Tabs dalam Modal -->
-<ul class="nav nav-tabs bg-light px-3 pt-3 border-bottom-0 shadow-sm" id="formPegawaiTabs" role="tablist" style="border-radius: 0 0 10px 10px;">
-<li class="nav-item" role="presentation">
-<button class="nav-link active" data-bs-target="#f-pribadi" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-id-card me-1"></i>Data Pribadi</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-pegawai" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-user-tag me-1"></i>Data Pegawai</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-pangkat" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-medal me-1"></i>Riwayat Pangkat (PNS)</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-kgb" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-money-check-alt me-1"></i>Riwayat KGB</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-kontrak" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-file-contract me-1"></i>Riwayat Kontrak (PPPK)</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-jabatan" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-briefcase me-1"></i>Riwayat Jabatan</button>
-</li>
-<li class="nav-item" id="nav-sertifikasi-guru" role="presentation">
-<button class="nav-link" data-bs-target="#f-sertifikasi" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-certificate me-1"></i>Sertifikasi (Guru)</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-pendidikan" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-graduation-cap me-1"></i>Riwayat Pendidikan</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-diklat" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-chalkboard-teacher me-1"></i>Diklat/Kursus</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link" data-bs-target="#f-keluarga" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-users me-1"></i>Keluarga</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link text-success fw-bold" data-bs-target="#f-foto" data-bs-toggle="tab" role="tab" type="button"><i class="fas fa-camera me-1"></i>Foto Pegawai</button>
-</li>
-</ul>
-<!-- Tab Content dalam Modal -->
-<div class="tab-content p-4 bg-white" id="formPegawaiTabsContent">
-<!-- TAB 1: DATA PRIBADI -->
-<div class="tab-pane fade show active" id="f-pribadi" role="tabpanel">
-<div class="tab-section-header">
-<span class="tab-badge" style="background:#4e73df;"><i class="fas fa-id-card" style="font-size:10px;"></i></span>
-<h5 class="fw-bold text-primary">Data Pribadi</h5>
-</div>
-<div class="alert alert-warning py-2 px-3 mb-3" data-admin-only="true" style="border-left:4px solid #e74a3b; font-size:0.82rem;">
-<i class="fas fa-info-circle me-1"></i> Kolom dengan garis <strong>merah</strong> dan
-                                tanda <span class="req-asterisk" style="color:#e74a3b;font-weight:bold;">*</span> adalah
-                                kolom <strong>wajib diisi</strong>.
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="margin: 0 auto; height: 100%; max-height: 100%;">
+        <div class="modal-content" style="height: 100%; border-radius: 0;">
+            <div class="modal-header text-white"
+                style="background: linear-gradient(135deg, #4e73df, #224abe); border-bottom: 0; padding: 0.5rem 1rem;">
+                <h6 class="modal-title fw-normal"><i class="fas fa-user-plus"></i> Form Pegawai Lengkap</h6>
+                <button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    type="button"></button>
+            </div>
+            <div class="modal-body p-0">
+                <!-- Nav Tabs dalam Modal -->
+                <ul class="nav nav-tabs bg-light px-3 pt-3 border-bottom-0 shadow-sm" id="formPegawaiTabs"
+                    role="tablist" style="border-radius: 0 0 10px 10px;">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-target="#f-pribadi" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-id-card me-1"></i>Data Pribadi</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-pegawai" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-user-tag me-1"></i>Data Pegawai</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-pangkat" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-medal me-1"></i>Riwayat Pangkat (PNS)</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-kontrak" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-file-contract me-1"></i>Riwayat Kontrak (PPPK)</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-kgb" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-money-check-alt me-1"></i>Riwayat KGB</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-jabatan" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-briefcase me-1"></i>Riwayat Jabatan</button>
+                    </li>
+                    <li class="nav-item" id="nav-sertifikasi-guru" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-sertifikasi" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-certificate me-1"></i>Sertifikasi (Guru)</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-pendidikan" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-graduation-cap me-1"></i>Riwayat Pendidikan</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-diklat" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-chalkboard-teacher me-1"></i>Diklat/Kursus</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-target="#f-keluarga" data-bs-toggle="tab" role="tab"
+                            type="button"><i class="fas fa-users me-1"></i>Keluarga</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-success fw-bold" data-bs-target="#f-foto" data-bs-toggle="tab"
+                            role="tab" type="button"><i class="fas fa-camera me-1"></i>Foto Pegawai</button>
+                    </li>
+                </ul>
+                <!-- Tab Content dalam Modal -->
+                <div class="tab-content p-4 bg-white" id="formPegawaiTabsContent">
+                    <!-- TAB 1: DATA PRIBADI -->
+                    <div class="tab-pane fade show active" id="f-pribadi" role="tabpanel">
+                        <div class="tab-section-header">
+                            <span class="tab-badge" style="background:#4e73df;"><i class="fas fa-id-card"
+                                    style="font-size:10px;"></i></span>
+                            <h5 class="fw-bold text-primary">Data Pribadi</h5>
+                        </div>
+                        <div class="alert alert-warning py-2 px-3 mb-3" data-admin-only="true"
+                            style="border-left:4px solid #e74a3b; font-size:0.82rem;">
+                            <i class="fas fa-info-circle me-1"></i> Kolom dengan garis <strong>merah</strong> dan
+                            tanda <span class="req-asterisk" style="color:#e74a3b;font-weight:bold;">*</span> adalah
+                            kolom <strong>wajib diisi</strong>.
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label label-required">NIK <span class="req-asterisk">*</span></label>
+                                <input class="form-control input-required" id="peg_nik" maxlength="16"
+                                    onblur="validasiNIK(this)" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    placeholder="16 digit NIK" required="" type="text" />
                             </div>
-<div class="row mb-3">
-<div class="col-md-4">
-<label class="form-label label-required">NIK <span class="req-asterisk">*</span></label>
-<input class="form-control input-required" id="peg_nik" maxlength="16" onblur="validasiNIK(this)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="16 digit NIK" required="" type="text"/>
-</div>
-<div class="col-md-8">
-<label class="form-label label-required">Nama Lengkap (tanpa gelar) <span class="req-asterisk">*</span></label>
-<input class="form-control input-required text-uppercase" id="peg_nama" oninput="this.value=this.value.toUpperCase()" placeholder="Nama sesuai KTP" required="" type="text"/>
-</div>
-</div>
-<div class="row mb-3">
-<div class="col-md-4 position-relative">
-<label class="form-label">Tempat Lahir (setingkat Kab/Kota)</label>
-<input autocomplete="off" class="form-control" id="peg_tempat_lahir" placeholder="Kota tempat lahir" type="text"/>
-<ul class="list-group position-absolute w-100 shadow" id="tempat_lahir_list" style="z-index: 1000; display: none; max-height: 200px; overflow-y: auto; top: 100%;">
-</ul>
-</div>
-<div class="col-md-4">
-<label class="form-label label-required">Tanggal Lahir <span class="req-asterisk">*</span></label>
-<input class="form-control input-required" id="peg_tgl_lahir" required="" type="date"/>
-</div>
-<div class="col-md-4">
-<label class="form-label">Jenis Kelamin</label>
-<select class="form-select" id="peg_kelamin">
-<option>Laki-Laki</option>
-<option>Perempuan</option>
-</select>
-</div>
-</div>
-<div class="row mb-3">
-<div class="col-md-4">
-<label class="form-label">Agama</label>
-<select class="form-select" id="peg_agama">
-<option>Islam</option>
-<option>Kristen</option>
-<option>Katolik</option>
-<option>Hindu</option>
-<option>Buddha</option>
-<option>Konghucu</option>
-</select>
-</div>
-<div class="col-md-4">
-<label class="form-label">Status Kawin</label>
-<select class="form-select" id="peg_status_kawin">
-<option>Belum Kawin</option>
-<option>Kawin</option>
-<option>Cerai Hidup</option>
-<option>Cerai Mati</option>
-</select>
-</div>
-<div class="col-md-4">
-<label class="form-label">Golongan Darah</label>
-<select class="form-select" id="peg_gol_darah">
-<option value="-">-</option>
-<option value="A">A</option>
-<option value="B">B</option>
-<option value="AB">AB</option>
-<option value="O">O</option>
-</select>
-</div>
-</div>
-<div class="mb-3 row">
-<div class="col-md-6 mb-2">
-<label class="form-label">Provinsi</label>
-<select class="form-select" id="peg_alamat_provinsi">
-<option value="">-- Pilih Provinsi --</option>
-</select>
-</div>
-<div class="col-md-6 mb-2">
-<label class="form-label">Kabupaten/Kota</label>
-<select class="form-select" id="peg_alamat_kabkota">
-<option value="">-- Pilih Kab/Kota --</option>
-</select>
-</div>
-<div class="col-12">
-<label class="form-label">Jalan, RT/RW, Desa, Kecamatan</label>
-<textarea class="form-control" id="peg_alamat" placeholder="Alamat manual tempat tinggal" rows="2"></textarea>
-</div>
-</div>
-<div class="row mb-3">
-<div class="col-md-4">
-<label class="form-label">No. HP / WA</label>
-<input class="form-control" id="peg_no_hp" placeholder="Contoh: 08123456789" type="text"/>
-</div>
-<div class="col-md-4">
-<label class="form-label">Email</label>
-<input class="form-control" id="peg_email" placeholder="contoh@email.com" type="email"/>
-</div>
-<div class="col-md-2">
-<label class="form-label">Tinggi (cm)</label>
-<input class="form-control" id="peg_tinggi_badan" placeholder="170" type="number"/>
-</div>
-<div class="col-md-2">
-<label class="form-label">Berat (kg)</label>
-<input class="form-control" id="peg_berat_badan" placeholder="65" type="number"/>
-</div>
-</div>
-<div class="row mb-3">
-<div class="col-md-5">
-<label class="form-label">Hobby</label>
-<input class="form-control" id="peg_hobby" placeholder="Contoh: Membaca, Olahraga" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="form-label">Berkebutuhan Khusus?</label>
-<select class="form-select" id="peg_is_kebutuhan_khusus" onchange="toggleKebutuhanKhusus()">
-<option value="Tidak">Tidak</option>
-<option value="Ya">Ya</option>
-</select>
-</div>
-<div class="col-md-4 d-none" id="div_kebutuhan_khusus">
-<label class="form-label">Uraian Kebutuhan Khusus</label>
-<input class="form-control" id="peg_uraian_kebutuhan_khusus" placeholder="Tuliskan kebutuhan khusus" type="text"/>
-</div>
-</div>
-</div>
-<!-- TAB 2: DATA PEGAWAI -->
-<div class="tab-pane fade" id="f-pegawai" role="tabpanel">
-<div class="tab-section-header">
-<span class="tab-badge" style="background:#1cc88a;"><i class="fas fa-user-tag" style="font-size:10px;"></i></span>
-<h5 class="fw-bold" style="color:#1cc88a;">Identitas Pegawai</h5>
-</div>
-<div class="row mb-3">
-<div class="col-md-5">
-<label class="form-label label-required" style="color:#1cc88a;">NIP Baru / NRP <span class="req-asterisk">*</span></label>
-<input class="form-control input-required" id="peg_nip" maxlength="18" onblur="validasiNIP(this)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="18 digit NIP" required="" style="border-left-color:#1cc88a !important; border-color:#1cc88a !important; background-color:#f0fff8 !important;" type="text"/>
-</div>
-<div class="col-md-4"><label class="form-label">NIP Lama (9 digit)</label><input class="form-control" id="peg_nip_lama" placeholder="Opsional" type="text"/></div>
-<div class="col-md-3">
-<label class="form-label label-required" style="color:#1cc88a;">Status Pegawai <span class="req-asterisk">*</span></label>
-<select class="form-select input-required" id="statusPegawai" onchange="toggleSKFields(this.value)" style="border-left-color:#1cc88a !important; border-color:#1cc88a !important; background-color:#f0fff8 !important;">
-<option value="PNS">PNS</option>
-<option value="PPPK">PPPK</option>
-<option value="PPPK Paruh Waktu">PPPK Paruh Waktu</option>
-<option value="Honorer">Honorer</option>
-</select>
-</div>
-</div>
-<!-- Dynamic SK Fields -->
-<div class="row mb-3 p-2 rounded" id="sk-pns-fields">
-<div class="col-md-4"><label class="form-label">No SK CPNS</label><input class="form-control form-control-sm" id="peg_no_sk_cpns" type="text"/></div>
-<div class="col-md-2"><label class="form-label">TMT CPNS</label><input class="form-control form-control-sm" id="peg_tmt_cpns" type="date"/></div>
-<div class="col-md-4"><label class="form-label">No SK PNS</label><input class="form-control form-control-sm" id="peg_no_sk_pns" type="text"/></div>
-<div class="col-md-2"><label class="form-label">TMT PNS</label><input class="form-control form-control-sm" id="peg_tmt_pns" type="date"/></div>
-</div>
-<div class="row mb-3 p-2 rounded d-none" id="sk-pppk-fields">
-<div class="col-md-4"><label class="form-label">No SK PPPK</label><input class="form-control form-control-sm" id="peg_no_sk_pppk" type="text"/></div>
-<div class="col-md-2"><label class="form-label">TMT Mulai Kontrak</label><input class="form-control form-control-sm" id="peg_tmt_pppk_mulai" type="date"/>
-</div>
-<div class="col-md-2"><label class="form-label">TMT Selesai Kontrak</label><input class="form-control form-control-sm" id="peg_tmt_pppk_selesai" type="date"/>
-</div>
-</div>
-<div class="row mb-3 p-2 rounded d-none" id="sk-honorer-fields">
-<div class="col-md-6"><label class="form-label">No SK Awal Honor</label><input class="form-control form-control-sm" id="peg_no_sk_honor" type="text"/></div>
-<div class="col-md-2"><label class="form-label">TMT Awal Honor</label><input class="form-control form-control-sm" id="peg_tmt_honor" type="date"/></div>
-</div>
-<div class="row mb-3">
-<div class="col-md-3"><label class="form-label">Nomor Karpeg</label><input class="form-control" id="peg_karpeg" type="text"/></div>
-<div class="col-md-3"><label class="form-label">NPWP</label><input class="form-control" id="peg_npwp" type="text"/></div>
-<div class="col-md-3"><label class="form-label">BPJS Kesehatan</label><input class="form-control" id="peg_bpjs" type="text"/></div>
-<div class="col-md-3"><label class="form-label">No Rekening Gaji</label><input class="form-control" id="peg_rekening" type="text"/></div>
-</div>
-<div class="row mb-3">
-<div class="col-md-6"><label class="form-label">NUPTK</label><input class="form-control" id="peg_nuptk" type="text"/></div>
-<div class="col-md-6"><label class="form-label">No Taspen</label><input class="form-control" id="peg_taspen" type="text"/></div>
-</div>
-</div>
-<!-- TAB 3: RIWAYAT PANGKAT -->
-<div class="tab-pane fade" id="f-pangkat" role="tabpanel">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<h5 class="fw-bold text-primary mb-0">Riwayat Pangkat / Golongan (PNS)</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelPangkat')" type="button"><i class="fas fa-plus"></i> Tambah
-                                    Data</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelPangkat">
-<thead class="table-light">
-<tr>
-<th>Golongan / Ruang</th>
-<th>TMT Pangkat</th>
-<th>Nomor SK</th>
-<th>Tanggal SK</th>
-<th>Pejabat Penandatangan</th>
-<th>MK (Thn)</th>
-<th>MK (Bln)</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis ditambahkan via JS -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB 3.5: RIWAYAT KONTRAK PPPK -->
-<div class="tab-pane fade" id="f-kontrak" role="tabpanel">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<h5 class="fw-bold text-primary mb-0">Riwayat Kontrak (PPPK)</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelKontrak')" type="button"><i class="fas fa-plus"></i> Tambah
-                                    Data</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelKontrak">
-<thead class="table-light">
-<tr>
-<th>Nama Jabatan</th>
-<th>Golongan</th>
-<th>TMT Mulai</th>
-<th>TMT Selesai</th>
-<th>Nomor SK</th>
-<th>Tanggal SK</th>
-<th>Pejabat Penandatangan</th>
-<th>MK (Thn)</th>
-<th>MK (Bln)</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis ditambahkan via JS -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB 4: RIWAYAT JABATAN -->
-<div class="tab-pane fade" id="f-jabatan" role="tabpanel">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<h5 class="fw-bold text-primary mb-0">Riwayat Jabatan</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelJabatan')" type="button"><i class="fas fa-plus"></i> Tambah
-                                    Data</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelJabatan">
-<thead class="table-light">
-<tr>
-<th>Jenis Jabatan</th>
-<th>Eselon</th>
-<th>Nama Jabatan</th>
-<th>Unit Kerja/Instansi</th>
-<th>TMT Jabatan</th>
-<th>Nomor SK</th>
-<th>Tgl SK</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB SERTIFIKASI GURU -->
-<div class="tab-pane fade" id="f-sertifikasi" role="tabpanel">
-<h5 class="fw-bold text-primary mb-3">Sertifikasi (Guru)</h5>
-<div class="row mb-3">
-<div class="col-md-4"><label class="form-label">Nomor Sertifikat</label><input class="form-control" id="cert_no" type="text"/></div>
-<div class="col-md-4"><label class="form-label">Tanggal Sertifikat</label><input class="form-control" id="cert_tgl" type="date"/></div>
-<div class="col-md-4"><label class="form-label">NRG</label><input class="form-control" id="cert_nrg" type="text"/></div>
-</div>
-<div class="row mb-3">
-<div class="col-md-4"><label class="form-label">NUPTK</label><input class="form-control" id="cert_nuptk" readonly="" type="text"/></div>
-<div class="col-md-4"><label class="form-label">Tahun Lulus</label><input class="form-control" id="cert_tahun" type="number"/></div>
-<div class="col-md-4"><label class="form-label">Mata Pelajaran (Mapel)</label><input class="form-control" id="cert_mapel" type="text"/></div>
-</div>
-<div class="row mb-3">
-<div class="col-md-4"><label class="form-label">LPTK Penyelenggara</label><input class="form-control" id="cert_lptk" type="text"/></div>
-<div class="col-md-4"><label class="form-label">Pejabat Penandatangan</label><input class="form-control" id="cert_pejabat" type="text"/></div>
-<div class="col-md-4">
-<label class="form-label">Upload Sertifikat (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="cert_file_data" onchange="handleFileUpload(this)" type="file"/>
-<input id="cert_file_data" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('cert_file_data').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-</div>
-</div>
-<!-- TAB BARU: RIWAYAT KGB -->
-<div class="tab-pane fade" id="f-kgb" role="tabpanel">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<h5 class="fw-bold text-primary mb-0">Riwayat KGB</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelKGB')" type="button"><i class="fas fa-plus"></i> Tambah
-                                    Data</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelKGB">
-<thead class="table-light">
-<tr>
-<th>Nomor SK KGB</th>
-<th>Tgl SK</th>
-<th>TMT KGB</th>
-<th>Jumlah Gaji Pokok</th>
-<th>Masa Kerja (Thn)</th>
-<th>Masa Kerja (Bln)</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB 5: RIWAYAT PENDIDIKAN -->
-<div class="tab-pane fade" id="f-pendidikan" role="tabpanel">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<h5 class="fw-bold text-primary mb-0">Riwayat Pendidikan Formal</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelPendidikan')" type="button"><i class="fas fa-plus"></i> Tambah
-                                    Data</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelPendidikan">
-<thead class="table-light">
-<tr>
-<th>Tingkat</th>
-<th>Nama Institusi / Sekolah</th>
-<th>Jurusan / Prodi</th>
-<th>Tahun Masuk</th>
-<th>Tahun Lulus</th>
-<th>Gelar Depan</th>
-<th>Gelar Belakang</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB BARU: DIKLAT / KURSUS -->
-<div class="tab-pane fade" id="f-diklat" role="tabpanel">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<h5 class="fw-bold text-primary mb-0">Riwayat Diklat / Kursus</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelDiklat')" type="button"><i class="fas fa-plus"></i> Tambah
-                                    Data</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelDiklat">
-<thead class="table-light">
-<tr>
-<th>Nama Diklat / Kursus</th>
-<th>Penyelenggara</th>
-<th>Tahun</th>
-<th>Durasi (Jam/Hari)</th>
-<th>No. Sertifikat</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB 6: DATA KELUARGA -->
-<div class="tab-pane fade" id="f-keluarga" role="tabpanel">
-<h5 class="fw-bold text-primary mb-3">Data Suami / Istri</h5>
-<div class="row mb-3">
-<div class="col-md-3"><label class="form-label">Nama Pasangan</label><input class="form-control" id="peg_pasangan_nama" type="text"/></div>
-<div class="col-md-3"><label class="form-label">NIK</label><input class="form-control" id="peg_pasangan_nik" type="text"/></div>
-<div class="col-md-3"><label class="form-label">Tempat Lahir</label><input class="form-control" id="peg_pasangan_tmpt_lahir" type="text"/></div>
-<div class="col-md-3"><label class="form-label">Tgl Lahir</label><input class="form-control" id="peg_pasangan_tgl_lahir" type="date"/></div>
-</div>
-<div class="row mb-3">
-<div class="col-md-4">
-<label class="form-label">Pekerjaan</label>
-<input class="form-control" id="peg_pasangan_pekerjaan" list="pekerjaanList" onchange="toggleNipPasangan()" placeholder="Ketik/pilih pekerjaan..."/>
-<datalist id="pekerjaanList">
-<option value="Belum/Tidak Bekerja">
-<option value="Mengurus Rumah Tangga">
-<option value="Pelajar/Mahasiswa">
-<option value="Pensiunan">
-<option value="ASN PNS">
-<option value="ASN PPPK">
-<option value="TNI/POLRI">
-<option value="Pegawai BUMN/BUMD">
-<option value="Pegawai Swasta">
-<option value="Wiraswasta / Pedagang">
-<option value="Petani/Pekebun">
-<option value="Peternak">
-<option value="Nelayan/Perikanan">
-<option value="Industri / Buruh">
-<option value="Konstruksi">
-<option value="Transportasi / Supir">
-<option value="Tenaga Medis (Dokter/Bidan/Perawat)">
-<option value="Dosen / Guru / Pengajar">
-<option value="Lainnya">
-</option></option></option></option></option></option></option></option></option></option></option></option></option></option></option></option></option></option></option></datalist>
-</div>
-<div class="col-md-4 d-none" id="div_pasangan_nip">
-<label class="form-label">NIP / NRP Pasangan</label>
-<input class="form-control" id="peg_pasangan_nip" placeholder="Wajib untuk ASN/TNI/POLRI" type="text"/>
-</div>
-</div>
-<div class="row mb-3">
-<div class="col-md-6">
-<label class="form-label">Buku Nikah / Akta Cerai (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="file_buku_nikah" onchange="handleFileUpload(this)" type="file"/>
-<input id="file_buku_nikah" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('file_buku_nikah').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-<div class="col-md-6">
-<label class="form-label">Kartu Keluarga (KK) (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="file_kk" onchange="handleFileUpload(this)" type="file"/>
-<input id="file_kk" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('file_kk').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-</div>
-<div class="d-flex justify-content-between align-items-center mb-2 mt-4">
-<h5 class="fw-bold text-primary mb-0">Data Anak</h5>
-<button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelAnak')" type="button"><i class="fas fa-plus"></i> Tambah Anak</button>
-</div>
-<div class="table-responsive">
-<table class="table table-bordered table-sm" id="tabelAnak">
-<thead class="table-light">
-<tr>
-<th>Nama Anak</th>
-<th>NIK</th>
-<th>Jenis Kelamin</th>
-<th>Kota Tempat Lahir</th>
-<th>Tanggal Lahir</th>
-<th>Status Keluarga</th>
-<th>Dari Istri/Suami Ke-</th>
-<th>Dapat Tunjangan</th>
-<th>Pekerjaan</th>
-<th>Status Sekolah</th>
-<th>Upload (PDF)</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-<!-- Baris dinamis -->
-</tbody>
-</table>
-</div>
-</div>
-<!-- TAB 9: FOTO PEGAWAI -->
-<div class="tab-pane fade" id="f-foto" role="tabpanel">
-<h5 class="fw-bold text-primary mb-3">Foto Pegawai</h5>
-<div class="row">
-<div class="col-md-3">
-<label class="form-label fw-bold">Unggah Foto (3:4)</label>
-<input accept="image/*" class="form-control" id="inputFotoPegawai" onchange="openCropper(this, 'previewFotoPegawai', 3/4)" type="file"/>
-</div>
-<div class="col-md-3 text-center">
-<div class="border rounded p-2 mb-3 bg-light mx-auto" style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
-<img alt="Preview Foto" class="img-thumbnail" id="previewFotoPegawai" src="logo-simpeel.png" style="max-width: 100%;"/>
-</div>
-</div>
-<div class="col-md-6">
-<div class="alert alert-info">
-<h6 class="fw-bold"><i class="fas fa-info-circle"></i> Petunjuk:</h6>
-<ul class="mb-0 ps-3">
-<li>Gunakan foto resmi dengan latar belakang yang seragam (misal:
-                                                merah/biru).</li>
-<li>Ukuran file maksimal 2MB.</li>
-<li>Foto akan otomatis di-crop 3:4 saat Anda memilih gambar.</li>
-</ul>
-</div>
-</div>
-<hr/>
-<div class="col-md-12 mb-4">
-<h6 class="fw-bold text-secondary">Dokumen Pendukung Lainnya</h6>
-<div class="row">
-<div class="col-md-6 mb-3">
-<label class="form-label">Kartu NUPTK (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="file_kartu_nuptk" type="file"/>
-<input id="file_kartu_nuptk" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('file_kartu_nuptk').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-<div class="col-md-6 mb-3">
-<label class="form-label">Taspen (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="file_taspen" type="file"/>
-<input id="file_taspen" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('file_taspen').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-<div class="col-md-6 mb-3">
-<label class="form-label">BPJS (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="file_bpjs" type="file"/>
-<input id="file_bpjs" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('file_bpjs').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-<div class="col-md-6 mb-3">
-<label class="form-label">KTP (PDF, max 250kb)</label>
-<div class="d-flex align-items-center">
-<input accept="application/pdf" class="form-control file-upload-input" data-max-size="250" data-target="file_ktp" type="file"/>
-<input id="file_ktp" type="hidden"/>
-<button class="btn btn-sm btn-info ms-2 d-none btn-view-file" onclick="viewFileApp(document.getElementById('file_ktp').value)" type="button"><i class="fas fa-eye"></i></button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="modal-footer" style="background: linear-gradient(180deg, #f8f9ff 0%, #eef0ff 100%); border-top: 2px solid #dee2e6;">
-<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Tutup</button>
-<button class="btn btn-primary px-4" onclick="simpanPegawai()" type="button"><i class="fas fa-save me-1"></i>
-                        Simpan Keseluruhan Data</button>
-</div>
-</div>
-</div>
+                            <div class="col-md-8">
+                                <label class="form-label label-required">Nama Lengkap (tanpa gelar) <span
+                                        class="req-asterisk">*</span></label>
+                                <input class="form-control input-required text-uppercase" id="peg_nama"
+                                    oninput="this.value=this.value.toUpperCase()" placeholder="Nama sesuai KTP"
+                                    required="" type="text" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 position-relative">
+                                <label class="form-label">Tempat Lahir (setingkat Kab/Kota)</label>
+                                <input autocomplete="off" class="form-control" id="peg_tempat_lahir"
+                                    placeholder="Kota tempat lahir" type="text" />
+                                <ul class="list-group position-absolute w-100 shadow" id="tempat_lahir_list"
+                                    style="z-index: 1000; display: none; max-height: 200px; overflow-y: auto; top: 100%;">
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label label-required">Tanggal Lahir <span
+                                        class="req-asterisk">*</span></label>
+                                <input class="form-control input-required" id="peg_tgl_lahir" required="" type="date" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" id="peg_kelamin">
+                                    <option>Laki-Laki</option>
+                                    <option>Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Agama</label>
+                                <select class="form-select" id="peg_agama">
+                                    <option>Islam</option>
+                                    <option>Kristen</option>
+                                    <option>Katolik</option>
+                                    <option>Hindu</option>
+                                    <option>Buddha</option>
+                                    <option>Konghucu</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Status Kawin</label>
+                                <select class="form-select" id="peg_status_kawin">
+                                    <option>Belum Kawin</option>
+                                    <option>Kawin</option>
+                                    <option>Cerai Hidup</option>
+                                    <option>Cerai Mati</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Golongan Darah</label>
+                                <select class="form-select" id="peg_gol_darah">
+                                    <option value="-">-</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Provinsi</label>
+                                <select class="form-select" id="peg_alamat_provinsi">
+                                    <option value="">-- Pilih Provinsi --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Kabupaten/Kota</label>
+                                <select class="form-select" id="peg_alamat_kabkota">
+                                    <option value="">-- Pilih Kab/Kota --</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Jalan, RT/RW, Desa, Kecamatan</label>
+                                <textarea class="form-control" id="peg_alamat"
+                                    placeholder="Alamat manual tempat tinggal" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">No. HP / WA</label>
+                                <input class="form-control" id="peg_no_hp" placeholder="Contoh: 08123456789"
+                                    type="text" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Email</label>
+                                <input class="form-control" id="peg_email" placeholder="contoh@email.com"
+                                    type="email" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tinggi (cm)</label>
+                                <input class="form-control" id="peg_tinggi_badan" placeholder="170" type="number" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Berat (kg)</label>
+                                <input class="form-control" id="peg_berat_badan" placeholder="65" type="number" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Hobby</label>
+                                <input class="form-control" id="peg_hobby" placeholder="Contoh: Membaca, Olahraga"
+                                    type="text" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Berkebutuhan Khusus?</label>
+                                <select class="form-select" id="peg_is_kebutuhan_khusus"
+                                    onchange="toggleKebutuhanKhusus()">
+                                    <option value="Tidak">Tidak</option>
+                                    <option value="Ya">Ya</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-none" id="div_kebutuhan_khusus">
+                                <label class="form-label">Uraian Kebutuhan Khusus</label>
+                                <input class="form-control" id="peg_uraian_kebutuhan_khusus"
+                                    placeholder="Tuliskan kebutuhan khusus" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TAB 2: DATA PEGAWAI -->
+                    <div class="tab-pane fade" id="f-pegawai" role="tabpanel">
+                        <div class="tab-section-header">
+                            <span class="tab-badge" style="background:#1cc88a;"><i class="fas fa-user-tag"
+                                    style="font-size:10px;"></i></span>
+                            <h5 class="fw-bold" style="color:#1cc88a;">Identitas Pegawai</h5>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label label-required" style="color:#1cc88a;">NIP Baru / NRP <span
+                                        class="req-asterisk">*</span></label>
+                                <input class="form-control input-required" id="peg_nip" maxlength="18"
+                                    onblur="validasiNIP(this)" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    placeholder="18 digit NIP" required=""
+                                    style="border-left-color:#1cc88a !important; border-color:#1cc88a !important; background-color:#f0fff8 !important;"
+                                    type="text" />
+                            </div>
+                            <div class="col-md-4"><label class="form-label">NIP Lama (9 digit)</label><input
+                                    class="form-control" id="peg_nip_lama" placeholder="Opsional" type="text" /></div>
+                            <div class="col-md-3">
+                                <label class="form-label label-required" style="color:#1cc88a;">Status Pegawai <span
+                                        class="req-asterisk">*</span></label>
+                                <select class="form-select input-required" id="statusPegawai"
+                                    onchange="toggleSKFields(this.value)"
+                                    style="border-left-color:#1cc88a !important; border-color:#1cc88a !important; background-color:#f0fff8 !important;">
+                                    <option value="PNS">PNS</option>
+                                    <option value="PPPK">PPPK</option>
+                                    <option value="PPPK Paruh Waktu">PPPK Paruh Waktu</option>
+                                    <option value="Honorer">Honorer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Dynamic SK Fields -->
+                        <div class="row mb-3 p-2 rounded" id="sk-pns-fields">
+                            <div class="col-md-4"><label class="form-label">No SK CPNS</label><input
+                                    class="form-control form-control-sm" id="peg_no_sk_cpns" type="text" /></div>
+                            <div class="col-md-2"><label class="form-label">TMT CPNS</label><input
+                                    class="form-control form-control-sm" id="peg_tmt_cpns" type="date" /></div>
+                            <div class="col-md-4"><label class="form-label">No SK PNS</label><input
+                                    class="form-control form-control-sm" id="peg_no_sk_pns" type="text" /></div>
+                            <div class="col-md-2"><label class="form-label">TMT PNS</label><input
+                                    class="form-control form-control-sm" id="peg_tmt_pns" type="date" /></div>
+                        </div>
+                        <div class="row mb-3 p-2 rounded d-none" id="sk-pppk-fields">
+                            <div class="col-md-4"><label class="form-label">No SK PPPK</label><input
+                                    class="form-control form-control-sm" id="peg_no_sk_pppk" type="text" /></div>
+                            <div class="col-md-2"><label class="form-label">TMT Mulai Kontrak</label><input
+                                    class="form-control form-control-sm" id="peg_tmt_pppk_mulai" type="date" />
+                            </div>
+                            <div class="col-md-2"><label class="form-label">TMT Selesai Kontrak</label><input
+                                    class="form-control form-control-sm" id="peg_tmt_pppk_selesai" type="date" />
+                            </div>
+                        </div>
+                        <div class="row mb-3 p-2 rounded d-none" id="sk-honorer-fields">
+                            <div class="col-md-6"><label class="form-label">No SK Awal Honor</label><input
+                                    class="form-control form-control-sm" id="peg_no_sk_honor" type="text" /></div>
+                            <div class="col-md-2"><label class="form-label">TMT Awal Honor</label><input
+                                    class="form-control form-control-sm" id="peg_tmt_honor" type="date" /></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3"><label class="form-label">Nomor Karpeg</label><input
+                                    class="form-control" id="peg_karpeg" type="text" /></div>
+                            <div class="col-md-3"><label class="form-label">NPWP</label><input class="form-control"
+                                    id="peg_npwp" type="text" /></div>
+                            <div class="col-md-3"><label class="form-label">BPJS Kesehatan</label><input
+                                    class="form-control" id="peg_bpjs" type="text" /></div>
+                            <div class="col-md-3"><label class="form-label">No Rekening Gaji</label><input
+                                    class="form-control" id="peg_rekening" type="text" /></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6"><label class="form-label">NUPTK</label><input class="form-control"
+                                    id="peg_nuptk" type="text" /></div>
+                            <div class="col-md-6"><label class="form-label">No Taspen</label><input class="form-control"
+                                    id="peg_taspen" type="text" /></div>
+                        </div>
+                    </div>
+                    <!-- TAB 3: RIWAYAT PANGKAT -->
+                    <div class="tab-pane fade" id="f-pangkat" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat Pangkat / Golongan (PNS)</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelPangkat')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelPangkat">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Golongan / Ruang</th>
+                                        <th>TMT Pangkat</th>
+                                        <th>Nomor SK</th>
+                                        <th>Tanggal SK</th>
+                                        <th>Pejabat Penandatangan</th>
+                                        <th>MK (Thn)</th>
+                                        <th>MK (Bln)</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis ditambahkan via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB 3.5: RIWAYAT KONTRAK PPPK -->
+                    <div class="tab-pane fade" id="f-kontrak" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat Kontrak (PPPK)</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelKontrak')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelKontrak">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nama Jabatan</th>
+                                        <th>Golongan</th>
+                                        <th>TMT Mulai</th>
+                                        <th>TMT Selesai</th>
+                                        <th>Nomor SK</th>
+                                        <th>Tanggal SK</th>
+                                        <th>Pejabat Penandatangan</th>
+                                        <th>MK (Thn)</th>
+                                        <th>MK (Bln)</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis ditambahkan via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB 4: RIWAYAT JABATAN -->
+                    <div class="tab-pane fade" id="f-jabatan" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat Jabatan</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelJabatan')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelJabatan">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Jenis Jabatan</th>
+                                        <th>Eselon</th>
+                                        <th>Nama Jabatan</th>
+                                        <th>Unit Kerja/Instansi</th>
+                                        <th>TMT Jabatan</th>
+                                        <th>Nomor SK</th>
+                                        <th>Tgl SK</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB SERTIFIKASI GURU -->
+                    <div class="tab-pane fade" id="f-sertifikasi" role="tabpanel">
+                        <h5 class="fw-bold text-primary mb-3">Sertifikasi (Guru)</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><label class="form-label">Nomor Sertifikat</label><input
+                                    class="form-control" id="cert_no" type="text" /></div>
+                            <div class="col-md-4"><label class="form-label">Tanggal Sertifikat</label><input
+                                    class="form-control" id="cert_tgl" type="date" /></div>
+                            <div class="col-md-4"><label class="form-label">NRG</label><input class="form-control"
+                                    id="cert_nrg" type="text" /></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><label class="form-label">NUPTK</label><input class="form-control"
+                                    id="cert_nuptk" readonly="" type="text" /></div>
+                            <div class="col-md-4"><label class="form-label">Tahun Lulus</label><input
+                                    class="form-control" id="cert_tahun" type="number" /></div>
+                            <div class="col-md-4"><label class="form-label">Mata Pelajaran (Mapel)</label><input
+                                    class="form-control" id="cert_mapel" type="text" /></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><label class="form-label">LPTK Penyelenggara</label><input
+                                    class="form-control" id="cert_lptk" type="text" /></div>
+                            <div class="col-md-4"><label class="form-label">Pejabat Penandatangan</label><input
+                                    class="form-control" id="cert_pejabat" type="text" /></div>
+                            <div class="col-md-4">
+                                <label class="form-label">Upload Sertifikat (PDF, max 250kb)</label>
+                                <div class="d-flex align-items-center">
+                                    <input accept="application/pdf" class="form-control file-upload-input"
+                                        data-max-size="250" data-target="cert_file_data"
+                                        onchange="handleFileUpload(this)" type="file" />
+                                    <input id="cert_file_data" type="hidden" />
+                                    <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                        onclick="viewFileApp(document.getElementById('cert_file_data').value)"
+                                        type="button"><i class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TAB BARU: RIWAYAT KGB -->
+                    <div class="tab-pane fade" id="f-kgb" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat KGB</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelKGB')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelKGB">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nomor SK KGB</th>
+                                        <th>Tgl SK</th>
+                                        <th>TMT KGB</th>
+                                        <th>Jumlah Gaji Pokok</th>
+                                        <th>Masa Kerja (Thn)</th>
+                                        <th>Masa Kerja (Bln)</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB 5: RIWAYAT PENDIDIKAN -->
+                    <div class="tab-pane fade" id="f-pendidikan" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat Pendidikan Formal</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelPendidikan')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelPendidikan">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Tingkat</th>
+                                        <th>Nama Institusi / Sekolah</th>
+                                        <th>Jurusan / Prodi</th>
+                                        <th>Tahun Masuk</th>
+                                        <th>Tahun Lulus</th>
+                                        <th>Gelar Depan</th>
+                                        <th>Gelar Belakang</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB BARU: DIKLAT / KURSUS -->
+                    <div class="tab-pane fade" id="f-diklat" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Riwayat Diklat / Kursus</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelDiklat')"
+                                type="button"><i class="fas fa-plus"></i> Tambah
+                                Data</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelDiklat">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nama Diklat / Kursus</th>
+                                        <th>Penyelenggara</th>
+                                        <th>Tahun</th>
+                                        <th>Durasi (Jam/Hari)</th>
+                                        <th>No. Sertifikat</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB 6: DATA KELUARGA -->
+                    <div class="tab-pane fade" id="f-keluarga" role="tabpanel">
+                        <h5 class="fw-bold text-primary mb-3">Data Suami / Istri</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-3"><label class="form-label">Nama Pasangan</label><input
+                                    class="form-control" id="peg_pasangan_nama" type="text" /></div>
+                            <div class="col-md-3"><label class="form-label">NIK</label><input class="form-control"
+                                    id="peg_pasangan_nik" type="text" /></div>
+                            <div class="col-md-3"><label class="form-label">Tempat Lahir</label><input
+                                    class="form-control" id="peg_pasangan_tmpt_lahir" type="text" /></div>
+                            <div class="col-md-3"><label class="form-label">Tgl Lahir</label><input class="form-control"
+                                    id="peg_pasangan_tgl_lahir" type="date" /></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Pekerjaan</label>
+                                <input class="form-control" id="peg_pasangan_pekerjaan" list="pekerjaanList"
+                                    onchange="toggleNipPasangan()" placeholder="Ketik/pilih pekerjaan..." />
+                                <datalist id="pekerjaanList">
+                                    <option value="Belum/Tidak Bekerja">
+                                    <option value="Mengurus Rumah Tangga">
+                                    <option value="Pelajar/Mahasiswa">
+                                    <option value="Pensiunan">
+                                    <option value="ASN PNS">
+                                    <option value="ASN PPPK">
+                                    <option value="TNI/POLRI">
+                                    <option value="Pegawai BUMN/BUMD">
+                                    <option value="Pegawai Swasta">
+                                    <option value="Wiraswasta / Pedagang">
+                                    <option value="Petani/Pekebun">
+                                    <option value="Peternak">
+                                    <option value="Nelayan/Perikanan">
+                                    <option value="Industri / Buruh">
+                                    <option value="Konstruksi">
+                                    <option value="Transportasi / Supir">
+                                    <option value="Tenaga Medis (Dokter/Bidan/Perawat)">
+                                    <option value="Dosen / Guru / Pengajar">
+                                    <option value="Lainnya">
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                    </option>
+                                </datalist>
+                            </div>
+                            <div class="col-md-4 d-none" id="div_pasangan_nip">
+                                <label class="form-label">NIP / NRP Pasangan</label>
+                                <input class="form-control" id="peg_pasangan_nip"
+                                    placeholder="Wajib untuk ASN/TNI/POLRI" type="text" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Buku Nikah / Akta Cerai (PDF, max 250kb)</label>
+                                <div class="d-flex align-items-center">
+                                    <input accept="application/pdf" class="form-control file-upload-input"
+                                        data-max-size="250" data-target="file_buku_nikah"
+                                        onchange="handleFileUpload(this)" type="file" />
+                                    <input id="file_buku_nikah" type="hidden" />
+                                    <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                        onclick="viewFileApp(document.getElementById('file_buku_nikah').value)"
+                                        type="button"><i class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Kartu Keluarga (KK) (PDF, max 250kb)</label>
+                                <div class="d-flex align-items-center">
+                                    <input accept="application/pdf" class="form-control file-upload-input"
+                                        data-max-size="250" data-target="file_kk" onchange="handleFileUpload(this)"
+                                        type="file" />
+                                    <input id="file_kk" type="hidden" />
+                                    <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                        onclick="viewFileApp(document.getElementById('file_kk').value)" type="button"><i
+                                            class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+                            <h5 class="fw-bold text-primary mb-0">Data Anak</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="tambahBaris('tabelAnak')"
+                                type="button"><i class="fas fa-plus"></i> Tambah Anak</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tabelAnak">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nama Anak</th>
+                                        <th>NIK</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Kota Tempat Lahir</th>
+                                        <th>Tanggal Lahir</th>
+                                        <th>Status Keluarga</th>
+                                        <th>Dari Istri/Suami Ke-</th>
+                                        <th>Dapat Tunjangan</th>
+                                        <th>Pekerjaan</th>
+                                        <th>Status Sekolah</th>
+                                        <th>Upload (PDF)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Baris dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- TAB 9: FOTO PEGAWAI -->
+                    <div class="tab-pane fade" id="f-foto" role="tabpanel">
+                        <h5 class="fw-bold text-primary mb-3">Foto Pegawai</h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Unggah Foto (3:4)</label>
+                                <input accept="image/*" class="form-control" id="inputFotoPegawai"
+                                    onchange="openCropper(this, 'previewFotoPegawai', 3/4)" type="file" />
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="border rounded p-2 mb-3 bg-light mx-auto"
+                                    style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                                    <img alt="Preview Foto" class="img-thumbnail" id="previewFotoPegawai"
+                                        src="logo-simpeel.png" style="max-width: 100%;" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="alert alert-info">
+                                    <h6 class="fw-bold"><i class="fas fa-info-circle"></i> Petunjuk:</h6>
+                                    <ul class="mb-0 ps-3">
+                                        <li>Gunakan foto resmi dengan latar belakang yang seragam (misal:
+                                            merah/biru).</li>
+                                        <li>Ukuran file maksimal 2MB.</li>
+                                        <li>Foto akan otomatis di-crop 3:4 saat Anda memilih gambar.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="col-md-12 mb-4">
+                                <h6 class="fw-bold text-secondary">Dokumen Pendukung Lainnya</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Kartu NUPTK (PDF, max 250kb)</label>
+                                        <div class="d-flex align-items-center">
+                                            <input accept="application/pdf" class="form-control file-upload-input"
+                                                data-max-size="250" data-target="file_kartu_nuptk" type="file" />
+                                            <input id="file_kartu_nuptk" type="hidden" />
+                                            <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                                onclick="viewFileApp(document.getElementById('file_kartu_nuptk').value)"
+                                                type="button"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Taspen (PDF, max 250kb)</label>
+                                        <div class="d-flex align-items-center">
+                                            <input accept="application/pdf" class="form-control file-upload-input"
+                                                data-max-size="250" data-target="file_taspen" type="file" />
+                                            <input id="file_taspen" type="hidden" />
+                                            <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                                onclick="viewFileApp(document.getElementById('file_taspen').value)"
+                                                type="button"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">BPJS (PDF, max 250kb)</label>
+                                        <div class="d-flex align-items-center">
+                                            <input accept="application/pdf" class="form-control file-upload-input"
+                                                data-max-size="250" data-target="file_bpjs" type="file" />
+                                            <input id="file_bpjs" type="hidden" />
+                                            <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                                onclick="viewFileApp(document.getElementById('file_bpjs').value)"
+                                                type="button"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">KTP (PDF, max 250kb)</label>
+                                        <div class="d-flex align-items-center">
+                                            <input accept="application/pdf" class="form-control file-upload-input"
+                                                data-max-size="250" data-target="file_ktp" type="file" />
+                                            <input id="file_ktp" type="hidden" />
+                                            <button class="btn btn-sm btn-info ms-2 d-none btn-view-file"
+                                                onclick="viewFileApp(document.getElementById('file_ktp').value)"
+                                                type="button"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"
+                style="background: linear-gradient(180deg, #f8f9ff 0%, #eef0ff 100%); border-top: 2px solid #dee2e6;">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Tutup</button>
+                <button class="btn btn-primary px-4" onclick="simpanPegawai()" type="button"><i
+                        class="fas fa-save me-1"></i>
+                    Simpan Keseluruhan Data</button>
+            </div>
+        </div>
+    </div>
 </div>
