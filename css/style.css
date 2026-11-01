@@ -1665,3 +1665,67 @@ body .modal-dialog {
         padding: 1rem;
     }
 }
+
+
+/* ============================================================
+   GRID TABEL SERAGAM (Akun Pegawai, Data Pegawai Lengkap, Pegawai Aktif)
+   - Lebar kolom TETAP & seragam antar tab (PNS / PPPK / PPPK PW / Honorer)
+   - Kolom Nama tebal, kolom Aksi selalu sejajar satu baris
+   - Di layar kecil tabel digeser ke samping (tidak menumpuk/turun)
+   ============================================================ */
+#wrapper #mainContainer table.simpeel-grid {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+#wrapper #mainContainer table.simpeel-grid th,
+#wrapper #mainContainer table.simpeel-grid td {
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+}
+
+/* Kolom Aksi: tombol sejajar, tidak boleh turun baris */
+#wrapper #mainContainer table.simpeel-grid thead th:last-child,
+#wrapper #mainContainer table.simpeel-grid tbody td:last-child {
+    text-align: center;
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+#wrapper #mainContainer table.simpeel-grid tbody td:last-child .btn {
+    display: inline-block;
+    margin: 0 0.1rem !important;
+    vertical-align: middle;
+}
+
+/* ---- Akun Pegawai: NIP | Nama | Status | Tgl Daftar | Role | Aksi ---- */
+#wrapper #mainContainer table.simpeel-grid-akun { min-width: 900px; }
+#wrapper #mainContainer table.simpeel-grid-akun thead th:nth-child(1) { width: 185px; }
+#wrapper #mainContainer table.simpeel-grid-akun thead th:nth-child(3) { width: 130px; }
+#wrapper #mainContainer table.simpeel-grid-akun thead th:nth-child(4) { width: 135px; }
+#wrapper #mainContainer table.simpeel-grid-akun thead th:nth-child(5) { width: 95px; }
+#wrapper #mainContainer table.simpeel-grid-akun thead th:nth-child(6) { width: 150px; }
+#wrapper #mainContainer table.simpeel-grid-akun tbody td:nth-child(1) { white-space: nowrap; overflow-wrap: normal; }
+#wrapper #mainContainer table.simpeel-grid-akun tbody td:nth-child(2) { font-weight: 700; color: #2e3b52; }
+
+/* ---- Data Pegawai Lengkap: NIP | Nama | Golongan | Jabatan | Unit Kerja | Aksi ---- */
+#wrapper #mainContainer table.simpeel-grid-induk { min-width: 1080px; }
+#wrapper #mainContainer table.simpeel-grid-induk thead th:nth-child(1) { width: 185px; }
+#wrapper #mainContainer table.simpeel-grid-induk thead th:nth-child(2) { width: 240px; }
+#wrapper #mainContainer table.simpeel-grid-induk thead th:nth-child(3) { width: 130px; }
+#wrapper #mainContainer table.simpeel-grid-induk thead th:nth-child(5) { width: 190px; }
+#wrapper #mainContainer table.simpeel-grid-induk thead th:nth-child(6) { width: 150px; }
+#wrapper #mainContainer table.simpeel-grid-induk tbody td:nth-child(1) { white-space: nowrap; overflow-wrap: normal; }
+#wrapper #mainContainer table.simpeel-grid-induk tbody td:nth-child(2) { font-weight: 700; color: #2e3b52; }
+
+/* ---- Pegawai Aktif: Nama | NIP | Golongan | Jabatan | Pendidikan | Status | Aksi ---- */
+#wrapper #mainContainer table.simpeel-grid-rekap { min-width: 1020px; }
+#wrapper #mainContainer table.simpeel-grid-rekap thead th:nth-child(1) { width: 240px; }
+#wrapper #mainContainer table.simpeel-grid-rekap thead th:nth-child(2) { width: 185px; }
+#wrapper #mainContainer table.simpeel-grid-rekap thead th:nth-child(3) { width: 130px; }
+#wrapper #mainContainer table.simpeel-grid-rekap thead th:nth-child(5) { width: 120px; }
+#wrapper #mainContainer table.simpeel-grid-rekap thead th:nth-child(6) { width: 90px; }
+#wrapper #mainContainer table.simpeel-grid-rekap thead th:nth-child(7) { width: 120px; }
+#wrapper #mainContainer table.simpeel-grid-rekap tbody td:nth-child(1) { font-weight: 700; color: #2e3b52; }
+#wrapper #mainContainer table.simpeel-grid-rekap tbody td:nth-child(2) { white-space: nowrap; overflow-wrap: normal; }
+#wrapper #mainContainer table.simpeel-grid-rekap tbody td:nth-child(6) { text-align: center; }
