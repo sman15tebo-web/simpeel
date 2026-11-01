@@ -1,0 +1,177 @@
+<div class="page-view d-none animate-fade-in" id="view-usul-cuti">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold"><i class="fas fa-calendar-alt text-primary me-2"></i>Usul Cuti Pegawai</h1>
+            <p class="text-muted small mb-0 mt-1">Layanan formulir permohonan dan pemberian cuti pegawai (PNS, PPPK, dan PPPK Paruh Waktu) serta riwayat usulan cuti</p>
+        </div>
+        <div>
+            <button class="btn btn-sm btn-outline-primary shadow-sm" onclick="segarkanHalamanAktif()" title="Segarkan Data Halaman Cuti">
+                <i class="fas fa-sync-alt me-1"></i>Segarkan Data
+            </button>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header py-3 bg-white border-bottom">
+            <ul class="nav nav-pills card-header-pills" id="cutiTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active fw-bold" data-bs-target="#cuti-tab-pns" data-bs-toggle="pill"
+                        id="tab-cuti-pns" type="button">
+                        <i class="fas fa-user-tie me-1"></i> PNS
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link fw-bold" data-bs-target="#cuti-tab-pppk" data-bs-toggle="pill"
+                        id="tab-cuti-pppk" type="button">
+                        <i class="fas fa-user-check me-1"></i> PPPK
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link fw-bold" data-bs-target="#cuti-tab-pppkpw" data-bs-toggle="pill"
+                        id="tab-cuti-pppkpw" type="button">
+                        <i class="fas fa-user-clock me-1"></i> PPPK Paruh Waktu
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link fw-bold" data-bs-target="#cuti-tab-riwayat" data-bs-toggle="pill"
+                        id="tab-cuti-riwayat" type="button">
+                        <i class="fas fa-history me-1"></i> Riwayat Usulan Cuti
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="cutiTabsContent">
+                <!-- TAB 1: PNS -->
+                <div class="tab-pane fade show active" id="cuti-tab-pns" role="tabpanel">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                                <input type="text" class="form-control" id="filterCutiPNS"
+                                    placeholder="Cari nama atau NIP PNS...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped w-100 table-sm align-middle"
+                            id="tblCutiPNS">
+                            <thead class="table-primary text-center">
+                                <tr>
+                                    <th style="width: 5%;">No</th>
+                                    <th>Nama Pegawai</th>
+                                    <th>NIP</th>
+                                    <th>Pangkat / Gol.</th>
+                                    <th>Jabatan</th>
+                                    <th>Masa Kerja</th>
+                                    <th>Unit Kerja</th>
+                                    <th style="width: 12%;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 2: PPPK -->
+                <div class="tab-pane fade" id="cuti-tab-pppk" role="tabpanel">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                                <input type="text" class="form-control" id="filterCutiPPPK"
+                                    placeholder="Cari nama atau NIP/NI PPPK...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped w-100 table-sm align-middle"
+                            id="tblCutiPPPK">
+                            <thead class="table-success text-center">
+                                <tr>
+                                    <th style="width: 5%;">No</th>
+                                    <th>Nama Pegawai</th>
+                                    <th>NIP / NI PPPK</th>
+                                    <th>Golongan</th>
+                                    <th>Jabatan</th>
+                                    <th>Masa Kerja</th>
+                                    <th>Unit Kerja</th>
+                                    <th style="width: 12%;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PPPK PARUH WAKTU -->
+                <div class="tab-pane fade" id="cuti-tab-pppkpw" role="tabpanel">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                                <input type="text" class="form-control" id="filterCutiPPPKPW"
+                                    placeholder="Cari nama atau NIP...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped w-100 table-sm align-middle"
+                            id="tblCutiPPPKPW">
+                            <thead class="table-warning text-center">
+                                <tr>
+                                    <th style="width: 5%;">No</th>
+                                    <th>Nama Pegawai</th>
+                                    <th>NIP / No. Pegawai</th>
+                                    <th>Golongan / Status</th>
+                                    <th>Jabatan</th>
+                                    <th>Masa Kerja</th>
+                                    <th>Unit Kerja</th>
+                                    <th style="width: 12%;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 4: RIWAYAT USULAN CUTI -->
+                <div class="tab-pane fade" id="cuti-tab-riwayat" role="tabpanel">
+                    <div class="row mb-3 align-items-center justify-content-between">
+                        <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                                <input type="text" class="form-control" id="filterCutiRiwayat"
+                                    placeholder="Cari dalam riwayat usulan cuti...">
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-sm btn-outline-danger shadow-sm" onclick="bersihkanSemuaRiwayatCuti()" title="Bersihkan Riwayat">
+                                <i class="fas fa-trash-alt me-1"></i>Kosongkan Riwayat
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped w-100 table-sm align-middle small"
+                            id="tblCutiRiwayat">
+                            <thead class="table-info text-center">
+                                <tr>
+                                    <th style="width: 4%;">No</th>
+                                    <th>Tgl Usulan</th>
+                                    <th>Nama / NIP</th>
+                                    <th>Status</th>
+                                    <th>Jenis / Lama Cuti</th>
+                                    <th>Waktu Pelaksanaan</th>
+                                    <th>Alasan Cuti</th>
+                                    <th style="width: 14%;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div aria-hidden="true" class="modal fade" id="modalSync" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header bg-primary text-white">
+<h5 class="modal-title"><i class="fas fa-sync-alt"></i> Sinkronisasi Data</h5>
+<button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<p class="small text-muted mb-3">Masukkan Link Exec Google Apps Script (API) versi Online untuk
+                        menautkan dan menyinkronkan data secara dua arah.</p>
+<div class="mb-3">
+<label class="form-label fw-bold">Link Exec API Google</label>
+<input class="form-control" id="syncExecUrl" placeholder="https://script.google.com/macros/s/.../exec" type="text"/>
+</div>
+</div>
+<div class="modal-footer bg-light">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Tutup</button>
+<button class="btn btn-primary shadow-sm" onclick="mulaiSinkronisasi()" type="button"><i class="fas fa-cloud-upload-alt"></i> Mulai Sinkronisasi</button>
+</div>
+</div>
+</div>
+</div>

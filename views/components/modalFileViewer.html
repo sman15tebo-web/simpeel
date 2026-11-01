@@ -1,0 +1,70 @@
+<!-- ============================================================
+     GOOGLE DRIVE STYLE CLEAN FILE VIEWER (WITH TOOLBAR & DRIVE LINK)
+     Pratinjau Berkas Lampiran SiMPEEL
+     ============================================================ -->
+<div id="simpeelFileViewerModal" class="simpeel-viewer-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-label="Pratinjau Berkas">
+    <!-- WINDOW FRAME (80% LEBAR DI TENGAH, TINGGI 100vh MENTOK LAYAR) -->
+    <div class="simpeel-viewer-window" id="simpeelViewerWindow">
+        <!-- Header Toolbar Pratinjau Dokumen -->
+        <header class="simpeel-viewer-header d-flex align-items-center justify-content-between px-3 py-2 border-bottom bg-white" style="z-index: 105; min-height: 50px;">
+            <div class="d-flex align-items-center overflow-hidden me-2">
+                <i class="fas fa-file-pdf text-danger me-2 fs-5" id="simpeelViewerIcon"></i>
+                <div class="text-truncate">
+                    <span class="fw-bold text-dark text-truncate" id="simpeelViewerTitle" style="font-size: 0.95rem;">Pratinjau Dokumen</span>
+                    <span class="badge bg-light text-secondary border ms-2" id="simpeelViewerBadge" style="font-size: 0.72rem;">Dokumen</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary d-inline-flex align-items-center" id="simpeelBtnDriveLink" style="display: none;" title="Buka berkas langsung di Google Drive atau tab baru">
+                    <i class="fab fa-google-drive me-1"></i> <span class="d-none d-sm-inline">Buka di Drive</span>
+                </a>
+                <button type="button" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center" id="simpeelBtnDownload" title="Unduh berkas">
+                    <i class="fas fa-download me-1"></i> <span class="d-none d-md-inline">Unduh</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" id="simpeelBtnClose" title="Tutup Pratinjau (Esc)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Pemberitahuan Pintasan Google Drive -->
+        <div id="simpeelDriveNotice" class="alert alert-info py-1 px-3 mb-0 small rounded-0 border-0 border-bottom d-flex align-items-center justify-content-between" style="display: none; font-size: 0.82rem; background-color: #f0f9ff; color: #0284c7; border-color: #bae6fd !important;">
+            <span class="text-truncate me-2">
+                <i class="fas fa-info-circle me-1"></i> Jika pratinjau dokumen tidak muncul di browser, silakan klik tombol <strong>"Buka di Drive"</strong> di atas.
+            </span>
+            <button type="button" class="btn-close btn-close-sm" style="font-size: 0.65rem;" onclick="this.parentElement.style.display='none'"></button>
+        </div>
+
+        <!-- VIEWER BODY (IFRAME / GAMBAR / FALLBACK) -->
+        <main class="simpeel-viewer-body" id="simpeelViewerBody">
+            <!-- Loading State -->
+            <div class="simpeel-viewer-loading" id="simpeelViewerLoading" style="display: none;">
+                <div class="spinner-border text-primary" role="status" style="width: 2.2rem; height: 2.2rem;">
+                    <span class="visually-hidden">Memuat berkas...</span>
+                </div>
+                <div class="text-secondary small mt-2">Memuat pratinjau berkas...</div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="simpeel-viewer-content-container" id="simpeelViewerContentContainer">
+                <!-- Iframe Viewer (Google Drive / Embedded PDF Bawaan) -->
+                <iframe id="simpeelViewerFrame" class="simpeel-viewer-frame" allow="autoplay" allowfullscreen></iframe>
+
+                <!-- Image Viewer (JPG / PNG / WebP) -->
+                <div class="simpeel-viewer-img-container" id="simpeelViewerImgContainer" style="display: none;">
+                    <img id="simpeelViewerImage" class="simpeel-viewer-img" alt="Pratinjau Berkas" />
+                </div>
+
+                <!-- Empty / Error Fallback -->
+                <div class="simpeel-viewer-empty" id="simpeelViewerEmpty" style="display: none;">
+                    <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                    <h5 class="fw-bold text-dark mb-2" id="simpeelViewerEmptyTitle">Pratinjau Tidak Tersedia</h5>
+                    <p class="text-muted small mb-3" id="simpeelViewerEmptyDesc">Berkas ini tidak dapat ditampilkan langsung di dalam halaman.</p>
+                    <button type="button" class="btn btn-primary btn-sm" id="simpeelBtnFallbackAction">
+                        <i class="fas fa-external-link-alt me-1"></i> Buka dengan Aplikasi Eksternal
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
