@@ -1124,12 +1124,12 @@ async function editPegawai(nip) {
     }
 
     // Periksa sesi untuk menentukan apakah sedang diakses pegawai (self-edit) atau admin
-    const ssoToken = localStorage.getItem('SIMPEEL_TOKEN_ONLINE') || localStorage.getItem('SIMPEEL_TOKEN_OFFLINE');
-    let session = null;
-    if (ssoToken) {
-        try { session = JSON.parse(ssoToken); } catch (e) { }
+    const editSessionRaw = localStorage.getItem('SIMPEEL_TOKEN_ONLINE') || localStorage.getItem('SIMPEEL_TOKEN_OFFLINE');
+    let editSession = null;
+    if (editSessionRaw) {
+        try { editSession = JSON.parse(editSessionRaw); } catch (e) { }
     }
-    const isPegawai = session && session.role === 'pegawai';
+    const isPegawai = editSession && editSession.role === 'pegawai';
 
     // Show Modal: Jika mode admin, pastikan DOM di-restore ke #modalPegawai
     if (!isPegawai && typeof window.restoreModalPegawaiDOM === 'function') {
