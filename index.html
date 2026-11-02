@@ -15,7 +15,7 @@
     <link href="assets/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
     <link href="assets/css/cropper.min.css" rel="stylesheet" />
-    <link href="css/style.css?v=20261102-table-grid" rel="stylesheet" />
+    <link href="css/style.css?v=20261102-pegawai-menu" rel="stylesheet" />
 </head>
 
 <body class="splash-screen-active" id="page-top">
@@ -61,6 +61,12 @@
                         <li class="nav-item d-md-none me-2" id="topNavPengaturanMobile" data-admin-only>
                             <a class="nav-link p-1 text-gray-600" href="#" onclick="nav('pengaturan')" title="Pengaturan Sistem" style="font-size: 1.25rem;">
                                 <i class="fas fa-cog text-primary"></i>
+                            </a>
+                        </li>
+                        <!-- Tombol Keluar Khusus HP (akun pegawai) di sudut kanan atas -->
+                        <li class="nav-item d-none d-md-none me-2" id="topNavLogoutMobile" data-pegawai-only>
+                            <a class="nav-link p-1 text-danger" href="#" onclick="logoutSSO()" title="Keluar" aria-label="Keluar" style="font-size: 1.25rem;">
+                                <i class="fas fa-sign-out-alt"></i>
                             </a>
                         </li>
                         <!-- Nav Item - User Information -->
@@ -113,6 +119,9 @@
                     <div data-include="views/pages/view-pegawai-input.html"></div>
                     <!-- ========================== USUL CUTI VIEW ========================== -->
                     <div data-include="views/pages/view-cuti.html"></div>
+                    <!-- ========================== PEGAWAI: USUL CUTI & SKUMPTK (halaman tombol cetak) ========================== -->
+                    <div data-include="views/pages/view-pegawai-cuti.html"></div>
+                    <div data-include="views/pages/view-pegawai-skumptk.html"></div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -168,17 +177,21 @@
             <i class="fas fa-home"></i>
             <span>Dashboard</span>
         </a>
-        <a class="nav-item-bottom" href="#" id="mob-nav-pegawai-cuti" onclick="nav('usul-cuti')">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Usul Cuti</span>
+        <a class="nav-item-bottom" href="#" id="mob-nav-profil-pegawai" onclick="nav('profil-pegawai')">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
         </a>
         <a class="nav-item-bottom nav-center-action" href="#" id="mob-nav-pegawai-input" onclick="nav('update-data')">
             <div class="nav-action-circle shadow"><i class="fas fa-edit"></i></div>
             <span>Input Data</span>
         </a>
-        <a class="nav-item-bottom" href="#" id="mob-nav-profil-pegawai" onclick="nav('profil-pegawai')">
-            <i class="fas fa-user"></i>
-            <span>Profil Saya</span>
+        <a class="nav-item-bottom" href="#" id="mob-nav-pegawai-cuti" onclick="nav('pegawai-cuti')">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Usul Cuti</span>
+        </a>
+        <a class="nav-item-bottom" href="#" id="mob-nav-pegawai-skumptk" onclick="nav('pegawai-skumptk')">
+            <i class="fas fa-file-word"></i>
+            <span>SKUMPTK</span>
         </a>
     </nav>
     <!-- ========================== MODALS ========================== -->
