@@ -503,7 +503,7 @@ async function renderTabelDUK() {
             }
 
             return [
-                no++, `${escapeHtml(p.nama)}<br><small>${escapeHtml(p.nip)}</small>`, escapeHtml(p.jabatan || '-'), golTmt, mkKeseluruhan, mkGolRuang, usia
+                no++, `<span class="simpeel-nama-bold">${escapeHtml(p.nama)}</span><br><small>${escapeHtml(p.nip)}</small>`, escapeHtml(p.jabatan || '-'), golTmt, mkKeseluruhan, mkGolRuang, usia
             ];
         });
     };
