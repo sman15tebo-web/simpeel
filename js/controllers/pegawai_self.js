@@ -379,7 +379,7 @@ document.addEventListener('input', function(e) {
     }
 });
 
-function bukaFormUpdateData() {
+async function bukaFormUpdateData() {
     // Sembunyikan semua page-view
     document.querySelectorAll('.page-view').forEach(el => el.classList.add('d-none'));
 
@@ -417,11 +417,17 @@ function bukaFormUpdateData() {
     if (ssoToken) {
         try {
             const user = JSON.parse(ssoToken);
-            sessionNip = user.username || user.nip || window.currentSessionNip;
+            sessionNip = user.nip || user.username || window.currentSessionNip;
         } catch(e) {}
     }
     if (sessionNip && typeof editPegawai === 'function') {
-        editPegawai(sessionNip);
+        // Ambil data terbaru dulu (data yang baru diinput admin ikut tampil), baru isi form
+        await window.segarkanDataPegawaiSaya();
+        // pengguna mungkin sudah pindah menu selama menunggu; jangan isi form yang tidak sedang dibuka
+        const stillOpen = document.getElementById('view-update-data');
+        if (stillOpen && !stillOpen.classList.contains('d-none')) {
+            await editPegawai(String(sessionNip));
+        }
     }
 }
 window.bukaFormUpdateData = bukaFormUpdateData;
@@ -584,6 +590,7 @@ window.bukaUsulCutiSaya = async function () {
     if (typeof bukaModalUsulCuti !== 'function') {
         return Swal.fire('Error', 'Fitur usul cuti belum siap. Muat ulang halaman.', 'error');
     }
+    await window.segarkanDataPegawaiSaya();
     await bukaModalUsulCuti(nip);
 };
 
@@ -593,5 +600,30 @@ window.cetakSkumptkSaya = async function () {
     if (typeof cetakSkumptk !== 'function') {
         return Swal.fire('Error', 'Fungsi cetak SKUMPTK belum siap. Muat ulang halaman.', 'error');
     }
+    await window.segarkanDataPegawaiSaya();
     await cetakSkumptk(nip);
+};
+
+/**
+ * Satu sumber data: baris pegawai yang sama dipakai admin & akun pegawai.
+ * Sebelum pegawai membuka Input Data / Usul Cuti / SKUMPTK, ambil ulang data terbaru
+ * (supaya riwayat yang baru diinput admin langsung tampil, tidak memakai salinan lama di browser).
+ * Jika gagal (offline/server lambat), tetap lanjut memakai data yang ada di perangkat.
+ */
+window.segarkanDataPegawaiSaya = async function () {
+    try {
+        if (typeof dbManager === 'undefined') return false;
+        if (isElectron) {
+            await dbManager.init();
+        } else if (API_URL && typeof dbManager.forceFetchFromServer === 'function') {
+            const res = await dbManager.forceFetchFromServer({ refreshUI: false });
+            if (!Array.isArray(res)) return false;
+        }
+        // cache daftar pegawai milik modul Usul Cuti ikut dikosongkan agar dibaca ulang
+        if (typeof cachedPegawaiCuti !== 'undefined') cachedPegawaiCuti = [];
+        return true;
+    } catch (e) {
+        console.warn('[SiMPeEL] Penyegaran data pegawai gagal, memakai data di perangkat:', e);
+        return false;
+    }
 };
