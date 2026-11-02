@@ -444,6 +444,13 @@ function checkSSOSession() {
         if (wrapper) wrapper.classList.add('d-none');
         if (loginView) loginView.classList.add('d-none');
         if (landingView) landingView.classList.remove('d-none');
+        // Sembunyikan bottom nav & tombol logout HP saat tidak ada sesi login
+        const mobAdmin = document.getElementById('mobile-bottom-nav-admin');
+        const mobPegawai = document.getElementById('mobile-bottom-nav-pegawai');
+        const mobLogout = document.getElementById('topNavLogoutMobile');
+        if (mobAdmin) mobAdmin.classList.add('d-none');
+        if (mobPegawai) mobPegawai.classList.add('d-none');
+        if (mobLogout) mobLogout.classList.add('d-none');
         return;
     }
 
@@ -475,6 +482,8 @@ function checkSSOSession() {
             const mobPegawai = document.getElementById('mobile-bottom-nav-pegawai');
             if (mobAdmin) mobAdmin.classList.add('d-none');
             if (mobPegawai) mobPegawai.classList.remove('d-none');
+            const mobLogout = document.getElementById('topNavLogoutMobile');
+            if (mobLogout) mobLogout.classList.remove('d-none');
 
             if (syncBtnParent) syncBtnParent.classList.add('d-none');
             document.querySelectorAll('[data-admin-only]').forEach(el => el.classList.add('d-none'));
@@ -492,6 +501,8 @@ function checkSSOSession() {
             const mobPegawai = document.getElementById('mobile-bottom-nav-pegawai');
             if (mobAdmin) mobAdmin.classList.remove('d-none');
             if (mobPegawai) mobPegawai.classList.add('d-none');
+            const mobLogoutAdmin = document.getElementById('topNavLogoutMobile');
+            if (mobLogoutAdmin) mobLogoutAdmin.classList.add('d-none');
 
             if (syncBtnParent) syncBtnParent.classList.remove('d-none');
             document.querySelectorAll('[data-admin-only]').forEach(el => el.classList.remove('d-none'));
