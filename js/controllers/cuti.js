@@ -1269,7 +1269,7 @@ async function renderTabelRiwayatCuti(forceRefresh = false) {
       return [
         idx + 1,
         `<span class="small text-muted text-nowrap">${item.tglSuratIndo || item.tglSurat || "-"}</span>`,
-        `<div class="d-flex flex-column"><span>${escNama || "-"}</span><span class="text-muted">${escapeHtml(item.nip || "-")}</span></div>`,
+        `<div class="d-flex flex-column"><span class="simpeel-nama-bold">${escNama || "-"}</span><span class="text-muted">${escapeHtml(item.nip || "-")}</span></div>`,
         `<span class="${badgeClass} fw-normal">${escStatus}</span>`,
         `<div class="d-flex flex-column"><span class="${jenisBadgeClass} fw-normal align-self-center">${escJenis}</span><span class="text-muted">${escapeHtml(item.lamaHari || 1)} Hari Kerja</span></div>`,
         `<div class="d-flex flex-column small text-nowrap"><span>${escapeHtml(item.tglMulaiIndo || item.tglMulai || "-")}</span><span class="text-muted">s/d ${escapeHtml(item.tglSelesaiIndo || item.tglSelesai || "-")}</span></div>`,
