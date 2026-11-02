@@ -562,3 +562,36 @@ async function renderDashboardPegawai() {
     `;
     container.innerHTML = html;
 }
+
+/**
+ * Akun pegawai: halaman "Usul Cuti" & "SKUMPTK" hanya berisi satu tombol di tengah halaman.
+ * Tombol membuka modal yang sama seperti di akun admin, tetapi khusus untuk data pegawai yang sedang login.
+ */
+function getNipSesiPegawai() {
+    try {
+        const raw = localStorage.getItem(TOKEN_KEY);
+        if (!raw) return '';
+        const user = JSON.parse(raw);
+        return String(user.nip || user.username || '').trim();
+    } catch (e) {
+        return '';
+    }
+}
+
+window.bukaUsulCutiSaya = async function () {
+    const nip = getNipSesiPegawai();
+    if (!nip) return Swal.fire('Sesi Tidak Valid', 'Silakan login ulang.', 'error');
+    if (typeof bukaModalUsulCuti !== 'function') {
+        return Swal.fire('Error', 'Fitur usul cuti belum siap. Muat ulang halaman.', 'error');
+    }
+    await bukaModalUsulCuti(nip);
+};
+
+window.cetakSkumptkSaya = async function () {
+    const nip = getNipSesiPegawai();
+    if (!nip) return Swal.fire('Sesi Tidak Valid', 'Silakan login ulang.', 'error');
+    if (typeof cetakSkumptk !== 'function') {
+        return Swal.fire('Error', 'Fungsi cetak SKUMPTK belum siap. Muat ulang halaman.', 'error');
+    }
+    await cetakSkumptk(nip);
+};
